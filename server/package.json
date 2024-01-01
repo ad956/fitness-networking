@@ -1,4 +1,5 @@
 {
+  "name": "fitness-networking-server",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
