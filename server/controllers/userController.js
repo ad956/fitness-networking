@@ -66,7 +66,7 @@ const login = asyncHandler(async (req, res, next) => {
         },
       },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "3m" }
+      { expiresIn: "30m" }
     );
     res.status(200).json({ accessToken });
   } else {
@@ -85,7 +85,8 @@ const allUsers = asyncHandler(async (req, res, next) => {
 // get particular user data
 const getUser = asyncHandler(async (req, res, next) => {
   const currentUser = req.user;
-  const user = await User.findOne({ user_id: currentUser.id });
+  const user = await User.findOne({ where: { user_id: currentUser.id } });
+
   res.status(201).json({ user });
 });
 
