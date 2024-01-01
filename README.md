@@ -80,7 +80,7 @@ The Fitness Networking App is a comprehensive platform designed to cater to the 
 
 #### Backend
 
-![Backend](https://skillicons.dev/icons?i=nodejs,expressjs,mysql&perline=10&theme=dark)
+![Backend](https://skillicons.dev/icons?i=nodejs,expressjs,sequelize,mysql&perline=10&theme=dark)
 
 ## Getting Started
 
