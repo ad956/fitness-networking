@@ -87,7 +87,7 @@ The Fitness Networking App is a comprehensive platform designed to cater to the 
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/ad956/fitness-networking-app.git
+   git clone https://github.com/ad956/fitness-networking.git
    ```
 
 2. Install dependencies:
