@@ -6,6 +6,7 @@ const User = require("../models/userModel")(sequelize, DataTypes);
 const bcrypt = require("bcrypt");
 const asyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 
 //register
 const registerUser = asyncHandler(async (req, res, next) => {
@@ -44,7 +45,6 @@ const registerUser = asyncHandler(async (req, res, next) => {
 });
 
 // login
-
 const login = asyncHandler(async (req, res, next) => {
   console.log(req.body);
   const { email_mobile, password } = req.body;
@@ -75,7 +75,7 @@ const login = asyncHandler(async (req, res, next) => {
   }
 });
 
-//
+// get all users details
 const allUsers = asyncHandler(async (req, res, next) => {
   const currentUser = req.user;
   const user = await User.findAll();
@@ -90,4 +90,41 @@ const getUser = asyncHandler(async (req, res, next) => {
   res.status(201).json({ user });
 });
 
-module.exports = { login, registerUser, allUsers, getUser };
+//forget-password
+const forgetPassword = asyncHandler(async (req, res, next) => {});
+
+//reset-password
+const resetPassword = asyncHandler(async (req, res, next) => {
+  const user = req.user;
+
+  const result = await User.findOne({ where: { user_id: user.id } });
+
+  const buffer = crypto.randomBytes(5);
+  const OTP = buffer.toString("base64").replace(/[+/=]/g, "").substring(0, 5);
+
+  console.log("------" + OTP);
+  // //  add otp to user
+  // const [updatedRowsCount] = await User.update(
+  //   { otp: "12345" },
+  //   { where: { email: userEmail }, returning: true }
+  // );
+
+  // if (updatedRowsCount === 0) {
+  //   res.status(500);
+  //   throw new Error("OTP sending failed");
+  // }
+
+  // // suppose sent an email...
+  // const userEmail = result.email;
+
+  res.json({ userEmail });
+});
+
+module.exports = {
+  login,
+  registerUser,
+  allUsers,
+  getUser,
+  resetPassword,
+  forgetPassword,
+};
