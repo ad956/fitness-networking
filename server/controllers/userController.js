@@ -102,6 +102,13 @@ const forgetPassword = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({
     where: { [Op.or]: [{ email: email_mobile }, { mobile: email_mobile }] },
   });
+
+  if (!user) {
+    res.status(400);
+    throw new Error("User doesn't exists");
+  }
+
+  res.json(user);
 });
 
 //reset-password
