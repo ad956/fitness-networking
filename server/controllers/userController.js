@@ -91,7 +91,18 @@ const getUser = asyncHandler(async (req, res, next) => {
 });
 
 //forget-password
-const forgetPassword = asyncHandler(async (req, res, next) => {});
+const forgetPassword = asyncHandler(async (req, res, next) => {
+  const { email_mobile } = req.body;
+
+  if (!email_mobile) {
+    res.status(400);
+    throw new Error("Email or Mobile is mandatory");
+  }
+
+  const user = await User.findOne({
+    where: { [Op.or]: [{ email: email_mobile }, { mobile: email_mobile }] },
+  });
+});
 
 //reset-password
 const resetPassword = asyncHandler(async (req, res, next) => {
