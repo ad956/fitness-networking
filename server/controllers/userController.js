@@ -7,6 +7,7 @@ const bcrypt = require("bcrypt");
 const asyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
+const transporter = require("../config/emailConfig");
 
 //register
 const registerUser = asyncHandler(async (req, res, next) => {
@@ -116,7 +117,7 @@ const resetPassword = asyncHandler(async (req, res, next) => {
   const user = req.user;
 
   const result = await User.findOne({ where: { user_id: user.id } });
-  const userEmail = result.email;
+  const userEmail = "anandsuthar956@gmail.com"; //result.email;
 
   const buffer = crypto.randomBytes(5);
   const newOTP = buffer
@@ -136,8 +137,21 @@ const resetPassword = asyncHandler(async (req, res, next) => {
   }
 
   // sending an email...
+  let message = {
+    from: "fitnessnetworking@gmail.com",
+    to: userEmail,
+    subject: "Reset Password",
+    html: "<b>Password reset krna h?</b>",
+  };
 
-  res.status(201).json({ msg: "OK" });
+  const info = await transporter.sendMail(message);
+  res.status(201).json({
+    msg: "Email sent",
+    info: info.messageId,
+    preview: nodemailer.getTestMessageUrl(info),
+  });
+
+  // res.status(201).json({ msg: "OK" });
 });
 
 module.exports = {
