@@ -98,26 +98,28 @@ const resetPassword = asyncHandler(async (req, res, next) => {
   const user = req.user;
 
   const result = await User.findOne({ where: { user_id: user.id } });
+  const userEmail = result.email;
 
   const buffer = crypto.randomBytes(5);
-  const OTP = buffer.toString("base64").replace(/[+/=]/g, "").substring(0, 5);
+  const newOTP = buffer
+    .toString("base64")
+    .replace(/[+/=]/g, "")
+    .substring(0, 5);
 
-  console.log("------" + OTP);
-  // //  add otp to user
-  // const [updatedRowsCount] = await User.update(
-  //   { otp: "12345" },
-  //   { where: { email: userEmail }, returning: true }
-  // );
+  //  add otp to user
+  const [updatedRowsCount] = await User.update(
+    { otp: newOTP },
+    { where: { email: userEmail }, returning: true }
+  );
 
-  // if (updatedRowsCount === 0) {
-  //   res.status(500);
-  //   throw new Error("OTP sending failed");
-  // }
+  if (updatedRowsCount === 0) {
+    res.status(500);
+    throw new Error("OTP sending failed");
+  }
 
-  // // suppose sent an email...
-  // const userEmail = result.email;
+  // sending an email...
 
-  res.json({ userEmail });
+  res.status(201).json({ msg: "OK" });
 });
 
 module.exports = {
