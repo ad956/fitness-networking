@@ -9,4 +9,4 @@ let config = {
 };
 
 let transporter = nodemailer.createTransport(config);
-module.exports = { transporter };
+module.exports = { transporter, nodemailer };
