@@ -112,7 +112,7 @@ const forgetPassword = asyncHandler(async (req, res, next) => {
   res.json(user);
 });
 
-//reset-passwor
+//reset-password
 const resetPassword = asyncHandler(async (req, res, next) => {
   const user = req.user;
 
