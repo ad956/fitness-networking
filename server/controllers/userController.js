@@ -7,7 +7,7 @@ const bcrypt = require("bcrypt");
 const asyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
-const transporter = require("../config/emailConfig");
+const { transporter, nodemailer } = require("../config/emailConfig");
 
 //register
 const registerUser = asyncHandler(async (req, res, next) => {
@@ -138,7 +138,7 @@ const resetPassword = asyncHandler(async (req, res, next) => {
 
   // sending an email...
   let message = {
-    from: "fitnessnetworking@gmail.com",
+    from: "Fitness Networking fitness@gmail.com",
     to: userEmail,
     subject: "Reset Password",
     html: "<b>Password reset krna h?</b>",
