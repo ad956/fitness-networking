@@ -12,7 +12,7 @@ const {
   MAIL_FROM,
   CLIENT_ERROR_URL,
   CLIENT_URL,
-} = require("../constants/constants");
+} = require("../utils/constants");
 const sendEmail = require("../services/sendEmailService");
 
 //register
