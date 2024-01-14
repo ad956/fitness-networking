@@ -154,7 +154,7 @@ const resetPassword = asyncHandler(async (req, res, next) => {
     outro
   );
 
-  // sending an email...
+  // sending an email ...
   let message = {
     from: MAIL_FROM,
     to: userEmail,
