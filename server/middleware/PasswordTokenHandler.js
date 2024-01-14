@@ -12,7 +12,7 @@ const validatePasswordToken = asyncHandler(async (req, res, next) => {
     res
       .status(401)
       .redirect(
-        "http://localhost:5173/err?msg=RESET%20TOKEN%20IS%20NOT%20VALID"
+        "http://localhost:5173/err?msg=RESET%20TOKEN%20IS%20NOT%20VALID%20OR%20EXPIRED"
       );
 
     return;
