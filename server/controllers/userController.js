@@ -126,7 +126,6 @@ const resetPassword = asyncHandler(async (req, res, next) => {
     .substring(0, 5);
 
   //  add otp to user
-
   result.otp = resetToken;
 
   const otpChanged = await result.save();
@@ -135,6 +134,7 @@ const resetPassword = asyncHandler(async (req, res, next) => {
     throw new Error("OTP sending failed");
   }
 
+  // diffrent for production
   const passwordResetLink = `http://localhost:3000/api/user/reset-password/${resetToken}`;
 
   res.json(passwordResetLink);
