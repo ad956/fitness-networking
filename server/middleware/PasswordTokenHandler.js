@@ -7,6 +7,7 @@ const validatePasswordToken = asyncHandler(async (req, res, next) => {
   const { token } = req.params;
   const user = await User.findOne({ where: { otp: token } });
 
+  console.log(token + " " + typeof token);
   if (!user) {
     res.status(401);
     throw new Error("Token expired or isn't valid");
