@@ -146,6 +146,7 @@ const resetPassword = asyncHandler(async (req, res, next) => {
   };
 
   const info = await transporter.sendMail(message);
+
   res.status(201).json({
     msg: "Email sent",
     info: info.messageId,
@@ -157,11 +158,16 @@ const resetPassword = asyncHandler(async (req, res, next) => {
 const setPassword = asyncHandler(async (req, res) => {
   const user = req.user;
   if (!user) {
-    res.status(401).redirect("http://localhost:5173/err");
-    throw new Error("Token expired or isn't valid");
+    console.log("Token expired or isn't valid");
+    res
+      .status(401)
+      .redirect(
+        "http://localhost:5173/err?msg=RESET%20TOKEN%20IS%20NOT%20VALID"
+      );
   }
 
   res.redirect("http://localhost:5173/login");
+  return;
 });
 
 module.exports = {
