@@ -126,17 +126,18 @@ const resetPassword = asyncHandler(async (req, res, next) => {
     .substring(0, 5);
 
   //  add otp to user
-  const [updatedRowsCount] = await User.update(
-    { otp: resetToken },
-    { where: { email: userEmail }, returning: true }
-  );
 
-  if (updatedRowsCount === 0) {
+  result.otp = resetToken;
+
+  const otpChanged = await result.save();
+  if (!otpChanged) {
     res.status(500);
     throw new Error("OTP sending failed");
   }
 
   const passwordResetLink = `http://localhost:3000/api/user/reset-password/${resetToken}`;
+
+  res.json(passwordResetLink);
 
   // sending an email...
   let message = {
@@ -147,11 +148,11 @@ const resetPassword = asyncHandler(async (req, res, next) => {
   };
 
   const info = await transporter.sendMail(message);
-  res.status(201).json({
-    msg: "Email sent",
-    info: info.messageId,
-    preview: nodemailer.getTestMessageUrl(info),
-  });
+  // res.status(201).json({
+  //   msg: "Email sent",
+  //   info: info.messageId,
+  //   preview: nodemailer.getTestMessageUrl(info),
+  // });
 
   // res.status(201).json({ msg: "OK" });
 });
