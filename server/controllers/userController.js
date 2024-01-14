@@ -120,14 +120,14 @@ const resetPassword = asyncHandler(async (req, res, next) => {
   const userEmail = "anandsuthar956@gmail.com"; //result.email;
 
   const buffer = crypto.randomBytes(5);
-  const newOTP = buffer
+  const resetToken = buffer
     .toString("base64")
     .replace(/[+/=]/g, "")
     .substring(0, 5);
 
   //  add otp to user
   const [updatedRowsCount] = await User.update(
-    { otp: newOTP },
+    { otp: resetToken },
     { where: { email: userEmail }, returning: true }
   );
 
@@ -136,12 +136,14 @@ const resetPassword = asyncHandler(async (req, res, next) => {
     throw new Error("OTP sending failed");
   }
 
+  const passwordResetLink = `http://localhost:3000/api/user/reset-password/${resetToken}`;
+
   // sending an email...
   let message = {
     from: "Fitness Networking fitness@gmail.com",
     to: userEmail,
     subject: "Reset Password",
-    html: "<b>Password reset krna h?</b>",
+    html: `<a href="${passwordResetLink}">Password reset krna h?</a>`,
   };
 
   const info = await transporter.sendMail(message);
@@ -154,6 +156,11 @@ const resetPassword = asyncHandler(async (req, res, next) => {
   // res.status(201).json({ msg: "OK" });
 });
 
+const setPassword = asyncHandler(async (req, res) => {
+  // if token isnt valid redirect to token isnt valid
+  // else to cleint side page for password setting
+});
+
 module.exports = {
   login,
   registerUser,
@@ -161,4 +168,5 @@ module.exports = {
   getUser,
   resetPassword,
   forgetPassword,
+  setPassword,
 };
