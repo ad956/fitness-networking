@@ -6,8 +6,9 @@ const User = require("../models/userModel")(sequelize, DataTypes);
 const bcrypt = require("bcrypt");
 const asyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
-const crypto = require("crypto");
+const resetToken = require("../services/otpGenration");
 const { transporter, nodemailer } = require("../config/emailConfig");
+const mailTemplateGenrator = require("../services/emailTemplateGenrator");
 
 //register
 const registerUser = asyncHandler(async (req, res, next) => {
@@ -119,12 +120,6 @@ const resetPassword = asyncHandler(async (req, res, next) => {
   const result = await User.findOne({ where: { user_id: user.id } });
   const userEmail = "anandsuthar956@gmail.com"; //result.email;
 
-  const buffer = crypto.randomBytes(5);
-  const resetToken = buffer
-    .toString("base64")
-    .replace(/[+/=]/g, "")
-    .substring(0, 5);
-
   //  add otp to user
   result.otp = resetToken;
 
@@ -137,12 +132,29 @@ const resetPassword = asyncHandler(async (req, res, next) => {
   // different for production
   const passwordResetLink = `http://localhost:3000/api/user/reset-password/${resetToken}`;
 
+  const introMsg =
+    "You have received this email because a password reset request for your account was received.";
+  const instuctMsg = "Click the button below to reset your password:";
+  const link = passwordResetLink;
+  const msg = "Reset your password";
+  const outro =
+    "If you did not request a password reset, no further action is required on your part.";
+
+  let mail = mailTemplateGenrator(
+    result.name,
+    introMsg,
+    instuctMsg,
+    link,
+    msg,
+    outro
+  );
+
   // sending an email...
   let message = {
     from: "Fitness Networking fitness@gmail.com",
     to: userEmail,
     subject: "Reset Password",
-    html: `<a href="${passwordResetLink}">Password reset krna h?</a>`,
+    html: mail,
   };
 
   const info = await transporter.sendMail(message);
@@ -158,12 +170,10 @@ const resetPassword = asyncHandler(async (req, res, next) => {
 const setPassword = asyncHandler(async (req, res) => {
   const user = req.user;
   if (!user) {
-    console.log("Token expired or isn't valid");
+    console.log("User doesn't exist");
     res
       .status(401)
-      .redirect(
-        "http://localhost:5173/err?msg=RESET%20TOKEN%20IS%20NOT%20VALID"
-      );
+      .redirect("http://localhost:5173/err?msg=USER%20NOT%20EXISTS");
   }
 
   res.redirect("http://localhost:5173/login");
