@@ -8,7 +8,11 @@ const asyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
 const resetToken = require("../services/otpGenration");
 const mailTemplateGenrator = require("../services/emailTemplateGenrator");
-const { MAIL_FROM } = require("../constants/constants");
+const {
+  MAIL_FROM,
+  CLIENT_ERROR_URL,
+  CLIENT_URL,
+} = require("../constants/constants");
 const sendEmail = require("../services/sendEmailService");
 
 //register
@@ -119,7 +123,7 @@ const resetPassword = asyncHandler(async (req, res, next) => {
   const user = req.user;
 
   const result = await User.findOne({ where: { user_id: user.id } });
-  const userEmail = "anandsuthar956@gmail.com"; //result.email;
+  const userEmail = result.email;
 
   //  add otp to user
   result.otp = resetToken;
@@ -167,12 +171,10 @@ const setPassword = asyncHandler(async (req, res) => {
   const user = req.user;
   if (!user) {
     console.log("User doesn't exist");
-    res
-      .status(401)
-      .redirect("http://localhost:5173/err?msg=USER%20NOT%20EXISTS");
+    res.status(401).redirect(`${CLIENT_ERROR_URL}?msg=USER%20NOT%20EXISTS`);
   }
 
-  res.redirect("http://localhost:5173/login");
+  res.redirect(`${CLIENT_URL}login`);
   return;
 });
 
