@@ -16,6 +16,7 @@ export default function AppRoutes() {
       <Route path="/user/*" element={<UserRoutes />} />
       <Route path="/partner/*" element={<PartnerRoutes />} />
       <Route path="/admin/*" element={<AdminRoutes />} />
+      <Route path="*" element={<h1>You got an error</h1>} />
     </Routes>
   );
 }
