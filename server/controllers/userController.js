@@ -153,10 +153,11 @@ const resetPassword = asyncHandler(async (req, res, next) => {
   });
 });
 
+// after reset-pass/:token
 const setPassword = asyncHandler(async (req, res) => {
   const user = req.user;
   if (!user) {
-    res.status(401);
+    res.status(401).redirect("http://localhost:5173/err");
     throw new Error("Token expired or isn't valid");
   }
 
