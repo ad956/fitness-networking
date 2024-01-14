@@ -9,6 +9,7 @@ const validatePasswordToken = asyncHandler(async (req, res, next) => {
 
   if (!user) {
     res.status(401);
+    res.redirect("http://localhost:5173/err");
     throw new Error("Token expired or isn't valid");
   }
 
