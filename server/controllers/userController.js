@@ -137,8 +137,6 @@ const resetPassword = asyncHandler(async (req, res, next) => {
   // different for production
   const passwordResetLink = `http://localhost:3000/api/user/reset-password/${resetToken}`;
 
-  res.json(passwordResetLink);
-
   // sending an email...
   let message = {
     from: "Fitness Networking fitness@gmail.com",
@@ -148,18 +146,21 @@ const resetPassword = asyncHandler(async (req, res, next) => {
   };
 
   const info = await transporter.sendMail(message);
-  // res.status(201).json({
-  //   msg: "Email sent",
-  //   info: info.messageId,
-  //   preview: nodemailer.getTestMessageUrl(info),
-  // });
-
-  // res.status(201).json({ msg: "OK" });
+  res.status(201).json({
+    msg: "Email sent",
+    info: info.messageId,
+    preview: nodemailer.getTestMessageUrl(info),
+  });
 });
 
 const setPassword = asyncHandler(async (req, res) => {
-  // if token isnt valid redirect to token isnt valid
-  // else to cleint side page for password setting
+  const user = req.user;
+  if (!user) {
+    res.status(401);
+    throw new Error("Token expired or isn't valid");
+  }
+
+  res.redirect("http://localhost:5173/login");
 });
 
 module.exports = {
