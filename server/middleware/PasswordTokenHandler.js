@@ -4,10 +4,8 @@ const { sequelize } = require("../config/dbConnection");
 const User = require("../models/userModel")(sequelize, DataTypes);
 
 const validatePasswordToken = asyncHandler(async (req, res, next) => {
-  const token = req.params;
-  console.log("ate punge riya ho");
+  const { token } = req.params;
   const user = await User.findOne({ where: { otp: token } });
-  console.log("ne ate ate punge riya ho");
 
   if (!user) {
     res.status(401);
