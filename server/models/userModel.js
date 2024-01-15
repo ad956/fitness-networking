@@ -35,8 +35,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "User",
-      tableName: "user", // Make sure this matches your table name
-      timestamps: false, // If you don't want timestamps (createdAt, updatedAt)
+      tableName: "user",
+      timestamps: false,
     }
   );
   return User;
