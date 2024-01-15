@@ -1,5 +1,3 @@
-// sab api lkhni h as a prototype ke kei kate veni chaije..
-
 const { DataTypes, Op } = require("sequelize");
 const { sequelize } = require("../config/dbConnection");
 const User = require("../models/userModel")(sequelize, DataTypes);
