@@ -6,13 +6,9 @@ const User = require("../models/userModel")(sequelize, DataTypes);
 const bcrypt = require("bcrypt");
 const asyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
-const resetToken = require("../services/otpGenration");
+const genratedOTP = require("../services/otpGenration");
 const mailTemplateGenrator = require("../services/emailTemplateGenrator");
-const {
-  MAIL_FROM,
-  CLIENT_ERROR_URL,
-  CLIENT_URL,
-} = require("../utils/constants");
+const { constants } = require("../utils/constants");
 const sendEmail = require("../services/sendEmailService");
 
 //register
@@ -102,8 +98,7 @@ const forgetPassword = asyncHandler(async (req, res, next) => {
   const { email_mobile } = req.body;
 
   if (!email_mobile) {
-    res.status(400);
-    throw new Error("Email or Mobile is mandatory");
+    return res.status(400).json({ msg: "Email or Mobile is mandatory" });
   }
 
   const user = await User.findOne({
@@ -111,11 +106,48 @@ const forgetPassword = asyncHandler(async (req, res, next) => {
   });
 
   if (!user) {
-    res.status(400);
-    throw new Error("User doesn't exists");
+    return res.status(400).json({ msg: "User doesn't exists" });
   }
 
-  res.json(user);
+  const forgotPasswordSecret = genratedOTP;
+
+  user.otp = forgotPasswordSecret;
+
+  const otpChanged = await user.save();
+  if (!otpChanged) {
+    res.status(500).json({ msg: "OTP sending failed" });
+    return;
+  }
+
+  const forgotPasswordLink = `${constants.USER_URL}reset-password/${forgotPasswordSecret}`;
+
+  const introMsg =
+    "You have received this email because a forgot password request for your account was received.";
+  const instuctMsg = "Click the button below to reset your password:";
+  const link = forgotPasswordLink;
+  const msg = "Reset your password";
+  const outro =
+    "If you did not request a forgot password reset, no further action is required on your part.";
+
+  let mail = mailTemplateGenrator(
+    user.name,
+    introMsg,
+    instuctMsg,
+    link,
+    msg,
+    outro
+  );
+
+  // sending an email ...
+  let message = {
+    from: constants.MAIL_FROM,
+    to: user.email,
+    subject: "Reset Password",
+    html: mail,
+  };
+
+  const info = await sendEmail(message);
+  res.status(201).json(info);
 });
 
 //reset-password
@@ -125,17 +157,18 @@ const resetPassword = asyncHandler(async (req, res, next) => {
   const result = await User.findOne({ where: { user_id: user.id } });
   const userEmail = result.email;
 
+  const resetToken = genratedOTP;
   //  add otp to user
   result.otp = resetToken;
 
   const otpChanged = await result.save();
   if (!otpChanged) {
-    res.status(500);
-    throw new Error("OTP sending failed");
+    res.status(500).json({ msg: "OTP sending failed" });
+    return;
   }
 
   // different for production
-  const passwordResetLink = `http://localhost:3000/api/user/reset-password/${resetToken}`;
+  const passwordResetLink = `${constants.USER_URL}reset-password/${resetToken}`;
 
   const introMsg =
     "You have received this email because a password reset request for your account was received.";
@@ -156,7 +189,7 @@ const resetPassword = asyncHandler(async (req, res, next) => {
 
   // sending an email ...
   let message = {
-    from: MAIL_FROM,
+    from: constants.MAIL_FROM,
     to: userEmail,
     subject: "Reset Password",
     html: mail,
@@ -171,10 +204,12 @@ const setPassword = asyncHandler(async (req, res) => {
   const user = req.user;
   if (!user) {
     console.log("User doesn't exist");
-    res.status(401).redirect(`${CLIENT_ERROR_URL}?msg=USER%20NOT%20EXISTS`);
+    res
+      .status(401)
+      .redirect(`${constants.CLIENT_ERROR_URL}?msg=USER%20NOT%20EXISTS`);
   }
 
-  res.redirect(`${CLIENT_URL}login`);
+  res.redirect(`${constants.CLIENT_URL}login`);
   return;
 });
 
