@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const { DataTypes, Op } = require("sequelize");
 const { sequelize } = require("../config/dbConnection");
-const { CLIENT_ERROR_URL } = require("../utils/constants");
+const { constants } = require("../utils/constants");
 const User = require("../models/userModel")(sequelize, DataTypes);
 
 const validatePasswordToken = asyncHandler(async (req, res, next) => {
@@ -13,7 +13,7 @@ const validatePasswordToken = asyncHandler(async (req, res, next) => {
     res
       .status(401)
       .redirect(
-        `${CLIENT_ERROR_URL}?msg=RESET%20TOKEN%20IS%20NOT%20VALID%20OR%20EXPIRED`
+        `${constants.CLIENT_ERROR_URL}?msg=RESET%20TOKEN%20IS%20NOT%20VALID%20OR%20EXPIRED`
       );
 
     return;
