@@ -92,6 +92,11 @@ const getUser = asyncHandler(async (req, res, next) => {
   const currentUser = req.user;
   const user = await User.findOne({ where: { user_id: currentUser.id } });
 
+  if (!user) {
+    res.status(400).json({ msg: "User doesn't exists" });
+    return;
+  }
+
   res.status(201).json({ user });
   return;
 });

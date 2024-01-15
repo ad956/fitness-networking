@@ -78,7 +78,15 @@ const login = asyncHandler(async (req, res) => {
 });
 
 const getAdmin = asyncHandler(async (req, res) => {
-  const admin = req.user;
+  const userAdmin = req.user;
+
+  const admin = await Admin.findOne({ where: { admin_id: userAdmin.id } });
+
+  if (!admin) {
+    res.status(400).json({ msg: "User doesn't exists" });
+    return;
+  }
+
   res.json({ msg: admin });
   return;
 });
