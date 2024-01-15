@@ -27,11 +27,10 @@ const registerUser = asyncHandler(async (req, res, next) => {
     throw new Error("User already exists");
   }
 
+  const bcryptRounds = parseInt(process.env.BCRYPT_ROUNDS, 10) || 10;
+
   // hashing the password
-  const hashedPassword = await bcrypt.hash(
-    password,
-    process.env.BCRYPT_ROUNDS || 10
-  );
+  const hashedPassword = await bcrypt.hash(password, bcryptRounds);
 
   const newUser = User.create({
     name,
