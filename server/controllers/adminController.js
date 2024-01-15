@@ -47,8 +47,33 @@ const register = asyncHandler(async (req, res) => {
 });
 
 const login = asyncHandler(async (req, res) => {
-  res.json({ msg: "ADMIN" });
-  return;
+  const { email_mobile, password } = req.body;
+
+  if (!email_mobile || !password) {
+    res.status(400);
+    throw new Error("All fields are mandatory");
+  }
+
+  const admin = await Admin.findOne({
+    where: { [Op.or]: [{ email: email_mobile }, { mobile: email_mobile }] },
+  });
+
+  if (admin && (await bcrypt.compare(password, admin.password))) {
+    const accessToken = jwt.sign(
+      {
+        admin: {
+          id: admin.admin_id,
+        },
+      },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: "30m" }
+    );
+    res.status(200).json({ accessToken });
+    return;
+  } else {
+    res.status(401);
+    throw new Error("email | mobile or password is not valid");
+  }
 });
 
 const getAdmin = asyncHandler(async (req, res) => {
