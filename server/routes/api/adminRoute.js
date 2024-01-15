@@ -2,9 +2,10 @@ const express = require("express");
 const router = express.Router();
 
 const adminController = require("../../controllers/adminController");
-// validateToken
+const validateToken = require("../../middleware/validateTokenHandler");
 
-router.get("/", adminController.admin);
-router.get("/login", adminController.login);
+router.get("/", validateToken, adminController.getAdmin);
+router.post("/login", adminController.login);
+router.post("/register", adminController.register);
 
 module.exports = router;
