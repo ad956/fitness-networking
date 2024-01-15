@@ -42,6 +42,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
 
   if (newUser) {
     res.status(201).json({ newUser }); // newUser for now will change it
+    return;
   } else {
     res.status(400);
     throw new Error("User data is not valid");
@@ -73,6 +74,7 @@ const login = asyncHandler(async (req, res, next) => {
       { expiresIn: "30m" }
     );
     res.status(200).json({ accessToken });
+    return;
   } else {
     res.status(401);
     throw new Error("email / mobile or password is not valid");
@@ -84,6 +86,7 @@ const allUsers = asyncHandler(async (req, res, next) => {
   const currentUser = req.user;
   const user = await User.findAll();
   res.status(201).json({ currentUser, user });
+  return;
 });
 
 // get particular user data
@@ -92,6 +95,7 @@ const getUser = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({ where: { user_id: currentUser.id } });
 
   res.status(201).json({ user });
+  return;
 });
 
 //forget-password
@@ -99,7 +103,8 @@ const forgetPassword = asyncHandler(async (req, res, next) => {
   const { email_mobile } = req.body;
 
   if (!email_mobile) {
-    return res.status(400).json({ msg: "Email or Mobile is mandatory" });
+    res.status(400).json({ msg: "Email or Mobile is mandatory" });
+    return;
   }
 
   const user = await User.findOne({
@@ -107,7 +112,8 @@ const forgetPassword = asyncHandler(async (req, res, next) => {
   });
 
   if (!user) {
-    return res.status(400).json({ msg: "User doesn't exists" });
+    res.status(400).json({ msg: "User doesn't exists" });
+    return;
   }
 
   const forgotPasswordSecret = genratedOTP;
@@ -149,6 +155,7 @@ const forgetPassword = asyncHandler(async (req, res, next) => {
 
   const info = await sendEmail(message);
   res.status(201).json(info);
+  return;
 });
 
 //reset-password
@@ -198,6 +205,7 @@ const resetPassword = asyncHandler(async (req, res, next) => {
 
   const info = await sendEmail(message);
   res.status(201).json(info);
+  return;
 });
 
 // after reset-pass/:token
