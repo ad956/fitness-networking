@@ -9,8 +9,8 @@ router.get("/", validateToken, userController.getUser);
 router.get("/all", validateToken, userController.allUsers);
 router.post("/login", userController.login);
 router.post("/register", userController.registerUser);
-router.post("/forgot-password", userController.forgetPassword);
-router.post("/reset-password", validateToken, userController.resetPassword);
+router.post("/forgot-password", userController.forgetPassword); // at login
+router.post("/reset-password", validateToken, userController.resetPassword); // using profile
 router.get(
   "/reset-password/:token",
   validatePasswordToken,
