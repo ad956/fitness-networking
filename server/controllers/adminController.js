@@ -68,6 +68,7 @@ const login = asyncHandler(async (req, res) => {
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: "30m" }
     );
+
     res.status(200).json({ accessToken });
     return;
   } else {
@@ -78,7 +79,6 @@ const login = asyncHandler(async (req, res) => {
 
 const getAdmin = asyncHandler(async (req, res) => {
   const admin = req.user;
-
   res.json({ msg: admin });
   return;
 });
