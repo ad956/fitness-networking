@@ -12,7 +12,20 @@ const validateToken = asyncHandler(async (req, res, next) => {
         res.status(401);
         throw new Error("Unauthorized User");
       }
-      req.user = decoded.user;
+
+      switch (true) {
+        case !!decoded.user:
+          req.user = decoded.user;
+          break;
+        case !!decoded.admin:
+          req.user = decoded.admin;
+          break;
+        case !!decoded.partner:
+          req.user = decoded.partner;
+          break;
+        default:
+          req.user = {};
+      }
       next();
     });
   }
