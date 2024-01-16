@@ -54,15 +54,15 @@ const login = asyncHandler(async (req, res) => {
     throw new Error("All fields are mandatory");
   }
 
-  const Partner = await Partner.findOne({
+  const partner = await Partner.findOne({
     where: { [Op.or]: [{ email: email_mobile }, { mobile: email_mobile }] },
   });
 
-  if (Partner && (await bcrypt.compare(password, Partner.password))) {
+  if (partner && (await bcrypt.compare(password, Partner.password))) {
     const accessToken = jwt.sign(
       {
         Partner: {
-          id: Partner.Partner_id,
+          id: Partner.gym_id,
         },
       },
       process.env.ACCESS_TOKEN_SECRET,
@@ -78,18 +78,18 @@ const login = asyncHandler(async (req, res) => {
 });
 
 const getPartner = asyncHandler(async (req, res) => {
-  const userPartner = req.user;
+  const user = req.user;
 
-  const Partner = await Partner.findOne({
-    where: { Partner_id: userPartner.id },
+  const partner = await Partner.findOne({
+    where: { gym_id: user.id },
   });
 
-  if (!Partner) {
-    res.status(400).json({ msg: "User doesn't exists" });
+  if (!partner) {
+    res.status(400).json({ msg: "Partner doesn't exists" });
     return;
   }
 
-  res.json({ msg: Partner });
+  res.json({ msg: partner });
   return;
 });
 
