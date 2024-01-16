@@ -203,6 +203,20 @@ const resetPassword = asyncHandler(async (req, res, next) => {
   return;
 });
 
+// after reset-pass/:token
+const setPassword = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if (!user) {
+    console.log("User doesn't exist");
+    res
+      .status(401)
+      .redirect(`${constants.CLIENT_ERROR_URL}?msg=USER%20NOT%20EXISTS`);
+  }
+
+  res.redirect(`${constants.CLIENT_URL}login`);
+  return;
+});
+
 module.exports = {
   register,
   login,
