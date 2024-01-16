@@ -1,18 +1,11 @@
 const express = require("express");
 const router = express.Router();
 
-// Middleware for gym owner authentication
+const partnerController = require("../../controllers/partnerController");
+const validateToken = require("../../middleware/validateTokenHandler");
 
-// Route to manage gym information
-router.get("/manage-gym", (req, res) => {
-  // Display gym management options
-});
-
-// Route to manage gym bookings
-router.get("/manage-bookings", (req, res) => {
-  // Display booking management options
-});
-
-// Other routes for gym owners
+router.get("/", validateToken, partnerController.getPartner);
+router.post("/login", partnerController.login);
+router.post("/register", partnerController.register);
 
 module.exports = router;
