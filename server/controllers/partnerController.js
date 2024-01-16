@@ -208,4 +208,5 @@ module.exports = {
   login,
   getPartner,
   forgetPassword,
+  resetPassword,
 };
