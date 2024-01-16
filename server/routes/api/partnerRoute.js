@@ -12,6 +12,6 @@ router.post("/reset-password", validateToken, partnerController.resetPassword); 
 router.get(
   "/reset-password/:token",
   validatePasswordToken,
-  userController.setPassword
+  partnerController.setPassword
 );
 module.exports = router;
