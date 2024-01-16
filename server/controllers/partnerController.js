@@ -223,4 +223,5 @@ module.exports = {
   getPartner,
   forgetPassword,
   resetPassword,
+  setPassword,
 };
