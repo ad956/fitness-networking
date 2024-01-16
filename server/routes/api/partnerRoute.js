@@ -3,6 +3,7 @@ const router = express.Router();
 
 const partnerController = require("../../controllers/partnerController");
 const validateToken = require("../../middleware/validateTokenHandler");
+const validatePasswordToken = require("../../middleware/PasswordTokenHandler");
 
 router.get("/", validateToken, partnerController.getPartner);
 router.post("/login", partnerController.login);
