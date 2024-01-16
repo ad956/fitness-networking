@@ -58,7 +58,7 @@ const login = asyncHandler(async (req, res) => {
     where: { [Op.or]: [{ email: email_mobile }, { mobile: email_mobile }] },
   });
 
-  if (partner && (await bcrypt.compare(password, Partner.password))) {
+  if (partner && (await bcrypt.compare(password, partner.password))) {
     const accessToken = jwt.sign(
       {
         Partner: {
