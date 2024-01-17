@@ -2,7 +2,7 @@ const asyncHandler = require("express-async-handler");
 const { DataTypes, Op } = require("sequelize");
 const { sequelize } = require("../config/dbConnection");
 const { constants } = require("../utils/constants");
-const User = require("../models/userModel")(sequelize, DataTypes);
+const User = require("../models/userModel");
 
 const validatePasswordToken = asyncHandler(async (req, res, next) => {
   const { token } = req.params;
