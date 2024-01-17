@@ -1,35 +1,39 @@
-const { Model } = require("sequelize");
+const { DataTypes } = require("sequelize");
+const { sequelize } = require("../config/dbConnection");
 
-module.exports = (sequelize, DataTypes) => {
-  class GymProfile extends Model {
-    static associate(models) {
-      this.belongsTo(models.Partner, { foreignKey: "gym_id" });
-    }
-  }
+const GymProfile = sequelize.define("GymProfile", {
+  gym_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    primaryKey: true,
+  },
+  total_credits: {
+    type: DataTypes.DECIMAL(10, 2),
+  },
+  upi_id: {
+    type: DataTypes.STRING(50),
+  },
+  credit_charge: {
+    type: DataTypes.DECIMAL(5, 2),
+  },
+  todays_credit: {
+    type: DataTypes.DECIMAL(10, 2),
+  },
+  profile_pic: {
+    type: DataTypes.STRING(255),
+  },
+  city: {
+    type: DataTypes.STRING(50),
+  },
+  pin_code: {
+    type: DataTypes.STRING(10),
+  },
+  state: {
+    type: DataTypes.STRING(50),
+  },
+  address: {
+    type: DataTypes.STRING(255),
+  },
+});
 
-  GymProfile.init(
-    {
-      gym_id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-      },
-      total_credits: DataTypes.DECIMAL(10, 2),
-      upi_id: DataTypes.STRING,
-      credit_charge: DataTypes.DECIMAL(5, 2),
-      todays_credit: DataTypes.DECIMAL(10, 2),
-      profile_pic: DataTypes.STRING,
-      city: DataTypes.STRING,
-      pin_code: DataTypes.STRING,
-      state: DataTypes.STRING,
-      address: DataTypes.STRING,
-    },
-    {
-      sequelize,
-      modelName: "GymProfile",
-      tableName: "gym_profile",
-      timestamps: false,
-    }
-  );
-
-  return GymProfile;
-};
+module.exports = GymProfile;

@@ -1,44 +1,38 @@
-const { Model, DataTypes } = require("sequelize");
+const { DataTypes } = require("sequelize");
+const { sequelize } = require("../config/dbConnection");
+const Status = require("./statusModel");
 
-module.exports = (sequelize, DataTypes) => {
-  class Admin extends Model {
-    static associate(models) {}
-  }
+const Admin = sequelize.define("Admin", {
+  admin_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  email: {
+    type: DataTypes.STRING(50),
+    allowNull: false,
+  },
+  mobile: {
+    type: DataTypes.STRING(15),
+    allowNull: false,
+  },
+  name: {
+    type: DataTypes.STRING(50),
+    allowNull: false,
+  },
+  password: {
+    type: DataTypes.STRING(60),
+    allowNull: false,
+  },
+  profilephoto: {
+    type: DataTypes.STRING(255),
+  },
+  otp: {
+    type: DataTypes.STRING(6),
+  },
+});
 
-  Admin.init(
-    {
-      admin_id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-      },
-      mobile: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      otp: DataTypes.STRING,
-      password: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      profilephoto: DataTypes.STRING,
-    },
-    {
-      sequelize,
-      modelName: "Admin",
-      tableName: "admin",
-      timestamps: false,
-    }
-  );
+Admin.hasMany(Status, { foreignKey: "admin_id" });
 
-  return Admin;
-};
+module.exports = Admin;
