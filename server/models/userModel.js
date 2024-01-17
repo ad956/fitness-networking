@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
       this.hasOne(models.Profile, { foreignKey: "user_id" });
-      this.belongsToMany(models.Gym, {
+      this.belongsToMany(models.Partner, {
         through: "GymUsers",
         foreignKey: "user_id",
       });

@@ -1,6 +1,6 @@
 class Service extends Model {
   static associate(models) {
-    this.belongsTo(models.Gym, { foreignKey: "gym_id" });
+    this.belongsTo(models.Partner, { foreignKey: "gym_id" });
   }
 }
 
