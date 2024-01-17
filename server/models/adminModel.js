@@ -1,4 +1,4 @@
-const { Model } = require("sequelize");
+const { Model, DataTypes } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class Admin extends Model {

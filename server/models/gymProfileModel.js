@@ -1,3 +1,5 @@
+const { Model, DataTypes } = require("sequelize");
+
 class GymProfile extends Model {
   static associate(models) {
     this.belongsTo(models.Partner, { foreignKey: "gym_id" });

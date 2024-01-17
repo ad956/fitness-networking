@@ -1,3 +1,5 @@
+const { Model, DataTypes } = require("sequelize");
+
 class Transactions extends Model {
   static associate(models) {
     this.belongsTo(models.User, { foreignKey: "user_id" });
