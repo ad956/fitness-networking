@@ -1,8 +1,10 @@
 const { DataTypes, Op } = require("sequelize");
 const { sequelize } = require("../config/dbConnection");
-const Admin = require("../models/adminModel")(sequelize, DataTypes);
-const User = require("../models/userModel")(sequelize, DataTypes);
-const Partner = require("../models/partnerModel")(sequelize, DataTypes);
+const Admin = require("../models/adminModel");
+const User = require("../models/userModel");
+const Profile = require("../models/userProfileModel");
+const Status = require("../models/statusModel");
+const Partner = require("../models/partnerModel");
 const bcrypt = require("bcrypt");
 const asyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
@@ -104,6 +106,21 @@ const getUsers = asyncHandler(async (req, res) => {
     attributes: {
       exclude: ["password", "otp"],
     },
+    include: [
+      {
+        model: Profile,
+        attributes: [
+          "credit_balance",
+          "total_spent",
+          "current_gym_name",
+          "requested_gym_name",
+        ],
+      },
+      {
+        model: Status,
+        attributes: ["status", "role"],
+      },
+    ],
   });
 
   if (!users) {
@@ -114,6 +131,7 @@ const getUsers = asyncHandler(async (req, res) => {
   res.status(200).json(users);
   return;
 });
+
 const getPartners = asyncHandler(async (req, res) => {
   const admin = req.user;
 
