@@ -106,9 +106,36 @@ const getUsers = asyncHandler(async (req, res) => {
     },
   });
 
-  res.json(users);
+  if (!users) {
+    res.json(400);
+    throw new Error("Error Fetching Users");
+  }
+
+  res.status(200).json(users);
+  return;
 });
-const getPartners = asyncHandler(async (req, res) => {});
+const getPartners = asyncHandler(async (req, res) => {
+  const admin = req.user;
+
+  if (!admin) {
+    res.status(401).json({ msg: "Only Admins are allowed" });
+    return;
+  }
+
+  const partners = await Partner.findAll({
+    attributes: {
+      exclude: ["password", "otp"],
+    },
+  });
+
+  if (!partners) {
+    res.json(400);
+    throw new Error("Error Fetching Gym Partners");
+  }
+
+  res.status(200).json(partners);
+  return;
+});
 
 module.exports = {
   register,
