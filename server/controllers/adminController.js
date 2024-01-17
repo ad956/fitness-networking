@@ -1,6 +1,8 @@
 const { DataTypes, Op } = require("sequelize");
 const { sequelize } = require("../config/dbConnection");
 const Admin = require("../models/adminModel")(sequelize, DataTypes);
+const User = require("../models/userModel")(sequelize, DataTypes);
+const Partner = require("../models/partnerModel")(sequelize, DataTypes);
 const bcrypt = require("bcrypt");
 const asyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
@@ -97,6 +99,14 @@ const getUsers = asyncHandler(async (req, res) => {
     res.status(401).json({ msg: "Only Admins are allowed" });
     return;
   }
+
+  const users = await User.findAll({
+    attributes: {
+      exclude: ["password", "otp"],
+    },
+  });
+
+  res.json(users);
 });
 const getPartners = asyncHandler(async (req, res) => {});
 
