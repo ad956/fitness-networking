@@ -99,4 +99,5 @@ module.exports = {
   login,
   getAdmin,
   getUsers,
+  getPartners,
 };
