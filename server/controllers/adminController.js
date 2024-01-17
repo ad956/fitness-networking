@@ -91,6 +91,8 @@ const getAdmin = asyncHandler(async (req, res) => {
   return;
 });
 
+const getUsers = asyncHandler(async (req, res) => {});
+
 module.exports = {
   register,
   login,
