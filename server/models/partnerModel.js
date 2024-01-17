@@ -10,7 +10,7 @@ module.exports = (sequelize) => {
       });
     }
   }
-
+  //
   Gym.init(
     {
       gym_id: {
