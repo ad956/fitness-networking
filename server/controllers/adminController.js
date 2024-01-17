@@ -92,6 +92,7 @@ const getAdmin = asyncHandler(async (req, res) => {
 });
 
 const getUsers = asyncHandler(async (req, res) => {});
+const getPartners = asyncHandler(async (req, res) => {});
 
 module.exports = {
   register,
