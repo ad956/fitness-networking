@@ -98,4 +98,5 @@ module.exports = {
   register,
   login,
   getAdmin,
+  getUsers,
 };
