@@ -83,7 +83,7 @@ const getAdmin = asyncHandler(async (req, res) => {
   const admin = await Admin.findOne({ where: { admin_id: userAdmin.id } });
 
   if (!admin) {
-    res.status(400).json({ msg: "User doesn't exists" });
+    res.status(400).json({ msg: "Admin doesn't exists" });
     return;
   }
 
@@ -91,7 +91,13 @@ const getAdmin = asyncHandler(async (req, res) => {
   return;
 });
 
-const getUsers = asyncHandler(async (req, res) => {});
+const getUsers = asyncHandler(async (req, res) => {
+  const admin = req.user;
+  if (!admin) {
+    res.status(401).json({ msg: "Only Admins are allowed" });
+    return;
+  }
+});
 const getPartners = asyncHandler(async (req, res) => {});
 
 module.exports = {
