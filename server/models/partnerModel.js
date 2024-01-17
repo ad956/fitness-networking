@@ -1,5 +1,7 @@
 const { Model, DataTypes } = require("sequelize");
 
+// Gym Model is used as Partner model throughout the app
+
 module.exports = (sequelize) => {
   class Gym extends Model {
     static associate(models) {
