@@ -1,4 +1,5 @@
 const { Model } = require("sequelize");
+const { sequelize } = require("../config/dbConnection");
 
 const Service = sequelize.define("Service", {
   service_id: {
