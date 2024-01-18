@@ -21,3 +21,5 @@ const Service = sequelize.define("Service", {
     type: DataTypes.STRING(255),
   },
 });
+
+module.exports = Service;
