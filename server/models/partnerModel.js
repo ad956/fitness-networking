@@ -6,7 +6,7 @@ const Status = require("./statusModel");
 const User = require("./userModel");
 
 // Gym Model is used as Partner model throughout the app
-const Gym = sequelize.define("Gym", {
+const Partner = sequelize.define("Gym", {
   gym_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -34,9 +34,9 @@ const Gym = sequelize.define("Gym", {
   },
 });
 
-Gym.hasMany(GymProfile, { foreignKey: "gym_id" });
-Gym.hasMany(Service, { foreignKey: "gym_id" });
-Gym.hasMany(Status, { foreignKey: "gym_id" });
-Gym.belongsToMany(User, { through: "GymUsers", foreignKey: "gym_id" });
+Partner.hasMany(GymProfile, { foreignKey: "gym_id" });
+Partner.hasMany(Service, { foreignKey: "gym_id" });
+Partner.hasMany(Status, { foreignKey: "gym_id" });
+Partner.belongsToMany(User, { through: "GymUsers", foreignKey: "gym_id" });
 
-module.exports = Gym;
+module.exports = Partner;
