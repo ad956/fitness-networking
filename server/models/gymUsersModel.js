@@ -1,29 +1,13 @@
-const { Model } = require("sequelize");
+const { DataTypes } = require("sequelize");
+const { sequelize } = require("../config/dbConnection");
 
-module.exports = (sequelize, DataTypes) => {
-  class GymUsers extends Model {
-    static associate(models) {
-      this.belongsTo(models.Partner, { foreignKey: "gym_id" });
-      this.belongsTo(models.User, { foreignKey: "user_id" });
-    }
-  }
+const GymUsers = sequelize.define("GymUsers", {
+  gym_id: {
+    type: DataTypes.INTEGER,
+  },
+  user_id: {
+    type: DataTypes.INTEGER,
+  },
+});
 
-  GymUsers.init(
-    {
-      gym_id: {
-        type: DataTypes.INTEGER,
-      },
-      user_id: {
-        type: DataTypes.INTEGER,
-      },
-    },
-    {
-      sequelize,
-      modelName: "GymUsers",
-      tableName: "gym_users",
-      timestamps: false,
-    }
-  );
-
-  return GymUsers;
-};
+module.exports = GymUsers;
