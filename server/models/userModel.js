@@ -38,4 +38,6 @@ const User = sequelize.define("User", {
   },
 });
 
+User.belongsToMany(Gym, { through: "GymUsers", foreignKey: "user_id" });
+
 module.exports = User;
