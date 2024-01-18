@@ -1,12 +1,13 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../config/dbConnection");
 const GymProfile = require("./gymProfileModel");
+const GymUsers = require("./gymUsersModel");
 const Service = require("./gymServicesModel");
 const Status = require("./statusModel");
 const User = require("./userModel");
 
 // Gym Model is used as Partner model throughout the app
-const Partner = sequelize.define("Gym", {
+const Partner = sequelize.define("Partner", {
   gym_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -37,6 +38,6 @@ const Partner = sequelize.define("Gym", {
 Partner.hasMany(GymProfile, { foreignKey: "gym_id" });
 Partner.hasMany(Service, { foreignKey: "gym_id" });
 Partner.hasMany(Status, { foreignKey: "gym_id" });
-Partner.belongsToMany(User, { through: "GymUsers", foreignKey: "gym_id" });
+Partner.belongsToMany(User, { through: GymUsers, foreignKey: "gym_id" });
 
 module.exports = Partner;
