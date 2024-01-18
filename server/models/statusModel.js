@@ -1,40 +1,30 @@
-const { Model } = require("sequelize");
+const { DataTypes } = require("sequelize");
+const { sequelize } = require("../config/dbConnection");
 
-module.exports = (sequelize, DataTypes) => {
-  class Status extends Model {
-    static associate(models) {
-      this.belongsTo(models.User, { foreignKey: "user_id" });
-      this.belongsTo(models.Partner, { foreignKey: "gym_id" });
-      this.belongsTo(models.User, { foreignKey: "admin_id" });
-    }
-  }
+const Status = sequelize.define("Status", {
+  status_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  user_id: {
+    type: DataTypes.INTEGER,
+  },
+  gym_id: {
+    type: DataTypes.INTEGER,
+  },
+  admin_id: {
+    type: DataTypes.INTEGER,
+  },
+  status: {
+    type: DataTypes.ENUM("Active", "Inactive"),
+    allowNull: false,
+  },
+  role: {
+    type: DataTypes.ENUM("User", "Admin", "Gym"),
+    allowNull: false,
+  },
+});
 
-  Status.init(
-    {
-      status_id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      user_id: {
-        type: DataTypes.INTEGER,
-      },
-      gym_id: {
-        type: DataTypes.INTEGER,
-      },
-      admin_id: {
-        type: DataTypes.INTEGER,
-      },
-      status: DataTypes.ENUM("Active", "Inactive"),
-      role: DataTypes.ENUM("User", "Admin", "Gym"),
-    },
-    {
-      sequelize,
-      modelName: "Status",
-      tableName: "status",
-      timestamps: false,
-    }
-  );
-
-  return Status;
-};
+module.exports = Status;
