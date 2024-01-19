@@ -38,6 +38,8 @@ const Partner = sequelize.define("Partner", {
 Partner.hasMany(GymProfile, { foreignKey: "gym_id" });
 Partner.hasMany(Service, { foreignKey: "gym_id" });
 Partner.hasMany(Status, { foreignKey: "gym_id" });
+
+// circular dependency issue
 Partner.belongsToMany(User, { through: GymUsers, foreignKey: "gym_id" });
 
 module.exports = Partner;
