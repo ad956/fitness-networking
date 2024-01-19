@@ -17,4 +17,6 @@ router.get(
   userController.setPassword
 );
 
+router.post("/credit", userController.purchaseCredits);
+
 module.exports = router;
