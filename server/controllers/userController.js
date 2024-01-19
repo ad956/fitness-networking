@@ -232,10 +232,10 @@ const purchaseCredits = asyncHandler(async (req, res) => {
     console.log("User isn't authorized");
     res
       .status(401)
-      .redirect(`${constants.CLIENT_ERROR_URL}?msg=USER`);
+      .redirect(`${constants.CLIENT_ERROR_URL}?msg=UNAUTHORISED%20USER`);
   }
 
-  res.redirect(`${constants.CLIENT_URL}login`);
+  res.redirect(`${constants.CLIENT_URL}credit`);
   return;
 });
 
