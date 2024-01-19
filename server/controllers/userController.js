@@ -225,6 +225,23 @@ const setPassword = asyncHandler(async (req, res) => {
   return;
 });
 
+
+const purchaseCredits = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if (!user) {
+    console.log("User isn't authorized");
+    res
+      .status(401)
+      .redirect(`${constants.CLIENT_ERROR_URL}?msg=USER`);
+  }
+
+  res.redirect(`${constants.CLIENT_URL}login`);
+  return;
+});
+
+
+
+
 module.exports = {
   login,
   registerUser,
