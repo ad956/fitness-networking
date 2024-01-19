@@ -40,6 +40,7 @@ const User = sequelize.define("User", {
   },
 });
 
+// circular dependency issues
 User.belongsToMany(Partner, { through: GymUsers, foreignKey: "user_id" });
 
 module.exports = User;
