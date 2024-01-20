@@ -225,7 +225,6 @@ const setPassword = asyncHandler(async (req, res) => {
   return;
 });
 
-
 const purchaseCredits = asyncHandler(async (req, res) => {
   const user = req.user;
   if (!user) {
@@ -239,9 +238,6 @@ const purchaseCredits = asyncHandler(async (req, res) => {
   return;
 });
 
-
-
-
 module.exports = {
   login,
   registerUser,
@@ -250,4 +246,5 @@ module.exports = {
   resetPassword,
   forgetPassword,
   setPassword,
+  purchaseCredits,
 };
