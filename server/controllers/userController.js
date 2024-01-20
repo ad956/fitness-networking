@@ -225,6 +225,18 @@ const setPassword = asyncHandler(async (req, res) => {
   return;
 });
 
+const availableCredits = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if (!user) {
+    res
+      .status(401)
+      .redirect(`${constants.CLIENT_ERROR_URL}?msg=UNAUTHORISED%20USER`);
+  }
+
+  res.redirect(`${constants.CLIENT_URL}credit`);
+  return;
+});
+
 const purchaseCredits = asyncHandler(async (req, res) => {
   const user = req.user;
   if (!user) {
@@ -234,7 +246,60 @@ const purchaseCredits = asyncHandler(async (req, res) => {
       .redirect(`${constants.CLIENT_ERROR_URL}?msg=UNAUTHORISED%20USER`);
   }
 
-  res.redirect(`${constants.CLIENT_URL}credit`);
+  // purchase logic
+
+  const purchasePlanID = req.params.plan;
+  /*
+
+300 Credit Points -> ₹1500.00
+900 Credit Points -> ₹3000.00
+1800 Credit Points -> ₹5000.00
+3600 Credit Points -> ₹8000.00
+4200 Credit Points -> ₹12000.00
+5000 Credit Points -> ₹15000.00
+*/
+
+  switch (purchasePlanID) {
+    case "1":
+      // Handle purchase with id 1
+      // Logic for processing purchase with id 1
+      res.send("Processed purchase with id 1");
+      break;
+
+    case "2":
+      // Handle purchase with id 2
+      // Logic for processing purchase with id 2
+      res.send("Processed purchase with id 2");
+      break;
+
+    case "3":
+      // Handle purchase with id 3
+      // Logic for processing purchase with id 3
+      res.send("Processed purchase with id 3");
+      break;
+
+    case "4":
+      // Handle purchase with id 4
+      // Logic for processing purchase with id 4
+      res.send("Processed purchase with id 4");
+      break;
+
+    case "5":
+      // Handle purchase with id 5
+      // Logic for processing purchase with id 5
+      res.send("Processed purchase with id 5");
+      break;
+
+    case "6":
+      // Handle purchase with id 6
+      // Logic for processing purchase with id 6
+      res.send("Processed purchase with id 6");
+      break;
+
+    default:
+      res.status(404).send("Invalid purchasePlanID");
+  }
+
   return;
 });
 
@@ -246,5 +311,6 @@ module.exports = {
   resetPassword,
   forgetPassword,
   setPassword,
+  availableCredits,
   purchaseCredits,
 };
