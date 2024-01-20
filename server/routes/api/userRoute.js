@@ -17,6 +17,7 @@ router.get(
   userController.setPassword
 );
 
-router.post("/credit", userController.purchaseCredits);
+router.get("/credit", validateToken, userController.availableCredits);
+router.post("/credit/:plan", validateToken, userController.purchaseCredits);
 
 module.exports = router;
