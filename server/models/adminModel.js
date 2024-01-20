@@ -34,6 +34,7 @@ const Admin = sequelize.define(
       type: DataTypes.STRING(6),
     },
   },
+
   {
     tableName: "admin",
     timestamps: false,
