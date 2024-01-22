@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../config/dbConnection");
+const User = require("./userModel");
 
 const Profile = sequelize.define(
   "Profile",
@@ -28,5 +29,7 @@ const Profile = sequelize.define(
     timestamps: false,
   }
 );
+
+// Profile.belongsTo(User, { foreignKey: "user_id" });
 
 module.exports = Profile;
