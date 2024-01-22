@@ -267,6 +267,8 @@ const purchaseCredits = asyncHandler(async (req, res) => {
 
       // save updated credit points to user profile
 
+      // add amount used to transactions
+
       break;
 
     case "900":
