@@ -261,10 +261,12 @@ const purchaseCredits = asyncHandler(async (req, res) => {
   switch (purchasePlanID) {
     case "300":
       const creditPointsToBeAdded = purchasePlanID;
-      
-      
+
       const currentCreditPoints = user.user_id; //user_id for now than profile.cr_points
       const updatedCreditPoints = currentCreditPoints + creditPointsToBeAdded;
+
+      // save updated credit points to user profile
+
       break;
 
     case "900":
