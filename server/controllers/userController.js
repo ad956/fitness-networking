@@ -275,7 +275,6 @@ const purchaseCredits = asyncHandler(async (req, res) => {
       break;
 
     case "4":
-      // Handle purchase with id 4
       // Logic for processing purchase with id 4
       res.send("Processed purchase with id 4");
       break;
