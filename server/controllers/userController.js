@@ -246,9 +246,8 @@ const purchaseCredits = asyncHandler(async (req, res) => {
       .redirect(`${constants.CLIENT_ERROR_URL}?msg=UNAUTHORISED%20USER`);
   }
 
-  // purchase logic
-
   const purchasePlanID = req.params.plan;
+  // purchase logic
   /*
 300 Credit Points -> ₹1500.00
 900 Credit Points -> ₹3000.00
@@ -257,34 +256,33 @@ const purchaseCredits = asyncHandler(async (req, res) => {
 4200 Credit Points -> ₹12000.00
 5000 Credit Points -> ₹15000.00
 */
-
   switch (purchasePlanID) {
-    case "1":
+    case "300":
       res.send("Processed purchase with id 1");
       break;
 
-    case "2":
+    case "900":
       res.send("Processed purchase with id 2");
       break;
 
-    case "3":
+    case "1800":
       res.send("Processed purchase with id 3");
       break;
 
-    case "4":
+    case "3600":
       res.send("Processed purchase with id 4");
       break;
 
-    case "5":
+    case "4200":
       res.send("Processed purchase with id 5");
       break;
 
-    case "6":
+    case "5000":
       res.send("Processed purchase with id 6");
       break;
 
     default:
-      res.status(404).send("Invalid purchasePlanID");
+      res.status(404).send("Invalid Purchase Plan Selected");
   }
 
   return;
