@@ -250,7 +250,6 @@ const purchaseCredits = asyncHandler(async (req, res) => {
 
   const purchasePlanID = req.params.plan;
   /*
-
 300 Credit Points -> ₹1500.00
 900 Credit Points -> ₹3000.00
 1800 Credit Points -> ₹5000.00
