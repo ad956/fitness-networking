@@ -260,8 +260,11 @@ const purchaseCredits = asyncHandler(async (req, res) => {
   // purchase logic
   switch (purchasePlanID) {
     case "300":
+      const creditPointsToBeAdded = purchasePlanID;
+      
+      
       const currentCreditPoints = user.user_id; //user_id for now than profile.cr_points
-      // const updatedCreditPoints = 1;
+      const updatedCreditPoints = currentCreditPoints + creditPointsToBeAdded;
       break;
 
     case "900":
