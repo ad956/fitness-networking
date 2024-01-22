@@ -247,15 +247,15 @@ const purchaseCredits = asyncHandler(async (req, res) => {
   }
 
   const purchasePlanID = req.params.plan;
-  // purchase logic
   /*
-300 Credit Points -> ₹1500.00
-900 Credit Points -> ₹3000.00
-1800 Credit Points -> ₹5000.00
-3600 Credit Points -> ₹8000.00
-4200 Credit Points -> ₹12000.00
-5000 Credit Points -> ₹15000.00
-*/
+  300 Credit Points -> ₹1500.00
+  900 Credit Points -> ₹3000.00
+  1800 Credit Points -> ₹5000.00
+  3600 Credit Points -> ₹8000.00
+  4200 Credit Points -> ₹12000.00
+  5000 Credit Points -> ₹15000.00
+  */
+  // purchase logic
   switch (purchasePlanID) {
     case "300":
       res.send("Processed purchase with id 1");
