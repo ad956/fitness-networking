@@ -221,7 +221,7 @@ const setPassword = asyncHandler(async (req, res) => {
       .redirect(`${constants.CLIENT_ERROR_URL}?msg=USER%20NOT%20EXISTS`);
   }
 
-  res.redirect(`${constants.CLIENT_URL}login`);
+  res.redirect(`${constants.CLIENT_URL}login`); //set password route
   return;
 });
 
@@ -258,6 +258,7 @@ const purchaseCredits = asyncHandler(async (req, res) => {
   // purchase logic
   switch (purchasePlanID) {
     case "300":
+      // const currentUserPoints =
       res.send("Processed purchase with id 1");
       break;
 
