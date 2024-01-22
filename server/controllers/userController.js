@@ -269,6 +269,8 @@ const purchaseCredits = asyncHandler(async (req, res) => {
 
       // add amount used to transactions
 
+      // send mail about success(with last and new credits)/failure transactions
+
       break;
 
     case "900":
