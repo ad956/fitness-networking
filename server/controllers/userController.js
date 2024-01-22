@@ -255,13 +255,12 @@ const purchaseCredits = asyncHandler(async (req, res) => {
   4200 Credit Points -> ₹12000.00
   5000 Credit Points -> ₹15000.00
   */
-  const user = await User.findOne({ where: { user_id: user.id } });
+  const user = await User.findOne({ where: { user_id: userID.id } });
 
   // purchase logic
   switch (purchasePlanID) {
     case "300":
-      // const currentUserPoints =
-      res.send("Processed purchase with id 1");
+      const currentUserPoints = user.res.send("Processed purchase with id 1");
       break;
 
     case "900":
