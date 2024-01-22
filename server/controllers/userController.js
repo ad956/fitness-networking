@@ -238,8 +238,8 @@ const availableCredits = asyncHandler(async (req, res) => {
 });
 
 const purchaseCredits = asyncHandler(async (req, res) => {
-  const user = req.user;
-  if (!user) {
+  const userID = req.user;
+  if (!userID) {
     console.log("User isn't authorized");
     res
       .status(401)
@@ -255,6 +255,8 @@ const purchaseCredits = asyncHandler(async (req, res) => {
   4200 Credit Points -> ₹12000.00
   5000 Credit Points -> ₹15000.00
   */
+  const user = await User.findOne({ where: { user_id: user.id } });
+
   // purchase logic
   switch (purchasePlanID) {
     case "300":
