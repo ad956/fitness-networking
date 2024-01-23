@@ -8,6 +8,7 @@ const genratedOTP = require("../services/otpGenration");
 const mailTemplateGenrator = require("../services/emailTemplateGenrator");
 const { constants } = require("../utils/constants");
 const sendEmail = require("../services/sendEmailService");
+const Profile = require("../models/userProfileModel");
 
 //register
 const registerUser = asyncHandler(async (req, res, next) => {
@@ -255,7 +256,10 @@ const purchaseCredits = asyncHandler(async (req, res) => {
   4200 Credit Points -> ₹12000.00
   5000 Credit Points -> ₹15000.00
   */
-  const user = await User.findOne({ where: { user_id: userID.id } });
+  const user = await User.findOne({
+    where: { user_id: userID.id },
+    include: Profile,
+  });
 
   // purchase logic
   switch (purchasePlanID) {
