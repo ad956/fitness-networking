@@ -261,7 +261,7 @@ const purchaseCredits = asyncHandler(async (req, res) => {
     attributes: ["name", "email", "mobile"],
     include: {
       model: Profile,
-      attributes: ["credit_balance"],
+      attributes: ["user_id", "credit_balance"],
     },
   });
 
@@ -272,12 +272,13 @@ const purchaseCredits = asyncHandler(async (req, res) => {
       const currentCreditPoints = parseInt(user.Profile.credit_balance); //user_id for now than profile.cr_points
       const updatedCreditPoints = currentCreditPoints + creditPointsToBeAdded;
 
-      user.Profile.credit_balance = updatedCreditPoints;
-      await user.save();
+      // save updated credit points to user profile
+      await user.Profile.update(
+        { credit_balance: updatedCreditPoints },
+        { where: { user_id: user.user_id } }
+      );
       res.json(user);
       return;
-
-      // save updated credit points to user profile
 
       // add amount used to transactions
 
