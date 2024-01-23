@@ -22,13 +22,12 @@ const Profile = sequelize.define(
       type: DataTypes.STRING(50),
     },
   },
-
   {
     tableName: "profile",
     timestamps: false,
   }
 );
 
-Profile.belongsTo(User, { foreignKey: "user_id" });
+// Profile.belongsTo(User, { foreignKey: "user_id" });
 
 module.exports = Profile;
