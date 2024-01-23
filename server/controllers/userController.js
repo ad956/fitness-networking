@@ -269,8 +269,8 @@ const purchaseCredits = asyncHandler(async (req, res) => {
   // purchase logic
   switch (purchasePlanID) {
     case "300":
-      const creditPointsToBeAdded = parseInt(purchasePlanID);
-      const currentCreditPoints = parseInt(user.Profile.credit_balance); //user_id for now than profile.cr_points
+      const creditPointsToBeAdded = parseFloat(purchasePlanID);
+      const currentCreditPoints = parseFloat(user.Profile.credit_balance); //user_id for now than profile.cr_points
       const updatedCreditPoints = currentCreditPoints + creditPointsToBeAdded;
 
       // save updated credit points to user profile
@@ -283,13 +283,13 @@ const purchaseCredits = asyncHandler(async (req, res) => {
 
       // add amount used to transactions
       // const transactionData = {};
-
+      const amountValue = "1500.00";
       const dt = await Transaction.create({
-        user_id: userID,
+        user_id: userID.id,
         gym_id: null,
         transaction_type: "Purchase",
-        transaction_amount: 1500,
-        credit_purchased: 300,
+        transaction_amount: amountValue,
+        credit_purchased: creditPointsToBeAdded,
       });
       res.json(dt);
       // send mail about success(with last and new credits)/failure transactions
