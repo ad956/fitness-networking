@@ -9,6 +9,7 @@ const mailTemplateGenrator = require("../services/emailTemplateGenrator");
 const { constants } = require("../utils/constants");
 const sendEmail = require("../services/sendEmailService");
 const Profile = require("../models/userProfileModel");
+const Transaction = require("../models/transactionsModel");
 
 //register
 const registerUser = asyncHandler(async (req, res, next) => {
@@ -275,13 +276,22 @@ const purchaseCredits = asyncHandler(async (req, res) => {
       // save updated credit points to user profile
       await user.Profile.update(
         { credit_balance: updatedCreditPoints },
-        { where: { user_id: user.user_id } }
+        { where: { user_id: userID } }
       );
-      res.json(user);
-      return;
+      // res.json(user);
+      // return;
 
       // add amount used to transactions
+      // const transactionData = {};
 
+      const dt = await Transaction.create({
+        user_id: userID,
+        gym_id: null,
+        transaction_type: "Purchase",
+        transaction_amount: 1500,
+        credit_purchased: 300,
+      });
+      res.json(dt);
       // send mail about success(with last and new credits)/failure transactions
 
       break;
