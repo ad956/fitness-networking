@@ -28,6 +28,4 @@ const Profile = sequelize.define(
   }
 );
 
-// Profile.belongsTo(User, { foreignKey: "user_id" });
-
 module.exports = Profile;
