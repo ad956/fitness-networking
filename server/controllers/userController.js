@@ -273,7 +273,7 @@ const purchaseCredits = asyncHandler(async (req, res) => {
       const updatedCreditPoints = currentCreditPoints + creditPointsToBeAdded;
 
       user.Profile.credit_balance = updatedCreditPoints;
-      await user.Profile.save();
+      await user.save();
       res.json(user);
       return;
 
