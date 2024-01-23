@@ -277,7 +277,7 @@ const purchaseCredits = asyncHandler(async (req, res) => {
       res.json(user);
       return;
 
-      // save updated credit points to user profil
+      // save updated credit points to user profile
 
       // add amount used to transactions
 
