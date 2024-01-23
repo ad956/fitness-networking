@@ -1,5 +1,7 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../config/dbConnection");
+const User = require("./userModel");
+
 const Profile = sequelize.define(
   "Profile",
   {
@@ -21,6 +23,7 @@ const Profile = sequelize.define(
       type: DataTypes.STRING(50),
     },
   },
+
   {
     tableName: "profile",
     timestamps: false,

@@ -46,7 +46,7 @@ const User = sequelize.define(
     timestamps: false,
   }
 );
-User.hasOne(Profile, { foreignKey: "user_id", primaryKey: "user_id" });
+User.hasOne(Profile, { foreignKey: "user_id" });
 // circular dependency issues
 // User.belongsToMany(Partner, { through: GymUsers, foreignKey: "user_id" });
 
