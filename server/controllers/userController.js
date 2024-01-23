@@ -258,21 +258,21 @@ const purchaseCredits = asyncHandler(async (req, res) => {
   */
   const user = await User.findOne({
     where: { user_id: userID.id },
-    include: Profile,
+    attributes: ["name", "email", "mobile"],
+    include: {
+      model: Profile,
+      attributes: ["credit_balance"],
+    },
   });
 
   // purchase logic
   switch (purchasePlanID) {
     case "300":
       const creditPointsToBeAdded = parseInt(purchasePlanID);
-
-      res.json({
-        type: typeof creditPointsToBeAdded,
-        cr: creditPointsToBeAdded,
-      });
-      return;
-      const currentCreditPoints = user.user_id; //user_id for now than profile.cr_points
+      const currentCreditPoints = parseInt(user.Profile.credit_balance); //user_id for now than profile.cr_points
       const updatedCreditPoints = currentCreditPoints + creditPointsToBeAdded;
+      res.json(updatedCreditPoints);
+      return;
 
       // save updated credit points to user profile
 
