@@ -30,7 +30,6 @@ const Transactions = sequelize.define(
       allowNull: true,
     },
     credits: {
-      // Updated column name
       type: DataTypes.DECIMAL(7, 2),
       allowNull: true,
     },
