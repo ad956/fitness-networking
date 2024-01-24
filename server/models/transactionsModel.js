@@ -15,7 +15,7 @@ const Transactions = sequelize.define(
     },
     user_id: {
       type: DataTypes.INTEGER,
-      allowNull: true, // Allow NULL values
+      allowNull: true,
     },
     gym_id: {
       type: DataTypes.INTEGER,
