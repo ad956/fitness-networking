@@ -5,6 +5,7 @@ const purchaseCreditsTransaction = asyncHandler(async (transactionData) => {
   const {
     userID,
     user,
+    amountValue,
     creditPointsToBeAdded,
     currentCreditPoints,
     updatedCreditPoints,
@@ -20,13 +21,12 @@ const purchaseCreditsTransaction = asyncHandler(async (transactionData) => {
   // add amount used to transactions
   const saveTransaction = await Transaction.create({
     user_id: userID.id,
-    gym_id: null,
-    transaction_type: transactionType,
+    transaction_type: "Purchase",
     transaction_amount: amountValue,
-    credit_purchased: creditPointsToBeAdded,
+    credits: creditPointsToBeAdded,
   });
 
-  return saveTransaction;
+  return saveTransaction.toJSON();
 });
 
 module.exports = { purchaseCreditsTransaction };
