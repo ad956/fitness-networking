@@ -1,6 +1,7 @@
 const { DataTypes, Op } = require("sequelize");
 const { sequelize } = require("../config/dbConnection");
 const User = require("../models/userModel");
+const UserService = require("../services/userServices");
 const bcrypt = require("bcrypt");
 const asyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
@@ -273,27 +274,20 @@ const purchaseCredits = asyncHandler(async (req, res) => {
       const currentCreditPoints = parseFloat(user.Profile.credit_balance); //user_id for now than profile.cr_points
       const updatedCreditPoints = currentCreditPoints + creditPointsToBeAdded;
 
-      // save updated credit points to user profile
-      await user.Profile.update(
-        { credit_balance: updatedCreditPoints },
-        { where: { user_id: userID } }
-      );
-      // res.json(user);
-      // return;
+      const transactionData = {
+        userID,
+        user,
+        amountValue: 1500.0,
+        creditPointsToBeAdded,
+        currentCreditPoints,
+        updatedCreditPoints,
+      };
 
-      // add amount used to transactions
-      // const transactionData = {};
-      const amountValue = "1500.00";
-      const dt = await Transaction.create({
-        user_id: userID.id,
-        gym_id: null,
-        transaction_type: "Purchase",
-        transaction_amount: amountValue,
-        credit_purchased: creditPointsToBeAdded,
-      });
-      res.json(dt);
+      const saveTransaction =
+        UserService.purchaseCreditsTransaction(transactionData);
+
       // send mail about success(with last and new credits)/failure transactions
-
+      res.json(saveTransaction);
       break;
 
     case "900":
