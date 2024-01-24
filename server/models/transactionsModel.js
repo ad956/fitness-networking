@@ -25,11 +25,11 @@ const Transactions = sequelize.define(
       allowNull: false,
     },
     transaction_amount: {
-      type: DataTypes.DECIMAL(5, 2),
+      type: DataTypes.DECIMAL(7, 2),
       allowNull: false,
     },
     credit_purchased: {
-      type: DataTypes.DECIMAL(5, 2),
+      type: DataTypes.DECIMAL(7, 2),
       allowNull: false,
     },
     transaction_date: {
