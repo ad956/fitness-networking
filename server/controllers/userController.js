@@ -283,11 +283,13 @@ const purchaseCredits = asyncHandler(async (req, res) => {
         updatedCreditPoints,
       };
 
-      const saveTransaction =
-        UserService.purchaseCreditsTransaction(transactionData);
+      const saveTransaction = await UserService.purchaseCreditsTransaction(
+        transactionData
+      );
 
       // send mail about success(with last and new credits)/failure transactions
-      res.json(saveTransaction);
+      console.log(saveTransaction);
+      // res.json(saveTransaction);
       break;
 
     case "900":
