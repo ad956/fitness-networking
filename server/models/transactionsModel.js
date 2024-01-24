@@ -19,7 +19,7 @@ const Transactions = sequelize.define(
     },
     gym_id: {
       type: DataTypes.INTEGER,
-      allowNull: true, // Allow NULL values
+      allowNull: true,
     },
     transaction_type: {
       type: DataTypes.ENUM("Purchase", "Usage", "Received", "Redeemed"),
