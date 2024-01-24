@@ -15,22 +15,24 @@ const Transactions = sequelize.define(
     },
     user_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true, // Allow NULL values
     },
     gym_id: {
       type: DataTypes.INTEGER,
+      allowNull: true, // Allow NULL values
     },
     transaction_type: {
-      type: DataTypes.ENUM("Purchase", "Usage"),
+      type: DataTypes.ENUM("Purchase", "Usage", "Received", "Redeemed"),
       allowNull: false,
     },
     transaction_amount: {
       type: DataTypes.DECIMAL(7, 2),
-      allowNull: false,
+      allowNull: true,
     },
-    credit_purchased: {
+    credits: {
+      // Updated column name
       type: DataTypes.DECIMAL(7, 2),
-      allowNull: false,
+      allowNull: true,
     },
     transaction_date: {
       type: DataTypes.DATE,
