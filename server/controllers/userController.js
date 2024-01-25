@@ -271,53 +271,6 @@ const purchaseCredits = asyncHandler(async (req, res) => {
   const currentCreditPoints = parseFloat(user.Profile.credit_balance); //user_id for now than profile.cr_points
   const updatedCreditPoints = currentCreditPoints + creditPointsToBeAdded;
 
-  const introMsg =
-    "Thank you for your recent transaction. This email confirms the success of your transaction.";
-  const instuctMsg = "Details of the transaction:";
-  const link = "";
-  const msg = `<table style='border-collapse: collapse; width: 100%;'>
-    <tr style='border: 1px solid black;'>
-      <td style='border: 1px solid black; padding: 8px;'>Transaction Id</td>
-      <td style='border: 1px solid black; padding: 8px;'>5356AD567VCCBV</td>
-    </tr>
-    <tr style='border: 1px solid black;'>
-      <td style='border: 1px solid black; padding: 8px;'>Transaction Type</td>
-      <td style='border: 1px solid black; padding: 8px;'>Purchase</td>
-    </tr>
-    <tr style='border: 1px solid black;'>
-      <td style='border: 1px solid black; padding: 8px;'>Transaction Amount</td>
-      <td style='border: 1px solid black; padding: 8px;'>12000</td>
-    </tr>
-    <tr style='border: 1px solid black;'>
-      <td style='border: 1px solid black; padding: 8px;'>Newly Added</td>
-      <td style='border: 1px solid black; padding: 8px;'>${updatedCreditPoints}</td>
-    </tr>
-    <tr style='border: 1px solid black;'>
-      <td style='border: 1px solid black; padding: 8px;'>Total Credits</td>
-      <td style='border: 1px solid black; padding: 8px;'>${updatedCreditPoints}</td>
-    </tr>
-  </table>
-  `;
-  const outro =
-    "If you have any questions or concerns about this transaction, please contact our customer support.";
-
-  let mail = mailTemplateGenrator(
-    user.name,
-    introMsg,
-    instuctMsg,
-    link,
-    msg,
-    outro
-  );
-
-  // sending an email ...
-  let message = {
-    from: constants.MAIL_FROM,
-    to: user.email,
-    subject: "Recent Transaction",
-    html: mail,
-  };
-
   // purchase logic
   switch (purchasePlanID) {
     case "300":
@@ -338,7 +291,6 @@ const purchaseCredits = asyncHandler(async (req, res) => {
         if (!saveTransaction) {
           res.status(500).json({ error: "Transaction failed" });
         } else {
-          const info = await sendEmail(message);
           res.status(201).json({ msg: "Transaction Success" });
         }
       }
