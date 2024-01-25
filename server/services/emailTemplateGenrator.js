@@ -1,6 +1,14 @@
 const Mailgen = require("mailgen");
 
-function mailTemplateGenrator(name, introMsg, instuctMsg, link, msg, outro) {
+function mailTemplateGenrator(
+  name,
+  introMsg,
+  instuctMsg,
+  link,
+  msg,
+  outro,
+  color
+) {
   let MailGenerator = new Mailgen({
     theme: "cerberus",
     product: {
@@ -16,7 +24,7 @@ function mailTemplateGenrator(name, introMsg, instuctMsg, link, msg, outro) {
       action: {
         instructions: instuctMsg,
         button: {
-          color: "#3457dc",
+          color,
           text: msg,
           link: link,
         },
