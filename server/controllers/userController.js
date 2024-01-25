@@ -288,8 +288,14 @@ const purchaseCredits = asyncHandler(async (req, res) => {
       );
 
       // send mail about success(with last and new credits)/failure transactions
-      console.log(saveTransaction);
-      // res.json(saveTransaction);
+      if (saveTransaction.status === "succeed") {
+      // Handle success (send a response or perform additional actions)
+      res.json(saveTransaction.transaction);
+    } else {
+      // Handle failure (e.g., log and return an error response)
+      console.error("Transaction failed:", saveTransaction.error);
+      res.status(500).json({ error: "Transaction failed" });
+    }
       break;
 
     case "900":
