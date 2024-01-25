@@ -293,7 +293,26 @@ const purchaseCredits = asyncHandler(async (req, res) => {
       break;
 
     case "900":
-      res.send("Processed purchase with id 2");
+          const creditPointsToBeAdded = parseFloat(purchasePlanID);
+      const currentCreditPoints = parseFloat(user.Profile.credit_balance); //user_id for now than profile.cr_points
+      const updatedCreditPoints = currentCreditPoints + creditPointsToBeAdded;
+
+      const transactionData = {
+        userID,
+        user,
+        amountValue: 1500.0,
+        creditPointsToBeAdded,
+        currentCreditPoints,
+        updatedCreditPoints,
+      };
+
+      const saveTransaction = await UserService.purchaseCreditsTransaction(
+        transactionData
+      );
+
+      // send mail about success(with last and new credits)/failure transactions
+      console.log(saveTransaction);
+      // res.json(saveTransaction);
       break;
 
     case "1800":
