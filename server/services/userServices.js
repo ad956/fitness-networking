@@ -7,7 +7,6 @@ const purchaseCreditsTransaction = asyncHandler(async (transactionData) => {
     user,
     amountValue,
     creditPointsToBeAdded,
-    currentCreditPoints,
     updatedCreditPoints,
   } = transactionData;
 
@@ -17,8 +16,7 @@ const purchaseCreditsTransaction = asyncHandler(async (transactionData) => {
     { where: { user_id: userID } }
   );
 
-  // Create a transaction :
-  // add amount used to transactions
+  // Create a transaction : add amount used to transactions
   const saveTransaction = await Transaction.create({
     user_id: userID.id,
     transaction_type: "Purchase",
