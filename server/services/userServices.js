@@ -26,9 +26,8 @@ const purchaseCreditsTransaction = asyncHandler(async (transactionData) => {
     credits: creditPointsToBeAdded,
   });
 
-  
   // Return success indicator
-  return { status: "success", transaction: saveTransaction.toJSON() };
+  return saveTransaction;
 });
 
 module.exports = { purchaseCreditsTransaction };
