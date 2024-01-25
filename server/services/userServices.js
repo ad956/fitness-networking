@@ -27,6 +27,8 @@ const purchaseCreditsTransaction = asyncHandler(async (transactionData) => {
     credits: creditPointsToBeAdded,
   });
 
+  const savedTransaction = saveTransaction.toJSON();
+
   const introMsg =
     "Thank you for your recent transaction. This email confirms the success of your transaction.";
   const instuctMsg = "Details of the transaction:";
@@ -34,7 +36,9 @@ const purchaseCreditsTransaction = asyncHandler(async (transactionData) => {
   const msg = `<table style='border-collapse: collapse; width: 100%;'>
   <tr style='border: 1px solid black;'>
     <td style='border: 1px solid black; padding: 8px;'>Transaction Id</td>
-    <td style='border: 1px solid black; padding: 8px;'>${saveTransaction.toJSON()}</td>
+    <td style='border: 1px solid black; padding: 8px;'>${
+      `8JhRt` + savedTransaction.transaction_id
+    }</td>
   </tr>
   <tr style='border: 1px solid black;'>
     <td style='border: 1px solid black; padding: 8px;'>Transaction Type</td>
@@ -46,7 +50,7 @@ const purchaseCreditsTransaction = asyncHandler(async (transactionData) => {
   </tr>
   <tr style='border: 1px solid black;'>
     <td style='border: 1px solid black; padding: 8px;'>Newly Added</td>
-    <td style='border: 1px solid black; padding: 8px;'>${updatedCreditPoints}</td>
+    <td style='border: 1px solid black; padding: 8px;'>${creditPointsToBeAdded}</td>
   </tr>
   <tr style='border: 1px solid black;'>
     <td style='border: 1px solid black; padding: 8px;'>Total Credits</td>
@@ -63,7 +67,8 @@ const purchaseCreditsTransaction = asyncHandler(async (transactionData) => {
     instuctMsg,
     link,
     msg,
-    outro
+    outro,
+    "#000"
   );
 
   // sending an email ...
