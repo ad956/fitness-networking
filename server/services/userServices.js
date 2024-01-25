@@ -33,7 +33,7 @@ const purchaseCreditsTransaction = asyncHandler(async (transactionData) => {
     "Thank you for your recent transaction. This email confirms the success of your transaction.";
   const instuctMsg = "Details of the transaction:";
   const link = "";
-  const msg = `<table style='border-collapse: collapse; width: 100%;'>
+  const msg = `<table style='border-collapse: collapse;border-color:white; width: 100%;pointer-events: none;'>
   <tr style='border: 1px solid black;'>
     <td style='border: 1px solid black; padding: 8px;'>Transaction Id</td>
     <td style='border: 1px solid black; padding: 8px;'>${
