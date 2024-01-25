@@ -16,7 +16,7 @@ function mailTemplateGenrator(name, introMsg, instuctMsg, link, msg, outro) {
       action: {
         instructions: instuctMsg,
         button: {
-          color: "#DC4D2F",
+          color: "#3457dc",
           text: msg,
           link: link,
         },
