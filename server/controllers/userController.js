@@ -148,7 +148,8 @@ const forgetPassword = asyncHandler(async (req, res, next) => {
     instuctMsg,
     link,
     msg,
-    outro
+    outro,
+    "#3457dc"
   );
 
   // sending an email ...
@@ -198,7 +199,8 @@ const resetPassword = asyncHandler(async (req, res, next) => {
     instuctMsg,
     link,
     msg,
-    outro
+    outro,
+    "#3457dc"
   );
 
   // sending an email ...
