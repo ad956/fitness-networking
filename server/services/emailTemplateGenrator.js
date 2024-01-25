@@ -2,7 +2,7 @@ const Mailgen = require("mailgen");
 
 function mailTemplateGenrator(name, introMsg, instuctMsg, link, msg, outro) {
   let MailGenerator = new Mailgen({
-    theme: "default",
+    theme: "cerberus",
     product: {
       name: "Fitness Networking",
       link: "http://localhost:5173/",
