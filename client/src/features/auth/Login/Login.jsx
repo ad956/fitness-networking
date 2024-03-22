@@ -136,7 +136,7 @@ function Login() {
           </FormControl>
         </Stack>
 
-        <Stack>Stack to be added</Stack>
+        <Stack>Stack to be added here</Stack>
       </Box>
     </Container>
   );
