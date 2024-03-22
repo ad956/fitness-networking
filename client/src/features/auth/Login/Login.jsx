@@ -73,9 +73,9 @@ function Login() {
                 required
                 sx={{
                   marginBottom: 1,
-                  // "& .MuiInputBase-input": {
-                  //   color: "blue", // Adjust the color based on your design
-                  // },
+                  "& .MuiInputBase-input": {
+                    color: "blue", // Adjust the color based on your design
+                  },
                 }}
                 size="small"
                 onChange={(e) => setEmail(e.target.value)}
@@ -136,7 +136,7 @@ function Login() {
           </FormControl>
         </Stack>
 
-        <Stack>fkedup</Stack>
+        <Stack>Stack to be added</Stack>
       </Box>
     </Container>
   );
