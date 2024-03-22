@@ -402,7 +402,7 @@ const purchaseCredits = asyncHandler(async (req, res) => {
         const saveTransaction =
           UserService.purchaseCreditsTransaction(transactionData);
 
-        // send mail about success(with last and new credits)/failure transactions
+        // send mail about success( with last and new credits)/failure transactions
         if (!saveTransaction) {
           res.status(500).json({ error: "Transaction failed" });
         } else {
