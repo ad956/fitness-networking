@@ -43,9 +43,7 @@ function Login() {
             md: "row",
           },
         }}
-      >
-        <Stack>Stack to be added here</Stack>
-      </Box>
+      ></Box>
     </Container>
   );
 }
