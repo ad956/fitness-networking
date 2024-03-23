@@ -34,16 +34,6 @@ function Login() {
       >
         Fitness Networking
       </Typography>
-
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: {
-            xs: "column",
-            md: "row",
-          },
-        }}
-      ></Box>
     </Container>
   );
 }
