@@ -27,7 +27,14 @@ function Login() {
         p: 1,
         m: 0,
       }}
-    ></Container>
+    >
+      <Typography
+        variant="h2"
+        sx={{ color: theme.palette.notification.secondary }}
+      >
+        Fitness Networking
+      </Typography>
+    </Container>
   );
 }
 
