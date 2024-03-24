@@ -1,9 +1,12 @@
+import { MdOutlineDashboard } from "react-icons/md";
+import { LiaQrcodeSolid } from "react-icons/lia";
+
 export default function Sidebar() {
   return (
     <div className="flex flex-col">
       {sidebarItems.map((item, index) => (
         <div key={index} className="flex items-center">
-          {getIconForLabel(item.label)}
+          {getIcon(item.label)}
           <span>{item.label}</span>
         </div>
       ))}
@@ -37,15 +40,15 @@ const sidebarItems = [
 const getIcon = (label) => {
   switch (label) {
     case "Dashboard":
-      return <FaChartLine />;
+      return <MdOutlineDashboard />;
     case "QR Code":
-      return <FaQrcode />;
+      return <LiaQrcodeSolid />;
     case "Membership":
-      return <FaUserFriends />;
+      return <LiaQrcodeSolid />;
     case "Transactions":
-      return <FaExchangeAlt />;
+      return <MdOutlineDashboard />;
     case "Settings":
-      return <FaCog />;
+      return <LiaQrcodeSolid />;
     default:
       return null;
   }
