@@ -1,8 +1,8 @@
 import { Routes, Route } from "react-router-dom";
-
+import UserLayout from "@pages/user";
 const UserRoutes = () => (
   <Routes>
-    <Route path="/" element={<p>Index page of user</p>} />
+    <Route path="/" element={<UserLayout />} />
     <Route path="/profile" element={<p>Profile</p>} />
   </Routes>
 );

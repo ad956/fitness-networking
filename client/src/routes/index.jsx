@@ -10,8 +10,8 @@ import { ErrorPage } from "@components";
 export default function AppRoutes() {
   return (
     <Routes>
-      {/* <Route path="/" element={<>Hey Boii</>} /> */}
       <Route path="/" element={<UserRoutes />} />
+      {/* ate landing page aavi */}
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/user/*" element={<UserRoutes />} />
