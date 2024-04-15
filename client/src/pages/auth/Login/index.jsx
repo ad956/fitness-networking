@@ -34,9 +34,9 @@ function LoginPage() {
     return re.test(String(email).toLowerCase());
   };
 
-  const validateUsername = (username) => {
-    const re = /^[a-zA-Z0-9_]{5,}$/;
-    return re.test(String(username));
+  const validateMobileNumber = (mobileNumber) => {
+    const re = /^\+\d{10}$/;
+    return re.test(String(mobileNumber));
   };
 
   const validatePassword = (password) => {
@@ -63,14 +63,14 @@ function LoginPage() {
       }
     }
     if (!user.identifier.includes("@")) {
-      if (!validateUsername(user.identifier)) {
+      if (!validateMobileNumber(user.identifier)) {
         toast.error(
-          "Username must be at least 5 characters and can contain letters, numbers, and underscores."
+          "Mobile number must be a valid format (e.g. +1234567890 or 123-456-7890)"
         );
         return;
       }
     }
-    if (!validatePassword(user.password)) {
+    if (validatePassword(user.password)) {
       toast.error(
         "Password must be at least 8 characters with at least one uppercase letter, one lowercase letter, one number, and one special character."
       );
@@ -84,7 +84,9 @@ function LoginPage() {
     }
 
     if (data) {
-      toast.success(data.msg);
+      toast.success(
+        "Your login link has been successfully sent to your email address."
+      );
     }
   };
 
@@ -128,8 +130,8 @@ function LoginPage() {
                 id="identifier"
                 name="identifier"
                 type="text"
-                autoComplete="username email"
-                label="Username or Email"
+                autoComplete="email mobile"
+                label="Email / Mobile"
                 labelPlacement="outside"
                 required
                 value={user.identifier}
@@ -138,7 +140,7 @@ function LoginPage() {
                 classNames={{
                   label: "text-black font-medium",
                 }}
-                placeholder="Enter username or email"
+                placeholder="Enter email or mobile"
                 variant="bordered"
                 size="lg"
                 radius="md"
