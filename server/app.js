@@ -12,7 +12,8 @@ app.use(cors());
 connectDB();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use("/", initialRoute);
+
+app.use("/api", initialRoute);
 app.use(errorHandler);
 
 app.listen(port, () => {

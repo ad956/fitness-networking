@@ -8,6 +8,7 @@ const validatePasswordToken = require("../../middleware/PasswordTokenHandler");
 router.get("/", validateToken, userController.getUser);
 router.get("/all", validateToken, userController.allUsers);
 router.post("/login", userController.login);
+router.get("/login/:token", validatePasswordToken);
 router.post("/register", userController.registerUser);
 router.post("/forgot-password", userController.forgetPassword); // at login
 router.post("/reset-password", validateToken, userController.resetPassword); // using profile
