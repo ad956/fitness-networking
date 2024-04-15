@@ -5,8 +5,8 @@ const userRoutes = require("./api/userRoute");
 const partnerRoutes = require("./api/partnerRoute");
 const adminRoutes = require("./api/adminRoute");
 
-router.use("/api/user", userRoutes);
-router.use("/api/partner", partnerRoutes);
-router.use("/api/admin", adminRoutes);
+router.use("/user", userRoutes);
+router.use("/partner", partnerRoutes);
+router.use("/admin", adminRoutes);
 
 module.exports = router;
