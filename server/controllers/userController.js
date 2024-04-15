@@ -53,7 +53,8 @@ const registerUser = asyncHandler(async (req, res, next) => {
 
 // login
 const login = asyncHandler(async (req, res, next) => {
-  const { email_mobile, password } = req.body;
+  const { identifier, password } = req.body;
+  const email_mobile = identifier;
 
   if (!email_mobile || !password) {
     res.status(400);
@@ -63,6 +64,11 @@ const login = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({
     where: { [Op.or]: [{ email: email_mobile }, { mobile: email_mobile }] },
   });
+
+  if (!user) {
+    res.status(400);
+    throw new Error("User doesn't exists");
+  }
 
   if (user && (await bcrypt.compare(password, user.password))) {
     const accessToken = jwt.sign(
@@ -74,6 +80,47 @@ const login = asyncHandler(async (req, res, next) => {
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: "30m" }
     );
+
+    const loginSecret = genratedOTP;
+
+    user.otp = loginSecret;
+
+    const otpChanged = await user.save();
+    if (!otpChanged) {
+      res.status(500);
+      throw new Error("OTP sending failed");
+    }
+
+    const loginLink = `${constants.USER_URL}reset-password/${loginSecret}`;
+
+    const introMsg =
+      "You have received this email because a login request for your account was received.";
+    const instuctMsg = "Click the button below to login to your account:";
+    const link = loginLink;
+    const msg = "Login to your account";
+    const outro =
+      "If you did not request a login, no further action is required on your part.";
+
+    let mail = mailTemplateGenrator(
+      user.name,
+      introMsg,
+      instuctMsg,
+      link,
+      msg,
+      outro,
+      "#3457dc"
+    );
+
+    // sending an email ...
+    let message = {
+      from: constants.MAIL_FROM,
+      to: user.email,
+      subject: "Login to fitness networking account",
+      html: mail,
+    };
+
+    await sendEmail(message);
+
     res.status(200).json({ accessToken });
     return;
   } else {
