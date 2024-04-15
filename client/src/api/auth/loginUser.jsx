@@ -2,22 +2,26 @@ import axios from "axios";
 import { SERVER_URL } from "@constants";
 
 export default async function loginUser(user) {
+  const path = user.role === "member" ? "user/" : "partner/";
   try {
-    const response = await axios.post(`${SERVER_URL}tmp`, user, {
+    const response = await axios.post(`${SERVER_URL}${path}login`, user, {
       headers: {
         "Content-Type": "application/json",
       },
     });
 
-    if (response.error) {
+    if (response.message) {
       throw new Error("Login failed");
     }
 
     const data = response.data;
-    console.log(data);
 
     return data;
   } catch (error) {
-    throw new Error("Login failed");
+    if (error.response && error.response.status === 401) {
+      throw new Error("Invalid email/mobile or password");
+    } else {
+      throw new Error("Login failed. Please try again later.");
+    }
   }
 }
