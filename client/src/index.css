@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: 'Outfit';
+    src: url('./assets/fonts/Outfit-VariableFont_wght.ttf'); 
+  }
+
 :root {
 margin: 0;
 padding: 0;
@@ -11,4 +16,5 @@ box-sizing: border-box;
 html,body{
     height: 100vh;
     width: 100vw;
-}
+    font-family: Outfit,'Segoe UI', sans-serif;
+  }
