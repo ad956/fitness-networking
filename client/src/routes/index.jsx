@@ -5,7 +5,7 @@ import PartnerRoutes from "./partnerRoutes";
 import AdminRoutes from "./adminRoutes";
 import Login from "@pages/auth/Login/";
 import Signup from "@pages/auth/Signup";
-import { ErrorPage } from "@components";
+import { PageNotFound } from "@components";
 
 export default function AppRoutes() {
   return (
@@ -17,7 +17,7 @@ export default function AppRoutes() {
       <Route path="/user/*" element={<UserRoutes />} />
       <Route path="/partner/*" element={<PartnerRoutes />} />
       <Route path="/admin/*" element={<AdminRoutes />} />
-      <Route path="*" element={<ErrorPage />} />
+      <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
 }
