@@ -11,9 +11,11 @@ import { AiTwotoneEye, AiTwotoneEyeInvisible } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { signin_png } from "@images";
 import { SeoHelmet } from "@components";
+import { loginUser } from "@api";
 import toast, { Toaster } from "react-hot-toast";
+import { useMutation } from "@tanstack/react-query";
 
-function Login() {
+function LoginPage() {
   const [user, setUser] = React.useState({
     identifier: "",
     password: "",
@@ -43,6 +45,10 @@ function Login() {
     return reg.test(String(password));
   };
 
+  const { mutate, isLoading, isError, error, data } = useMutation({
+    mutationFn: loginUser,
+  });
+
   const handleFormSubmit = (event) => {
     event.preventDefault();
 
@@ -69,6 +75,16 @@ function Login() {
         "Password must be at least 8 characters with at least one uppercase letter, one lowercase letter, one number, and one special character."
       );
       return;
+    }
+
+    mutate(user);
+
+    if (isError || error) {
+      toast.error(error.message);
+    }
+
+    if (data) {
+      toast.success(data.msg);
     }
   };
 
@@ -206,4 +222,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LoginPage;
