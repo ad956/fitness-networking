@@ -1,5 +1,15 @@
 import Header from "./Header";
 import Footer from "./Footer";
-import ErrorPage from "./Error";
+import SeoHelmet from "./SeoHelmet";
+import PageNotFound from "./PageNotFound";
+import ErrorBoundary from "./ErrorBoundary";
+import ErrorFallback from "./ErrorFallback";
 
-export { Header, Footer, ErrorPage };
+export {
+  Header,
+  Footer,
+  SeoHelmet,
+  PageNotFound,
+  ErrorBoundary,
+  ErrorFallback,
+};
