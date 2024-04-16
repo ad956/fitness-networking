@@ -2,7 +2,7 @@ import axios from "axios";
 import { SERVER_URL } from "@constants";
 
 export default async function loginUser(user) {
-  const path = user.role === "member" ? "user/" : "partner/";
+  const path = user.role === "user" ? "user/" : "partner/";
   try {
     const response = await axios.post(`${SERVER_URL}${path}login`, user, {
       headers: {
@@ -15,7 +15,6 @@ export default async function loginUser(user) {
     }
 
     const data = response.data;
-
     return data;
   } catch (error) {
     if (error.response && error.response.status === 401) {
