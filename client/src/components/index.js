@@ -4,6 +4,7 @@ import SeoHelmet from "./SeoHelmet";
 import PageNotFound from "./PageNotFound";
 import ErrorBoundary from "./ErrorBoundary";
 import ErrorFallback from "./ErrorFallback";
+import GoogleAuthHandler from "./Firebase/GoogleAuthHandler";
 
 export {
   Header,
@@ -12,4 +13,5 @@ export {
   PageNotFound,
   ErrorBoundary,
   ErrorFallback,
+  GoogleAuthHandler,
 };
