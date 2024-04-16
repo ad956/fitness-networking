@@ -47,7 +47,8 @@ const register = asyncHandler(async (req, res) => {
 });
 
 const login = asyncHandler(async (req, res) => {
-  const { email_mobile, password } = req.body;
+  const { identifier, password } = req.body;
+  const email_mobile = identifier;
 
   if (!email_mobile || !password) {
     res.status(400);
@@ -75,6 +76,12 @@ const login = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error("email | mobile or password is not valid");
   }
+});
+
+// redirect the user after login/:token validation
+const redirectUser = asyncHandler(async (req, res) => {
+  res.status(302).redirect(`${constants.CLIENT_URL}user`);
+  return;
 });
 
 const getPartner = asyncHandler(async (req, res) => {
@@ -220,6 +227,7 @@ const setPassword = asyncHandler(async (req, res) => {
 module.exports = {
   register,
   login,
+  redirectUser,
   getPartner,
   forgetPassword,
   resetPassword,

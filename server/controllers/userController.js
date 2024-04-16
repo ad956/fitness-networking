@@ -91,7 +91,7 @@ const login = asyncHandler(async (req, res, next) => {
       throw new Error("OTP sending failed");
     }
 
-    const loginLink = `${constants.USER_URL}reset-password/${loginSecret}`;
+    const loginLink = `${constants.USER_URL}login/${loginSecret}`;
 
     const introMsg =
       "You have received this email because a login request for your account was received.";
@@ -127,6 +127,38 @@ const login = asyncHandler(async (req, res, next) => {
     res.status(401);
     throw new Error("email / mobile or password is not valid");
   }
+});
+
+const googleAuth = asyncHandler(async (req, res, next) => {
+  const email = req.email;
+  console.log("EMAIL : " + email);
+  const user = await User.findOne({
+    where: { email },
+  });
+
+  if (!user) {
+    res.status(400);
+    throw new Error("User doesn't exists");
+  }
+
+  const accessToken = jwt.sign(
+    {
+      user: {
+        id: user.user_id,
+      },
+    },
+    process.env.ACCESS_TOKEN_SECRET,
+    { expiresIn: "30m" }
+  );
+
+  res.status(200).json({ accessToken });
+  return;
+});
+
+// redirect the user after login/:token validation
+const redirectUser = asyncHandler(async (req, res) => {
+  res.status(302).redirect(`${constants.CLIENT_URL}user`);
+  return;
 });
 
 // get all users details
@@ -467,6 +499,8 @@ const purchaseCredits = asyncHandler(async (req, res) => {
 
 module.exports = {
   login,
+  googleAuth,
+  redirectUser,
   registerUser,
   allUsers,
   getUser,
