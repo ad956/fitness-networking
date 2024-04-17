@@ -10,7 +10,8 @@
     "mailgen": "^2.0.28",
     "mysql2": "^3.9.2",
     "nodemailer": "^6.9.13",
-    "sequelize": "^6.37.1"
+    "sequelize": "^6.37.1",
+    "socket.io": "^4.7.5"
   },
   "scripts": {
     "start": "node index.js",
