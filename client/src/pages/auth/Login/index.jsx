@@ -10,7 +10,7 @@ import {
 import { AiTwotoneEye, AiTwotoneEyeInvisible } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { signin_png } from "@images";
-import { SeoHelmet, GoogleAuthHandler } from "@components";
+import { SeoHelmet, GoogleAuthHandler, VerificationModal } from "@components";
 import { loginUser } from "@api";
 import toast, { Toaster } from "react-hot-toast";
 import { useMutation } from "@tanstack/react-query";
@@ -24,8 +24,17 @@ function LoginPage() {
 
   const [isVisible, setIsVisible] = React.useState(false);
   const [isDigitsOnly, setIsDigitsOnly] = React.useState(false);
+  const [showVerifyModal, setshowVerifyModal] = React.useState(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
+
+  const { mutate, isError, error } = useMutation({
+    mutationFn: loginUser,
+    onSuccess: (data) => {
+      toast.dismiss();
+      setshowVerifyModal(true);
+    },
+  });
 
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -61,10 +70,6 @@ function LoginPage() {
       password
     );
 
-  const { mutate, isError, error, data } = useMutation({
-    mutationFn: loginUser,
-  });
-
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
@@ -96,20 +101,7 @@ function LoginPage() {
     }
 
     toast.loading("Please wait...");
-
     mutate(user);
-
-    if (isError || error) {
-      toast.dismiss();
-      toast.error(error.message);
-    }
-
-    if (data) {
-      toast.dismiss();
-      toast.success(
-        "Your login link has been successfully sent to your email address."
-      );
-    }
   };
 
   const handleGoogleSignInButton = async () => {
@@ -128,6 +120,11 @@ function LoginPage() {
 
   const title = "Login | Fitness Networking";
   const canonical = window.location.href;
+
+  if (isError || error) {
+    toast.dismiss();
+    toast.error(error.message);
+  }
 
   return (
     <section className="bg-white/75 min-h-screen min-w-screen flex justify-around items-center px-4 sm:px-6 lg:px-8">
@@ -260,6 +257,8 @@ function LoginPage() {
           </p>
         </div>
       </div>
+
+      {showVerifyModal && <VerificationModal mutate={mutate} user={user} />}
     </section>
   );
 }
