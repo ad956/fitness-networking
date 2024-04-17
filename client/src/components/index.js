@@ -5,6 +5,7 @@ import PageNotFound from "./PageNotFound";
 import ErrorBoundary from "./ErrorBoundary";
 import ErrorFallback from "./ErrorFallback";
 import GoogleAuthHandler from "./Firebase/GoogleAuthHandler";
+import VerificationModal from "./VerificationModal";
 
 export {
   Header,
@@ -14,4 +15,5 @@ export {
   ErrorBoundary,
   ErrorFallback,
   GoogleAuthHandler,
+  VerificationModal,
 };
