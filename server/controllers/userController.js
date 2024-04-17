@@ -156,8 +156,43 @@ const googleAuth = asyncHandler(async (req, res, next) => {
 });
 
 // redirect the user after login/:token validation
-const redirectUser = asyncHandler(async (req, res) => {
-  res.status(302).redirect(`${constants.CLIENT_URL}user`);
+const checkUserVerificationStatus = asyncHandler(async (req, res) => {
+  const io = req.app.get("io");
+  const email = req.user.email;
+  const mobile = req.user.mobile;
+  io.emit("emailVerified", {
+    email,
+    mobile,
+    message: "Email verification successful",
+  });
+
+  res.status(200).send(`
+    <html>
+      <head>
+        <title>Email Verification Successful</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            padding-top: 50px;
+          }
+          h1 {
+            color: #333;
+          }
+          p {
+            color: #666;
+            font-size: 18px;
+          }
+        </style>
+      </head>
+      <body>
+        <h1>Email Verification Successful</h1>
+        <p>Your email has been successfully verified. You can now close this tab.</p>
+      </body>
+    </html>
+  `);
+
   return;
 });
 
@@ -500,7 +535,7 @@ const purchaseCredits = asyncHandler(async (req, res) => {
 module.exports = {
   login,
   googleAuth,
-  redirectUser,
+  checkUserVerificationStatus,
   registerUser,
   allUsers,
   getUser,
