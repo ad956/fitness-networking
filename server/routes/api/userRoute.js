@@ -10,7 +10,11 @@ const verifyGoogleIdToken = require("../../middleware/verifyGoogleIdToken");
 router.get("/", validateToken, userController.getUser);
 router.get("/all", validateToken, userController.allUsers);
 router.post("/login", userController.login);
-router.get("/login/:token", validatePasswordToken, userController.redirectUser);
+router.get(
+  "/login/:token",
+  validatePasswordToken,
+  userController.checkUserVerificationStatus
+);
 router.post("/google-auth", verifyGoogleIdToken, userController.googleAuth);
 router.post("/register", userController.registerUser);
 router.post("/forgot-password", userController.forgetPassword); // at login
