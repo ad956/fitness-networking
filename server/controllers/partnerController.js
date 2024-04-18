@@ -5,7 +5,17 @@ const bcrypt = require("bcrypt");
 const asyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
 const genratedOTP = require("../services/otpGenration");
+const mailTemplateGenrator = require("../services/emailTemplateGenrator");
+const { constants } = require("../utils/constants");
+const {
+  emailVerificationSuccessTemplate,
+} = require("../utils/custom_templates");
+const {
+  generateAccessToken,
+  generateRefreshToken,
+} = require("../utils/generateTokens");
 
+//register
 const register = asyncHandler(async (req, res) => {
   const { name, email, mobile, password } = req.body;
 
@@ -46,6 +56,7 @@ const register = asyncHandler(async (req, res) => {
   }
 });
 
+// login
 const login = asyncHandler(async (req, res) => {
   const { identifier, password } = req.body;
   const email_mobile = identifier;
@@ -59,18 +70,55 @@ const login = asyncHandler(async (req, res) => {
     where: { [Op.or]: [{ email: email_mobile }, { mobile: email_mobile }] },
   });
 
+  if (!partner) {
+    res.status(400);
+    throw new Error("Partner doesn't exists");
+  }
+
   if (partner && (await bcrypt.compare(password, partner.password))) {
-    const accessToken = jwt.sign(
-      {
-        Partner: {
-          id: Partner.gym_id,
-        },
-      },
-      process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "30m" }
+    let loginSecret = genratedOTP;
+
+    partner.otp = loginSecret;
+
+    const otpChanged = await user.save();
+    if (!otpChanged) {
+      res.status(500);
+      throw new Error("OTP sending failed");
+    }
+
+    loginSecret += "_partner";
+    const loginLink = `${constants.PARTNER_URL}login/${loginSecret}`;
+
+    const introMsg =
+      "You have received this email because a login request for your account was received.";
+    const instuctMsg = "Click the button below to login to your account:";
+    const link = loginLink;
+    const msg = "Login to your account";
+    const outro =
+      "If you did not request a login, no further action is required on your part.";
+
+    let mail = mailTemplateGenrator(
+      partner.name,
+      introMsg,
+      instuctMsg,
+      link,
+      msg,
+      outro,
+      "#3457dc"
     );
 
-    res.status(200).json({ accessToken });
+    // sending an email ...
+    let message = {
+      from: constants.MAIL_FROM,
+      to: partner.email,
+      subject: "Login to fitness networking account",
+      html: mail,
+    };
+
+    await sendEmail(message);
+
+    res.status(200).json({ msg: "verification pending" });
+
     return;
   } else {
     res.status(401);
@@ -78,9 +126,63 @@ const login = asyncHandler(async (req, res) => {
   }
 });
 
-// redirect the user after login/:token validation
-const redirectUser = asyncHandler(async (req, res) => {
-  res.status(302).redirect(`${constants.CLIENT_URL}user`);
+//sign in using google
+const googleAuth = asyncHandler(async (req, res, next) => {
+  const email = req.email;
+
+  const user = await Partner.findOne({
+    where: { email },
+  });
+
+  if (!user) {
+    res.status(400);
+    throw new Error("Partner doesn't exists");
+  }
+
+  const accessToken = generateAccessToken(user.gym_id);
+  const refreshToken = generateRefreshToken(user.gym_id);
+
+  res
+    .status(200)
+    .cookie("refreshToken", refreshToken, {
+      maxAge: 100000,
+      httpOnly: true,
+      secure: false,
+    })
+    .json({ accessToken });
+  return;
+});
+
+// partner verification after login
+const checkUserVerificationStatus = asyncHandler(async (req, res) => {
+  const io = req.app.get("io");
+  const partner = req.user;
+
+  const accessToken = generateAccessToken(partner.user_id);
+  const refreshToken = generateRefreshToken(partner.user_id);
+
+  io.emit("userVerified", {
+    role: "partner",
+    accessToken,
+    message: "Partner verification successful",
+  });
+
+  res
+    .cookie("refreshToken", refreshToken, {
+      maxAge: 100000,
+      httpOnly: true,
+      secure: false,
+    })
+    .status(200)
+    .send(emailVerificationSuccessTemplate);
+  return;
+});
+
+// get all partners details
+const allPartners = asyncHandler(async (req, res, next) => {
+  const currentUser = req.user;
+  const partners = await Partner.findAll();
+  res.status(201).json({ currentUser, partners });
   return;
 });
 
@@ -227,7 +329,9 @@ const setPassword = asyncHandler(async (req, res) => {
 module.exports = {
   register,
   login,
-  redirectUser,
+  checkUserVerificationStatus,
+  googleAuth,
+  allPartners,
   getPartner,
   forgetPassword,
   resetPassword,
