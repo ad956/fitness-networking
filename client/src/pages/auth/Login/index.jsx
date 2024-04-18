@@ -30,7 +30,7 @@ function LoginPage() {
 
   const { mutate, isError, error } = useMutation({
     mutationFn: loginUser,
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast.dismiss();
       setshowVerifyModal(true);
     },
