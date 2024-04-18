@@ -1,30 +1,28 @@
 const Mailgen = require("mailgen");
 
-function mailTemplateGenrator(
+function mailTemplateGenerator(
   name,
   introMsg,
-  instuctMsg,
+  instructMsg,
   link,
   msg,
   outro,
   color
 ) {
-  let MailGenerator = new Mailgen({
-    theme: "cerberus",
+  const MailGenerator = new Mailgen({
     product: {
       name: "Fitness Networking",
       link: "http://localhost:5173/",
     },
   });
 
-  let response = {
+  const emailContent = {
     body: {
       name: name,
       intro: introMsg,
       action: {
-        instructions: instuctMsg,
+        instructions: instructMsg,
         button: {
-          color,
           text: msg,
           link: link,
         },
@@ -32,7 +30,8 @@ function mailTemplateGenrator(
       outro: outro,
     },
   };
-  return MailGenerator.generate(response);
+
+  return MailGenerator.generate(emailContent);
 }
 
-module.exports = mailTemplateGenrator;
+module.exports = mailTemplateGenerator;
