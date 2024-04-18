@@ -11,24 +11,38 @@ import {
 } from "@nextui-org/react";
 import { email_gif } from "@images";
 import { SERVER_URL } from "@constants";
+import { useDispatch } from "react-redux";
+import { setAuthData } from "../../features/auth/authSlice";
 import io from "socket.io-client";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export default function VerificationModal({ mutate, user }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  // removing /api part not needed for socket
+  const ServerUrl = SERVER_URL.replace(/\/api\/$/, "");
+
   React.useEffect(() => {
     onOpen();
 
-    const socket = io(`http://localhost:3000/`);
+    const socket = io(`${ServerUrl}`);
 
-    socket.on("emailVerified", (response) => {
-      if (
-        response.email === user.identifier ||
-        response.mobile === user.identifier
-      ) {
-        console.log("Verification successful");
+    socket.on("userVerified", (response) => {
+      if (response) {
+        dispatch(
+          setAuthData({
+            accessToken: response.accessToken,
+            userRole: response.role,
+          })
+        );
+
+        navigate(`/${response.role}`);
       } else {
-        console.log("Verification failed");
+        toast.error("Verification failed");
       }
     });
 
@@ -39,6 +53,16 @@ export default function VerificationModal({ mutate, user }) {
 
   const handleResendClick = () => {
     mutate(user);
+    toast.promise(
+      new Promise((resolve) => {
+        setTimeout(resolve, 1000);
+      }),
+      {
+        loading: "Resending verification link...",
+        success: "Verification link has been resent",
+        error: "Error resending verification link",
+      }
+    );
   };
 
   return (
