@@ -8,9 +8,16 @@ const jwt = require("jsonwebtoken");
 const genratedOTP = require("../services/otpGenration");
 const mailTemplateGenrator = require("../services/emailTemplateGenrator");
 const { constants } = require("../utils/constants");
+const {
+  emailVerificationSuccessTemplate,
+} = require("../utils/custom_templates");
 const sendEmail = require("../services/sendEmailService");
 const Profile = require("../models/userProfileModel");
 const Transaction = require("../models/transactionsModel");
+const {
+  generateAccessToken,
+  generateRefreshToken,
+} = require("../utils/generateTokens");
 
 //register
 const registerUser = asyncHandler(async (req, res, next) => {
@@ -71,16 +78,6 @@ const login = asyncHandler(async (req, res, next) => {
   }
 
   if (user && (await bcrypt.compare(password, user.password))) {
-    const accessToken = jwt.sign(
-      {
-        user: {
-          id: user.user_id,
-        },
-      },
-      process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "30m" }
-    );
-
     const loginSecret = genratedOTP;
 
     user.otp = loginSecret;
@@ -121,7 +118,8 @@ const login = asyncHandler(async (req, res, next) => {
 
     await sendEmail(message);
 
-    res.status(200).json({ accessToken });
+    res.status(200).json({ msg: "verification pending" });
+
     return;
   } else {
     res.status(401);
@@ -129,9 +127,9 @@ const login = asyncHandler(async (req, res, next) => {
   }
 });
 
+//sign in using google
 const googleAuth = asyncHandler(async (req, res, next) => {
   const email = req.email;
-  console.log("EMAIL : " + email);
   const user = await User.findOne({
     where: { email },
   });
@@ -155,43 +153,28 @@ const googleAuth = asyncHandler(async (req, res, next) => {
   return;
 });
 
-// redirect the user after login/:token validation
+// user verification after login
 const checkUserVerificationStatus = asyncHandler(async (req, res) => {
   const io = req.app.get("io");
-  const email = req.user.email;
-  const mobile = req.user.mobile;
-  io.emit("emailVerified", {
-    email,
-    mobile,
-    message: "Email verification successful",
+  const user = req.user;
+
+  const accessToken = generateAccessToken(user.user_id);
+  const refreshToken = generateRefreshToken(user.user_id);
+
+  io.emit("userVerified", {
+    role: "user",
+    accessToken,
+    message: "User verification successful",
   });
 
-  res.status(200).send(`
-    <html>
-      <head>
-        <title>Email Verification Successful</title>
-        <style>
-          body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            text-align: center;
-            padding-top: 50px;
-          }
-          h1 {
-            color: #333;
-          }
-          p {
-            color: #666;
-            font-size: 18px;
-          }
-        </style>
-      </head>
-      <body>
-        <h1>Email Verification Successful</h1>
-        <p>Your email has been successfully verified. You can now close this tab.</p>
-      </body>
-    </html>
-  `);
+  res
+    .cookie("refreshToken", refreshToken, {
+      maxAge: 100000,
+      httpOnly: true,
+      secure: false,
+    })
+    .status(200)
+    .send(emailVerificationSuccessTemplate);
 
   return;
 });
