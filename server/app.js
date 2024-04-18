@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const http = require("http"); // Import the http module
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const port = process.env.PORT || 3000;
 
 const initialRoute = require("./routes");
@@ -18,12 +19,19 @@ const io = require("socket.io")(server, {
   },
 });
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 connectDB();
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.set("io", io);
 app.use("/api", initialRoute);
+
 app.use(errorHandler);
 
 server.listen(port, () => {
