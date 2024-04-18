@@ -18,6 +18,7 @@ const {
   generateAccessToken,
   generateRefreshToken,
 } = require("../utils/generateTokens");
+const Partner = require("../models/partnerModel");
 
 //register
 const registerUser = asyncHandler(async (req, res, next) => {
@@ -78,7 +79,7 @@ const login = asyncHandler(async (req, res, next) => {
   }
 
   if (user && (await bcrypt.compare(password, user.password))) {
-    const loginSecret = genratedOTP;
+    let loginSecret = genratedOTP;
 
     user.otp = loginSecret;
 
@@ -88,6 +89,7 @@ const login = asyncHandler(async (req, res, next) => {
       throw new Error("OTP sending failed");
     }
 
+    loginSecret += "_user";
     const loginLink = `${constants.USER_URL}login/${loginSecret}`;
 
     const introMsg =
@@ -130,6 +132,7 @@ const login = asyncHandler(async (req, res, next) => {
 //sign in using google
 const googleAuth = asyncHandler(async (req, res, next) => {
   const email = req.email;
+
   const user = await User.findOne({
     where: { email },
   });
@@ -139,17 +142,17 @@ const googleAuth = asyncHandler(async (req, res, next) => {
     throw new Error("User doesn't exists");
   }
 
-  const accessToken = jwt.sign(
-    {
-      user: {
-        id: user.user_id,
-      },
-    },
-    process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: "30m" }
-  );
+  const accessToken = generateAccessToken(user.user_id);
+  const refreshToken = generateRefreshToken(user.user_id);
 
-  res.status(200).json({ accessToken });
+  res
+    .status(200)
+    .cookie("refreshToken", refreshToken, {
+      maxAge: 100000,
+      httpOnly: true,
+      secure: false,
+    })
+    .json({ accessToken });
   return;
 });
 
