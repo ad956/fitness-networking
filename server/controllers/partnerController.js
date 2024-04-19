@@ -3,17 +3,10 @@ const { sequelize } = require("../config/dbConnection");
 const Partner = require("../models/partnerModel");
 const bcrypt = require("bcrypt");
 const asyncHandler = require("express-async-handler");
-const jwt = require("jsonwebtoken");
 const genratedOTP = require("../services/otpGenration");
+const sendEmail = require("../services/sendEmailService");
 const mailTemplateGenrator = require("../services/emailTemplateGenrator");
-const { constants } = require("../utils/constants");
-const {
-  emailVerificationSuccessTemplate,
-} = require("../utils/custom_templates");
-const {
-  generateAccessToken,
-  generateRefreshToken,
-} = require("../utils/generateTokens");
+const { constants, templates, tokens } = require("../utils/");
 
 //register
 const register = asyncHandler(async (req, res) => {
@@ -76,18 +69,18 @@ const login = asyncHandler(async (req, res) => {
   }
 
   if (partner && (await bcrypt.compare(password, partner.password))) {
-    let loginSecret = genratedOTP;
+    const loginSecret = genratedOTP;
 
     partner.otp = loginSecret;
 
-    const otpChanged = await user.save();
+    const otpChanged = await partner.save();
     if (!otpChanged) {
       res.status(500);
       throw new Error("OTP sending failed");
     }
 
-    loginSecret += "_partner";
     const loginLink = `${constants.PARTNER_URL}login/${loginSecret}`;
+    console.log("ate avvo ke ni");
 
     const introMsg =
       "You have received this email because a login request for your account was received.";
@@ -115,8 +108,11 @@ const login = asyncHandler(async (req, res) => {
       html: mail,
     };
 
+    console.log("befor rmail");
+
     await sendEmail(message);
 
+    console.log("after akil");
     res.status(200).json({ msg: "verification pending" });
 
     return;
@@ -139,8 +135,8 @@ const googleAuth = asyncHandler(async (req, res, next) => {
     throw new Error("Partner doesn't exists");
   }
 
-  const accessToken = generateAccessToken(user.gym_id);
-  const refreshToken = generateRefreshToken(user.gym_id);
+  const accessToken = tokens.generateAccessToken(user.gym_id);
+  const refreshToken = tokens.generateRefreshToken(user.gym_id);
 
   res
     .status(200)
@@ -158,8 +154,8 @@ const checkUserVerificationStatus = asyncHandler(async (req, res) => {
   const io = req.app.get("io");
   const partner = req.user;
 
-  const accessToken = generateAccessToken(partner.user_id);
-  const refreshToken = generateRefreshToken(partner.user_id);
+  const accessToken = tokens.generateAccessToken(partner.user_id);
+  const refreshToken = tokens.generateRefreshToken(partner.user_id);
 
   io.emit("userVerified", {
     role: "partner",
@@ -174,7 +170,7 @@ const checkUserVerificationStatus = asyncHandler(async (req, res) => {
       secure: false,
     })
     .status(200)
-    .send(emailVerificationSuccessTemplate);
+    .send(templates.verifiedUserTemplate);
   return;
 });
 

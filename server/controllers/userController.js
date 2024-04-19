@@ -7,18 +7,10 @@ const asyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
 const genratedOTP = require("../services/otpGenration");
 const mailTemplateGenrator = require("../services/emailTemplateGenrator");
-const { constants } = require("../utils/constants");
-const {
-  emailVerificationSuccessTemplate,
-} = require("../utils/custom_templates");
+const { constants, templates, tokens } = require("../utils/");
 const sendEmail = require("../services/sendEmailService");
 const Profile = require("../models/userProfileModel");
 const Transaction = require("../models/transactionsModel");
-const {
-  generateAccessToken,
-  generateRefreshToken,
-} = require("../utils/generateTokens");
-const Partner = require("../models/partnerModel");
 
 //register
 const registerUser = asyncHandler(async (req, res, next) => {
@@ -79,7 +71,7 @@ const login = asyncHandler(async (req, res, next) => {
   }
 
   if (user && (await bcrypt.compare(password, user.password))) {
-    let loginSecret = genratedOTP;
+    const loginSecret = genratedOTP;
 
     user.otp = loginSecret;
 
@@ -89,7 +81,6 @@ const login = asyncHandler(async (req, res, next) => {
       throw new Error("OTP sending failed");
     }
 
-    loginSecret += "_user";
     const loginLink = `${constants.USER_URL}login/${loginSecret}`;
 
     const introMsg =
@@ -142,8 +133,8 @@ const googleAuth = asyncHandler(async (req, res, next) => {
     throw new Error("User doesn't exists");
   }
 
-  const accessToken = generateAccessToken(user.user_id);
-  const refreshToken = generateRefreshToken(user.user_id);
+  const accessToken = tokens.generateAccessToken(user.user_id);
+  const refreshToken = tokens.generateRefreshToken(user.user_id);
 
   res
     .status(200)
@@ -161,8 +152,8 @@ const checkUserVerificationStatus = asyncHandler(async (req, res) => {
   const io = req.app.get("io");
   const user = req.user;
 
-  const accessToken = generateAccessToken(user.user_id);
-  const refreshToken = generateRefreshToken(user.user_id);
+  const accessToken = tokens.generateAccessToken(user.user_id);
+  const refreshToken = tokens.generateRefreshToken(user.user_id);
 
   io.emit("userVerified", {
     role: "user",
@@ -177,7 +168,7 @@ const checkUserVerificationStatus = asyncHandler(async (req, res) => {
       secure: false,
     })
     .status(200)
-    .send(emailVerificationSuccessTemplate);
+    .send(templates.verifiedUserTemplate);
 
   return;
 });
