@@ -1,12 +1,14 @@
 const asyncHandler = require("express-async-handler");
-const { DataTypes, Op } = require("sequelize");
-const { sequelize } = require("../config/dbConnection");
 const { constants } = require("../utils/constants");
 const User = require("../models/userModel");
+const Partner = require("../models/partnerModel");
 
 const validatePasswordToken = asyncHandler(async (req, res, next) => {
   const { token } = req.params;
-  const user = await User.findOne({ where: { otp: token } });
+
+  const user = req.originalUrl.includes("user")
+    ? await User.findOne({ where: { otp: token } })
+    : await Partner.findOne({ where: { otp: token } });
 
   if (!user) {
     res
