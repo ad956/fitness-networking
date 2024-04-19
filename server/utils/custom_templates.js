@@ -1,4 +1,4 @@
-const emailVerificationSuccessTemplate = `
+const verifiedUserTemplate = `
 <html>
   <head>
     <title>Email Verification Successful</title>
@@ -41,4 +41,4 @@ const emailVerificationSuccessTemplate = `
 </html>
 `;
 
-module.exports = { emailVerificationSuccessTemplate };
+module.exports = { verifiedUserTemplate };
