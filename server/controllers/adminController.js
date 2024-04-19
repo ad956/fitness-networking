@@ -1,5 +1,4 @@
-const { DataTypes, Op } = require("sequelize");
-const { sequelize } = require("../config/dbConnection");
+const { Op } = require("sequelize");
 const Admin = require("../models/adminModel");
 const User = require("../models/userModel");
 const Profile = require("../models/userProfileModel");
@@ -7,8 +6,8 @@ const Status = require("../models/statusModel");
 const Partner = require("../models/partnerModel");
 const bcrypt = require("bcrypt");
 const asyncHandler = require("express-async-handler");
-const jwt = require("jsonwebtoken");
 const genratedOTP = require("../services/otpGenration");
+const { generateAccessToken } = require("../utils/generateTokens");
 
 const register = asyncHandler(async (req, res) => {
   const { name, email, mobile, password } = req.body;
@@ -63,15 +62,7 @@ const login = asyncHandler(async (req, res) => {
   });
 
   if (admin && (await bcrypt.compare(password, admin.password))) {
-    const accessToken = jwt.sign(
-      {
-        admin: {
-          id: admin.admin_id,
-        },
-      },
-      process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "30m" }
-    );
+    const accessToken = generateAccessToken(admin.admin_id);
 
     res.status(200).json({ accessToken });
     return;
@@ -95,6 +86,7 @@ const getAdmin = asyncHandler(async (req, res) => {
   return;
 });
 
+// get all users (gym members)
 const getUsers = asyncHandler(async (req, res) => {
   const admin = req.user;
   if (!admin) {
@@ -132,6 +124,7 @@ const getUsers = asyncHandler(async (req, res) => {
   return;
 });
 
+// get all partners (gym owners)
 const getPartners = asyncHandler(async (req, res) => {
   const admin = req.user;
 

@@ -1,5 +1,4 @@
-const { DataTypes, Op } = require("sequelize");
-const { sequelize } = require("../config/dbConnection");
+const { Op } = require("sequelize");
 const Partner = require("../models/partnerModel");
 const bcrypt = require("bcrypt");
 const asyncHandler = require("express-async-handler");

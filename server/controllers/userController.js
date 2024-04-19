@@ -1,10 +1,8 @@
-const { DataTypes, Op } = require("sequelize");
-const { sequelize } = require("../config/dbConnection");
+const { Op } = require("sequelize");
 const User = require("../models/userModel");
 const UserService = require("../services/userServices");
 const bcrypt = require("bcrypt");
 const asyncHandler = require("express-async-handler");
-const jwt = require("jsonwebtoken");
 const genratedOTP = require("../services/otpGenration");
 const mailTemplateGenrator = require("../services/emailTemplateGenrator");
 const { constants, templates, tokens } = require("../utils/");
