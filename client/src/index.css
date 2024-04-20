@@ -6,15 +6,39 @@
     font-family: 'Outfit';
     src: url('./assets/fonts/Outfit-VariableFont_wght.ttf'); 
   }
+@font-face {
+    font-family: 'Inter';
+    src: url('./assets/fonts/Inter.ttf'); 
+  }
 
+
+  ::-webkit-scrollbar {
+    width: 15px;
+    height: 15px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    border-radius: 100vh;
+    background: #f7f4ed; 
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #fd7276; 
+    border-radius: 100vh;
+    border: 3px solid #f6f7ed;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #e95b7b; 
+  }
+  
 :root {
 margin: 0;
 padding: 0;
 box-sizing: border-box;
+scroll-behavior: smooth;
 }
 
-html,body{
-    height: 100vh;
-    width: 100vw;
-    font-family: Outfit,'Segoe UI', sans-serif;
-  }
+/* html,body{
+    font-family: Inter,Outfit,'Segoe UI', sans-serif;
+  } */
