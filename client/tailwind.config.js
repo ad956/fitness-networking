@@ -11,6 +11,7 @@ export default {
     extend: {
       fontFamily: {
         outfit: "Outfit",
+        inter: "Inter",
       },
     },
   },
