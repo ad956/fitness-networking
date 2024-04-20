@@ -105,7 +105,7 @@ function SignupPage() {
   const canonical = window.location.href;
 
   return (
-    <section className="bg-white/75 min-h-screen min-w-screen flex justify-around items-center px-4 sm:px-6 lg:px-8">
+    <section className="bg-white/75  font-outfit min-h-screen min-w-screen flex justify-around items-center px-4 sm:px-6 lg:px-8">
       <SeoHelmet title={title} canonical={canonical} />
       <Toaster />
       <div className="w-full lg:w-2/6 space-y-5">

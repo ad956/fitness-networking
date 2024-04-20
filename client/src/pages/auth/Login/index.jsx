@@ -13,7 +13,10 @@ import { signin_png } from "@images";
 import { SeoHelmet, GoogleAuthHandler, VerificationModal } from "@components";
 import { loginUser } from "@api";
 import toast, { Toaster } from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { setAuthData } from "../../../features/auth/authSlice";
 import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
   const [user, setUser] = React.useState({
@@ -27,6 +30,8 @@ function LoginPage() {
   const [showVerifyModal, setshowVerifyModal] = React.useState(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { mutate, isError, error } = useMutation({
     mutationFn: loginUser,
@@ -112,8 +117,15 @@ function LoginPage() {
     try {
       const res = await GoogleAuthHandler(user.role);
       console.log("TOKEN : " + res.accessToken);
+
+      dispatch(
+        setAuthData({
+          accessToken: res.accessToken,
+          userRole: user.role,
+        })
+      );
+      navigate(`/${user.role}`);
     } catch (error) {
-      console.error(error);
       toast.error(error.message);
     }
   };
@@ -127,7 +139,7 @@ function LoginPage() {
   }
 
   return (
-    <section className="bg-white/75 min-h-screen min-w-screen flex justify-around items-center px-4 sm:px-6 lg:px-8">
+    <section className="bg-white/75 font-outfit min-h-screen min-w-screen flex justify-around items-center px-4 sm:px-6 lg:px-8">
       <SeoHelmet title={title} canonical={canonical} />
       <Toaster />
       <Image src={signin_png} className="hidden md:block h-3/5 w-4/5" />
