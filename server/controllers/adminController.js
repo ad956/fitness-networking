@@ -2,6 +2,9 @@ const { Op } = require("sequelize");
 const Admin = require("../models/adminModel");
 const User = require("../models/userModel");
 const Profile = require("../models/userProfileModel");
+const mailTemplateGenrator = require("../services/emailTemplateGenrator");
+const sendEmail = require("../services/sendEmailService");
+const { constants, tokens } = require("../utils/");
 const Status = require("../models/statusModel");
 const Partner = require("../models/partnerModel");
 const bcrypt = require("bcrypt");
@@ -148,10 +151,68 @@ const getPartners = asyncHandler(async (req, res) => {
   return;
 });
 
+// contact us form from fitness networking landing page
+
+const contactUsForm = asyncHandler(async (req, res) => {
+  const formData = req.body;
+
+  const msg = `
+  <table style="font-family: Arial, sans-serif; font-size: 16px; color: #333; background-color: #f7f7f7; padding: 20px; border-radius: 10px; max-width: 600px; margin: 0 auto;">
+    <tr>
+      <td colspan="2" style="text-align: center;">
+        <h2 style="color: #3457dc; font-size: 24px;">Fitness Networking - New Contact Inquiry</h2>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding-bottom: 10px;"><strong>Name:</strong></td>
+      <td style="padding-bottom: 10px;">${formData.name}</td>
+    </tr>
+    <tr>
+      <td style="padding-bottom: 10px;"><strong>Email:</strong></td>
+      <td style="padding-bottom: 10px;">${formData.email}</td>
+    </tr>
+    <tr>
+    <td style="padding-bottom: 10px;"><strong>Message:</strong></td>
+    <td style="padding-bottom: 10px;">${formData.message}</td>
+    </tr>
+    <tr>
+      <td colspan="2" style="color: #666; font-size: 14px; text-align: center;">
+        This email is a notification about a new contact inquiry received through the Fitness Networking website. Please review the details provided and respond to the inquiry as soon as possible.
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" style="text-align: center; padding-top: 20px;">
+      <button style="background-color: #3457dc; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+      <a href="mailto:${formData.email}" style="text-decoration: none; color: #fff;">Respond to Inquiry</a>
+    </button>
+    
+      </td>
+    </tr>
+  </table>
+`;
+
+  let message = {
+    from: constants.MAIL_FROM,
+    to: process.env.FITNESS_NETWORKING_EMAIL,
+    subject: "New Contact Inquiry from Fitness Networking",
+    html: msg,
+  };
+
+  const sent = await sendEmail(message);
+
+  if (!sent) {
+    res.status(400);
+    throw new Error("ERROR SENDING MESSAGE");
+  }
+  res.status(200).json({ msg: "sent" });
+  return;
+});
+
 module.exports = {
   register,
   login,
   getAdmin,
   getUsers,
   getPartners,
+  contactUsForm,
 };
