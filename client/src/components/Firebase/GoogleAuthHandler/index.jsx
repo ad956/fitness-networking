@@ -20,9 +20,7 @@ const GoogleAuthHandler = async (userRole) => {
 
     return res;
   } catch (error) {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    throw new Error(errorCode + " " + errorMessage);
+    throw new Error(error.message);
   }
 };
 
