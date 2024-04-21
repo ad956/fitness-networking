@@ -7,34 +7,10 @@ import PartnerRoutes from "./partnerRoutes";
 import AdminRoutes from "./adminRoutes";
 import LandingPage from "@pages/LandingPage";
 import { LoginPage, SignupPage } from "@pages/auth";
-import { PageNotFound } from "@components";
+import { PageNotFound, ErrorFallback } from "@components";
 
 export default function AppRoutes() {
   const { accessToken, userRole } = useSelector((state) => state.auth);
-
-  // Define route paths
-  const userRoutes = "/user";
-  const partnerRoutes = "/partner";
-  const adminRoutes = "/admin";
-
-  // Redirect path based on user role
-  let redirectPath = "/";
-  if (accessToken && userRole) {
-    switch (userRole) {
-      case "user":
-        redirectPath = userRoutes;
-        break;
-      case "partner":
-        redirectPath = partnerRoutes;
-        break;
-      case "admin":
-        redirectPath = adminRoutes;
-        break;
-      default:
-        redirectPath = "/";
-        break;
-    }
-  }
 
   return (
     <Routes>
@@ -49,17 +25,18 @@ export default function AppRoutes() {
       {accessToken && userRole && (
         <>
           {userRole === "user" && (
-            <Route path={userRoutes + "/*"} element={<UserRoutes />} />
+            <Route path="/user/*" element={<UserRoutes />} />
           )}
           {userRole === "partner" && (
-            <Route path={partnerRoutes + "/*"} element={<PartnerRoutes />} />
+            <Route path="/partner/*" element={<PartnerRoutes />} />
           )}
           {userRole === "admin" && (
-            <Route path={adminRoutes + "/*"} element={<AdminRoutes />} />
+            <Route path="/admin/*" element={<AdminRoutes />} />
           )}
         </>
       )}
 
+      <Route path="/error/*" element={<ErrorFallback />} />
       {/* Route not found */}
       <Route path="*" element={<PageNotFound />} />
     </Routes>
