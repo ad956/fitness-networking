@@ -14,18 +14,15 @@ const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ReduxProvider store={store}>
-      <Router>
-        <ErrorBoundary FallbackComponent={ErrorFallback}>
-          <HelmetProvider>
-            <QueryClientProvider client={queryClient}>
-              <NextUIProvider>
-                <App />
-              </NextUIProvider>
-              ``
-            </QueryClientProvider>
-          </HelmetProvider>
-        </ErrorBoundary>
-      </Router>
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <HelmetProvider>
+          <QueryClientProvider client={queryClient}>
+            <NextUIProvider>
+              <App />
+            </NextUIProvider>
+          </QueryClientProvider>
+        </HelmetProvider>
+      </ErrorBoundary>
     </ReduxProvider>
   </React.StrictMode>
 );
