@@ -4,7 +4,6 @@ import App from "./App.jsx";
 import "./index.css";
 import { Provider as ReduxProvider } from "react-redux";
 import store from "./app/store.js";
-import { BrowserRouter as Router } from "react-router-dom";
 import { NextUIProvider } from "@nextui-org/react";
 import { HelmetProvider } from "react-helmet-async";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
