@@ -3,26 +3,53 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
+  Outlet,
   RouterProvider,
+  useRouteError,
 } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
 import UserRoutes from "./routes/userRoutes";
 import PartnerRoutes from "./routes/partnerRoutes";
 import AdminRoutes from "./routes/adminRoutes";
 import LandingPage from "@pages/LandingPage";
 import { LoginPage, SignupPage } from "@pages/auth";
-import { PageNotFound, ErrorFallback } from "@components";
+import { ErrorFallback, PageNotFound } from "@components";
+import ProtectedRoute from "./components/ProtectedRoute";
+
+const Root = () => {
+  return <Outlet />;
+};
 
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route path="/">
+      <Route path="/" element={<Root />}>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
-        <Route path="/user/*" element={<UserRoutes />} />
-        <Route path="/partner/*" element={<PartnerRoutes />} />
-        <Route path="/admin/*" element={<AdminRoutes />} />
+        <Route
+          path="/user/*"
+          element={
+            <ProtectedRoute requiredRole="user">
+              <UserRoutes />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/partner/*"
+          element={
+            <ProtectedRoute requiredRole="partner">
+              <PartnerRoutes />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/*"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <AdminRoutes />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/error/*" element={<ErrorFallback />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
