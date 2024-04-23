@@ -5,7 +5,6 @@ import {
   Route,
   Outlet,
   RouterProvider,
-  useRouteError,
 } from "react-router-dom";
 import UserRoutes from "./routes/userRoutes";
 import PartnerRoutes from "./routes/partnerRoutes";
