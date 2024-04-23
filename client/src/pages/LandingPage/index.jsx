@@ -63,7 +63,7 @@ export default function LandingPage() {
       <header className="px-4 lg:px-6 h-14 flex items-center">
         <Link className="flex items-center justify-center gap-2" href="#">
           <Image src={fitness} className="h-6 w-6" />
-          <span className="text-black/80 text-lg font-medium">
+          <span className="hidden md:flex text-black/80 text-lg font-medium">
             Fitness Networking
           </span>
         </Link>
@@ -96,7 +96,7 @@ export default function LandingPage() {
       </header>
       <main className="flex-1 mx-auto">
         {/* intro */}
-        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
+        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 grid place-items-center">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center space-y-4 text-center">
               <div className="space-y-2">
@@ -129,7 +129,7 @@ export default function LandingPage() {
         {/* key features */}
         <section
           id="features"
-          className="w-full py-12 md:py-24 bg-gray-100 dark:bg-gray-800"
+          className="w-full py-12 md:py-24 bg-gray-100 dark:bg-gray-800 grid place-items-center"
         >
           <div className="container px-4 md:px-6">
             <div className="grid items-center gap-6 lg:grid-cols-[1fr_500px] lg:gap-12 xl:grid-cols-[1fr_550px]">
@@ -211,7 +211,7 @@ export default function LandingPage() {
         {/* pricing */}
         <section
           id="pricing"
-          className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800"
+          className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800 grid place-items-center"
         >
           <div className="container px-4 md:px-6 space-y-14">
             {/* gym members plans */}
@@ -252,7 +252,7 @@ export default function LandingPage() {
         {/* about us */}
         <section
           id="about"
-          className="w-full py-12 md:py-24 lg:py-32 bg-white dark:bg-gray-950"
+          className="w-full py-12 md:py-24 lg:py-32 bg-white dark:bg-gray-950 grid place-items-center"
         >
           <div className="container px-4 md:px-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -303,7 +303,7 @@ export default function LandingPage() {
         {/* contact us */}
         <section
           id="contact"
-          className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800"
+          className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800 grid place-items-center"
         >
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
