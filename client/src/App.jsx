@@ -9,7 +9,7 @@ import {
 import UserRoutes from "./routes/userRoutes";
 import PartnerRoutes from "./routes/partnerRoutes";
 import AdminRoutes from "./routes/adminRoutes";
-import LandingPage from "@pages/LandingPage";
+import HomePage from "@pages/home-page";
 import { LoginPage, SignupPage } from "@pages/auth";
 import { ErrorFallback, PageNotFound } from "@components";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -22,7 +22,7 @@ function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<Root />}>
-        <Route path="/" element={<LandingPage />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route

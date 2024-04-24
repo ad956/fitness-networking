@@ -1,6 +1,4 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux"; // Import useSelector hook to access Redux state
-import { removeAuthData } from "../../features/auth/authSlice";
 import { Link, Image, Input, Textarea, Button, Card } from "@nextui-org/react";
 import { fitness, keyfeatures, signin_png } from "@images";
 import { SeoHelmet } from "@components";
@@ -13,12 +11,17 @@ import {
   BiWallet,
 } from "react-icons/bi";
 import axios from "axios";
+import { isLoggedIn } from "@utils";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-export default function LandingPage() {
-  // const authState = useSelector((state) => state.auth);
-  // const isLoggedIn = authState && !!authState.accessToken;
+export default function HomePage() {
+  const navigate = useNavigate();
+  const authState = useSelector((state) => state.auth);
 
-  // const dispatch = useDispatch();
+  React.useEffect(() => {
+    isLoggedIn(navigate, authState);
+  }, [authState]);
 
   const [formData, setFormData] = React.useState({
     name: "",

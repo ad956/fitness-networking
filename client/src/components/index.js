@@ -1,5 +1,7 @@
+import Layout from "./Layout";
 import Header from "./Header";
 import Footer from "./Footer";
+import Sidebar from "./Sidebar";
 import SeoHelmet from "./SeoHelmet";
 import PageNotFound from "./PageNotFound";
 import ErrorBoundary from "./ErrorBoundary";
@@ -10,6 +12,8 @@ import VerificationModal from "./VerificationModal";
 import ProtectedRoute from "./ProtectedRoute";
 
 export {
+  Layout,
+  Sidebar,
   Header,
   Footer,
   SeoHelmet,

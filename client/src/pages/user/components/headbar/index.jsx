@@ -3,17 +3,13 @@ import { CiSearch } from "react-icons/ci";
 import React from "react";
 import { BiBell } from "react-icons/bi";
 import { IoAddOutline } from "react-icons/io5";
+import { fitness } from "@images";
 
 export default function Headbar() {
   return (
     <section className="w-full flex flex-row justify-between items-center gap-5 px-5">
       <div className="flex gap-10 items-center">
-        <Image
-          src="https://img.freepik.com/free-vector/bird-colorful-logo-gradient-vector_343694-1365.jpg?size=338&ext=jpg&ga=GA1.1.735520172.1711411200&semt=ais"
-          alt="brand-logo"
-          height={80}
-          width={50}
-        />
+        <Image src={fitness} alt="brand-logo" height={80} width={50} />
 
         <Input
           label="Search"

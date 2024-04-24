@@ -14,8 +14,18 @@ import { SeoHelmet, GoogleAuthHandler } from "@components";
 import { signupUser } from "@api";
 import toast, { Toaster } from "react-hot-toast";
 import { useMutation } from "@tanstack/react-query";
+import { isLoggedIn } from "@utils";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function SignupPage() {
+  const navigate = useNavigate();
+  const authState = useSelector((state) => state.auth);
+
+  React.useEffect(() => {
+    isLoggedIn(navigate, authState);
+  }, []);
+
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -267,7 +277,7 @@ function SignupPage() {
         <div className="text-center">
           <p className="text-sm font-medium text-zinc-600">
             Already have an account?{" "}
-            <Link href="#" className="text-sm text-black/80">
+            <Link href="/login" className="text-sm text-black/80">
               Sign in
             </Link>
           </p>

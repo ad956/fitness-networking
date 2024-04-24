@@ -11,6 +11,9 @@ export default async function googleAuthToken(token, userRole) {
     null,
     {
       headers,
+      validateStatus: (status) => {
+        return status < 500;
+      },
     }
   );
 

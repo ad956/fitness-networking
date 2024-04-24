@@ -1,13 +1,13 @@
 // import UserRoutes from "@routes/userRoutes";
-import Headbar from "./components/headbar";
-import Sidebar from "./components/sidebar";
+// Sidebar, Headbar
+import { Layout } from "@components";
 
 export default function UserLayout() {
   return (
-    <section className="h-full w-full flex flex-row">
-      <Headbar />
-      {/* <Sidebar /> */}
-      {/* <UserRoutes /> */}
-    </section>
+    <Layout>
+      <section className="h-screen w-full flex flex-row border-2 border-black">
+        APPLICATION
+      </section>
+    </Layout>
   );
 }
