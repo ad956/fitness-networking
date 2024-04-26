@@ -6,13 +6,13 @@ import {
   Outlet,
   RouterProvider,
 } from "react-router-dom";
-import UserRoutes from "./routes/userRoutes";
 import PartnerRoutes from "./routes/partnerRoutes";
 import AdminRoutes from "./routes/adminRoutes";
 import HomePage from "@pages/home-page";
 import { LoginPage, SignupPage } from "@pages/auth";
 import { ErrorFallback, PageNotFound } from "@components";
 import ProtectedRoute from "./components/ProtectedRoute";
+import UserLayout from "./pages/user";
 
 const Root = () => {
   return <Outlet />;
@@ -29,7 +29,7 @@ function App() {
           path="/user/*"
           element={
             <ProtectedRoute requiredRole="user">
-              <UserRoutes />
+              <UserLayout />
             </ProtectedRoute>
           }
         />
