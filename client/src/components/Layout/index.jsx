@@ -1,11 +1,13 @@
 import React from "react";
 import Sidebar from "../Sidebar";
+import Headbar from "../Headbar";
+import { Card } from "@nextui-org/react";
 
 const Layout = ({ children }) => {
   return (
-    <div className="h-screen w-screen flex flex-row justify-between items-center border2 border-red-800">
+    <div className="font-inter h-screen w-screen flex flex-row justify-between items-center">
       <Sidebar />
-      <main>{children}</main>
+      <main className="h-screen w-full flex flex-col">{children}</main>
     </div>
   );
 };
