@@ -44,41 +44,33 @@ export default function Sidebar() {
   const BaseURL = import.meta.env.VITE_APP_BASE_URL || "http://localhost:5173/";
 
   return (
-    <Card
-      shadow="lg"
-      className="h-full w-1/6 flex flex-col justify-around p-5 border2 border-purple-800"
-    >
-      <div className="flex items-center gap-2 mb-8">
-        <Image src={fitness} height={30} width={30} />
-        <h2 className="text-md tracking-wide text-gray-700 font-medium">
-          Fitness Networking
-        </h2>
+    <div shadow="lg" className="h-full w-44 border flex flex-col relative p-5">
+      <div className="flex gap-2 items-center">
+        <Image src={fitness} height={40} width={40} />
+        <p className="text-sm font-semibold">Fitness Networking</p>
       </div>
 
-      {sidebarItems.map((item, index) => (
-        <Button
-          as={Link}
-          href={`${BaseURL}${item.path}`}
-          key={index}
-          // radius="full"
-          variant="shadow"
-          className={`flex justify-start items-center gap-2 text-sm tracking-wide font-medium bg-white ${
-            selected === index ? "text-[#1f1c2e]" : "text-gray-700"
-          }`}
-          onClick={() => handleButtonClick(index)}
-          // className=""
-        >
-          {getIcon(item.label)}
-          <span>{item.label}</span>
-        </Button>
-      ))}
+      <div className="flex flex-col justify-around h-2/5 my-10">
+        {sidebarItems.map((item, index) => (
+          <Link
+            href={`${BaseURL}${item.path}`}
+            key={index}
+            variant="shadow"
+            className={`text-sm flex gap-2 tracking-wide font-medium rounded-md p-1 bg-white ${
+              selected === index ? "bg-gray-900  text-white" : "text-gray-700"
+            }`}
+            onClick={() => handleButtonClick(index)}
+          >
+            {getIcon(item.label)}
+            <span className="">{item.label}</span>
+          </Link>
+        ))}
+      </div>
 
-      <Image src={tryy} className="mx-auto border-2 my-10" />
-
-      <Button isIconOnly>
+      <Button isIconOnly className="absolute bottom-5 bg-transparent">
         <LuLogOut size={20} />
       </Button>
-    </Card>
+    </div>
   );
 }
 
@@ -116,10 +108,10 @@ const getIcon = (label) => {
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="icon icon-tabler icons-tabler-outline icon-tabler-layout-dashboard"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="icon icon-tabler icons-tabler-outline icon-tabler-layout-dashboard"
         >
           <path stroke="none" d="M0 0h24v24H0z" fill="none" />
           <path d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1" />
@@ -137,10 +129,10 @@ const getIcon = (label) => {
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="icon icon-tabler icons-tabler-outline icon-tabler-qrcode"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="icon icon-tabler icons-tabler-outline icon-tabler-qrcode"
         >
           <path stroke="none" d="M0 0h24v24H0z" fill="none" />
           <path d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
@@ -166,10 +158,10 @@ const getIcon = (label) => {
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="icon icon-tabler icons-tabler-outline icon-tabler-barbell"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="icon icon-tabler icons-tabler-outline icon-tabler-barbell"
         >
           <path stroke="none" d="M0 0h24v24H0z" fill="none" />
           <path d="M2 12h1" />
@@ -190,10 +182,10 @@ const getIcon = (label) => {
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="icon icon-tabler icons-tabler-outline icon-tabler-transaction-rupee"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="icon icon-tabler icons-tabler-outline icon-tabler-transaction-rupee"
         >
           <path stroke="none" d="M0 0h24v24H0z" fill="none" />
           <path d="M21 12h-6h1a3 3 0 0 1 0 6h-1l3 3" />
@@ -213,14 +205,15 @@ const getIcon = (label) => {
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="icon icon-tabler icons-tabler-outline icon-tabler-user"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="icon icon-tabler icons-tabler-outline icon-tabler-user-circle"
         >
           <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-          <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
-          <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+          <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+          <path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+          <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855" />
         </svg>
       );
     default:
