@@ -127,20 +127,21 @@ const googleAuth = asyncHandler(async (req, res, next) => {
   });
 
   if (!user) {
-    res.status(400);
-    throw new Error("User doesn't exists");
+    res.status(404);
+    throw new Error("Gym Member not found. Please sign up.");
   }
 
   const accessToken = tokens.generateAccessToken(user.user_id);
   const refreshToken = tokens.generateRefreshToken(user.user_id);
 
   res
-    .status(200)
     .cookie("refreshToken", refreshToken, {
-      maxAge: 100000,
+      maxAge: constants.COOKIE_MAX_AGE_MS,
       httpOnly: true,
       secure: false,
+      sameSite: "None",
     })
+    .status(200)
     .json({ accessToken });
   return;
 });
@@ -155,13 +156,15 @@ const checkUserVerificationStatus = asyncHandler(async (req, res) => {
 
   io.emit("userVerified", {
     role: "user",
+    email: user.email,
+    mobile: user.mobile,
     accessToken,
     message: "User verification successful",
   });
 
   res
     .cookie("refreshToken", refreshToken, {
-      maxAge: 100000,
+      maxAge: constants.COOKIE_MAX_AGE_MS,
       httpOnly: true,
       secure: false,
     })

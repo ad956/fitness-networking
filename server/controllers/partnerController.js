@@ -124,26 +124,26 @@ const login = asyncHandler(async (req, res) => {
 //sign in using google
 const googleAuth = asyncHandler(async (req, res, next) => {
   const email = req.email;
-
-  const user = await Partner.findOne({
+  const partner = await Partner.findOne({
     where: { email },
   });
 
-  if (!user) {
-    res.status(400);
-    throw new Error("Partner doesn't exists");
+  if (!partner) {
+    res.status(404);
+    throw new Error("Gym Proprietor not found. Please sign up.");
   }
 
-  const accessToken = tokens.generateAccessToken(user.gym_id);
-  const refreshToken = tokens.generateRefreshToken(user.gym_id);
+  const accessToken = tokens.generateAccessToken(partner.gym_id);
+  const refreshToken = tokens.generateRefreshToken(partner.gym_id);
 
   res
-    .status(200)
     .cookie("refreshToken", refreshToken, {
-      maxAge: 100000,
+      maxAge: constants.COOKIE_MAX_AGE_MS,
       httpOnly: true,
       secure: false,
+      sameSite: "None",
     })
+    .status(200)
     .json({ accessToken });
   return;
 });
@@ -156,15 +156,17 @@ const checkUserVerificationStatus = asyncHandler(async (req, res) => {
   const accessToken = tokens.generateAccessToken(partner.user_id);
   const refreshToken = tokens.generateRefreshToken(partner.user_id);
 
-  io.emit("userVerified", {
+  io.emit("partnerVerified", {
     role: "partner",
+    email: partner.email,
+    mobile: partner.mobile,
     accessToken,
     message: "Partner verification successful",
   });
 
   res
     .cookie("refreshToken", refreshToken, {
-      maxAge: 100000,
+      maxAge: constants.COOKIE_MAX_AGE_MS,
       httpOnly: true,
       secure: false,
     })
