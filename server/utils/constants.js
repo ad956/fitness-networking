@@ -10,4 +10,5 @@ exports.constants = {
   FORBIDDEN: 403,
   NOT_FOUND: 404,
   SERVER_ERROR: 500,
+  COOKIE_MAX_AGE_MS: 24 * 60 * 60 * 1000,
 };
