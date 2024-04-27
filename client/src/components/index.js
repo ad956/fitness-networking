@@ -1,5 +1,5 @@
 import Layout from "./Layout";
-import Header from "./Header";
+import Headbar from "./Headbar";
 import Footer from "./Footer";
 import Sidebar from "./Sidebar";
 import SeoHelmet from "./SeoHelmet";
@@ -14,7 +14,7 @@ import ProtectedRoute from "./ProtectedRoute";
 export {
   Layout,
   Sidebar,
-  Header,
+  Headbar,
   Footer,
   SeoHelmet,
   PageNotFound,
