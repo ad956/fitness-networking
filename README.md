@@ -12,7 +12,7 @@ The **Fitness Networking App** is a comprehensive platform designed to cater to 
 
 <p>
   <img src="https://skillicons.dev/icons?i=react,tailwindcss,redux&perline=10&theme=dark" />
-  <img src="https://avatars.githubusercontent.com/u/86160567?s=280&v=4" height="50" width="50" alt="nextui" />
+  <img src="https://avatars.githubusercontent.com/u/86160567?s=280&v=4" height="48" width="48" alt="nextui" />
 </p>
 
 ### Backend
