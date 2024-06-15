@@ -2,106 +2,99 @@
 
 ## Overview
 
-The Fitness Networking App is a comprehensive platform designed to cater to the needs of users, fitness partners, and administrators in the fitness and wellness domain. The application offers a range of features to enhance the fitness journey of users, facilitate business operations for fitness partners, and provide robust administrative tools for efficient system management.
+The **Fitness Networking App** is a comprehensive platform designed to cater to the needs of users, fitness partners, and administrators in the fitness and wellness domain. The application offers a range of features to enhance the fitness journey of users, facilitate business operations for fitness partners, and provide robust administrative tools for efficient system management.
 
-## Features
-
-### For Users:
-
-1. **Personalized Workout Plans:**
-
-   - Generate personalized workout plans based on fitness goals, current fitness level, and available equipment.
-
-2. **Social Integration:**
-
-   - Connect with friends or gym buddies.
-   - Track each other's progress, compete, or collaborate on fitness goals.
-
-3. **Nutrition Tracking:**
-
-   - Log daily food intake.
-   - Receive dietary recommendations based on fitness goals.
-
-4. **Wearable Device Integration:**
-
-   - Sync with popular fitness wearables to automatically track and record activity and health data.
-
-5. **Progress Photos:**
-
-   - Take and store progress photos to visually track fitness journey over time.
-
-6. **Virtual Classes:**
-   - Participate in virtual fitness classes or live-streamed workouts.
-
-### For Fitness Partners:
-
-1. **Business Analytics:**
-
-   - Access detailed analytics on user attendance, preferences, and peak hours.
-
-2. **Booking System:**
-
-   - Implement a booking system for fitness classes or gym sessions.
-
-3. **Marketing Tools:**
-
-   - Send promotions, discounts, or loyalty rewards to attract and retain customers.
-
-4. **User Engagement:**
-   - Engage with users through in-app messaging, announcements, or feedback collection.
-
-### For Admin:
-
-1. **Real-time Reporting:**
-
-   - Access real-time reporting and dashboards for overall system performance, user statistics, and revenue generation.
-
-2. **User Management:**
-
-   - Manage user accounts, resolve disputes, and handle customer support requests.
-
-3. **Security Measures:**
-
-   - Implement security measures to protect user data, including encryption and compliance with data protection regulations.
-
-4. **Content Management:**
-
-   - Manage content within the app, such as workout plans, class schedules, and promotional material.
-
-5. **Customization:**
-
-   - Customize the app's branding and features according to the preferences of fitness partners and evolving user needs.
+---
 
 ## Technology Stack
 
-#### Frontend
+### Frontend
 
-![Frontend](https://skillicons.dev/icons?i=react,tailwindcss,redux,materialui&perline=10&theme=dark)
+<p>
+  <img src="https://skillicons.dev/icons?i=react,tailwindcss,redux&perline=10&theme=dark" />
+  <img src="https://avatars.githubusercontent.com/u/86160567?s=280&v=4" height="45" width="45" alt="nextui" />
+</p>
 
-#### Backend
+### Backend
 
-![Backend](https://skillicons.dev/icons?i=nodejs,expressjs,sequelize,mysql&perline=10&theme=dark)
+![Backend](https://skillicons.dev/icons?i=nodejs,expressjs,sequelize,redis,mysql&perline=10&theme=dark)
+
+---
+
+## Features
+
+### For Gym Members
+
+- **Multi-City Access**  
+  Easily find and access participating gyms in various cities, making it convenient for those who travel frequently.
+
+- **Credit Points System**  
+  Receive and use credit points to check into different gyms.
+
+- **Easy Check-In**  
+  Simple check-in process using QR code scanning.
+
+- **Personalized Workout Plans**  
+  Access personalized workout plans tailored to your fitness goals.
+
+- **Activity Tracking**  
+  Monitor your workouts, track progress, and analyze performance over time.
+
+### For Gym Owners
+
+- **Member Management**  
+  Manage member profiles, track attendance, and monitor credit point usage.
+
+- **Revenue Generation**  
+  Earn credit points when members check in at your gym and redeem them for monetary value.
+
+- **Analytics Dashboard**  
+  Access detailed analytics on gym usage, member demographics, and revenue.
+
+- **Integration with Payment Systems**  
+  Seamlessly integrate with various payment gateways for membership fees and other transactions.
+
+### For Admin
+
+- **User Management**  
+  Manage user accounts, roles, and permissions for members, gym owners, and other administrators.
+
+- **System Monitoring**  
+  Monitor system performance, usage statistics, and troubleshoot issues.
+
+- **Content Management**  
+  Manage and update content on the platform, including gym listings, class descriptions, and promotional materials.
+
+- **Support and Maintenance**  
+  Provide support to users and gym owners, and maintain system health through regular updates and patches.
+
+- **Reporting Tools**  
+  Generate comprehensive reports on system usage, financial performance, and user activity.
+
+---
 
 ## Getting Started
 
-1. Clone the repository:
+1. **Clone the repository:**
 
    ```bash
    git clone https://github.com/ad956/fitness-networking.git
    ```
 
-2. Install dependencies:
+2. **Install dependencies:**
 
    ```bash
    npm install
    ```
 
-3. Set up your environment variables.
+3. **Set up your environment variables.**
 
-4. Run the application:
+4. **Run the application:**
 
    ```bash
    npm start
    ```
 
    The app will be accessible at `http://localhost:3000`.
+
+---
