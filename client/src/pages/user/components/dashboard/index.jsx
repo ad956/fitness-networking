@@ -1,74 +1,107 @@
 import React from "react";
-import { Card, User } from "@nextui-org/react";
-import { IoNotificationsOutline } from "react-icons/io5";
-import { CreditSpentLine } from "../Charts";
+import { Card, User, Progress } from "@nextui-org/react";
+import {
+  IoNotificationsOutline,
+  IoFitnessOutline,
+  IoWalletOutline,
+  IoTrendingUpOutline,
+} from "react-icons/io5";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 import { useQRCode } from "next-qrcode";
+
+const data = [
+  { name: "Mon", visits: 4 },
+  { name: "Tue", visits: 3 },
+  { name: "Wed", visits: 5 },
+  { name: "Thu", visits: 2 },
+  { name: "Fri", visits: 3 },
+  { name: "Sat", visits: 6 },
+  { name: "Sun", visits: 4 },
+];
 
 export default function Dashboard() {
   const { SVG } = useQRCode();
-  const text = "loremipsunsbhvhbh";
+  const text = "fitnessnetworking-member-123456";
 
   return (
-    <div className="font-outfit h-full w-full grid grid-rows-7 grid-cols-6 gap-3 border2 border-rose-600">
-      {/* header */}
-      <div className="row-span-1 col-span-6 flex justify-between items-center px-10">
-        <h1 className="text-xl font-medium tracking-wide">Dashboard</h1>
-        <div className="flex flex-row gap-5 items-center">
-          <IoNotificationsOutline size={20} />
+    <div className="font-outfit h-full w-full p-6 space-y-6">
+      <header className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold">Dashboard</h1>
+        <div className="flex items-center space-x-4">
+          <IoNotificationsOutline
+            size={24}
+            className="text-gray-600 cursor-pointer"
+          />
           <User
-            name="Anand Suthar"
-            description="@gym-member"
+            name="John Doe"
+            description="@fitness-enthusiast"
             avatarProps={{
-              src: "https://images.alphacoders.com/994/994973.jpg",
-            }}
-            classNames={{
-              name: "font-medium",
-              description: "font-medium",
+              src: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
             }}
           />
         </div>
-      </div>
+      </header>
 
-      {/* qr code */}
-      <Card
-        radius="lg"
-        className="row-span-3 col-span-2 flex flex-row items-between px-2 border-2"
-      >
-        <Card
-          id="qr-code-card"
-          className="w-3/5 p-5 flex flex-col justify-center items-center"
-        >
-          <SVG
-            text={text}
-            options={{
-              margin: 2,
-              width: 180,
-              color: {
-                dark: "#000000",
-                light: "#ffffff",
-              },
-            }}
-          />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Card className="p-4 space-y-4">
+          <div className="flex justify-between items-center">
+            <h2 className="text-lg font-semibold">Membership QR</h2>
+            <IoFitnessOutline size={24} className="text-primary" />
+          </div>
+          <div className="flex justify-center">
+            <SVG
+              text={text}
+              options={{
+                margin: 2,
+                width: 200,
+                color: {
+                  dark: "#000000",
+                  light: "#ffffff",
+                },
+              }}
+            />
+          </div>
         </Card>
 
-        <div className="flex flex-col justify-evenly h-full">
-          <Card radius="lg" className="h-16 border-2">
-            Current Gym
-          </Card>
-          <Card radius="lg" className="h-16 border-2">
-            credit balance
-          </Card>
-          <Card radius="lg" className="h-16 border-2">
-            totals money spent
-          </Card>
-        </div>
-      </Card>
-      {/* credt balances */}
+        <Card className="p-4 space-y-4">
+          <div className="flex justify-between items-center">
+            <h2 className="text-lg font-semibold">Credit Balance</h2>
+            <IoWalletOutline size={24} className="text-primary" />
+          </div>
+          <p className="text-3xl font-bold">500 Credits</p>
+          <Progress size="sm" value={70} color="primary" className="max-w-md" />
+        </Card>
 
-      {/* transactions */}
-      <div className="row-span-3 col-span-6 border-2">
-        <Card radius="lg" className=""></Card>
+        <Card className="p-4 space-y-4">
+          <div className="flex justify-between items-center">
+            <h2 className="text-lg font-semibold">Total Spent</h2>
+            <IoTrendingUpOutline size={24} className="text-primary" />
+          </div>
+          <p className="text-3xl font-bold">$1,250</p>
+          <p className="text-sm text-gray-500">Last 30 days</p>
+        </Card>
       </div>
+
+      <Card className="p-4">
+        <h2 className="text-xl font-semibold mb-4">Weekly Gym Visits</h2>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={data}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Bar dataKey="visits" fill="#8884d8" />
+          </BarChart>
+        </ResponsiveContainer>
+      </Card>
     </div>
   );
 }
