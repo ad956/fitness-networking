@@ -1,8 +1,9 @@
 services:
   - type: web
+    runtime: docker
     name: fitness-networking-frontend
-    env: docker
-    image: ad956/fitness-networking-frontend:latest
+    image:
+      url: docker.io/fitness-networking-frontend:latest
     envVars:
       - key: NODE_ENV
         value: production
@@ -17,9 +18,10 @@ services:
       - key: VITE_APP_FIREBASE_MEASUREMENT_ID
 
   - type: web
+    runtime: docker
     name: fitness-networking-backend
-    env: docker
-    image: ad956/fitness-networking-backend:latest
+    image: 
+     url: docker.io/fitness-networking-backend:latest
     envVars:
       - key: NODE_ENV
         value: production
