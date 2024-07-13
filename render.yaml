@@ -1,27 +1,67 @@
 services:
   - type: web
-    runtime: docker
     name: fitness-networking-frontend
-    image:
-      url: docker.io/fitness-networking-frontend:latest
+    runtime: docker
     region: oregon
     plan: free
+    branch: main
+    dockerfilePath: ./client/Dockerfile
+    dockerContext: ./client
     envVars:
       - key: NODE_ENV
         value: production
+      - key: VITE_APP_BASE_URL
+        sync: false
+      - key: VITE_APP_SERVER_URL
+        sync: false
+      - key: VITE_APP_FIREBASE_API_KEY
+        sync: false
+      - key: VITE_APP_FIREBASE_AUTH_DOMAIN
+        sync: false
+      - key: VITE_APP_FIREBASE_PROJECT_ID
+        sync: false
+      - key: VITE_APP_FIREBASE_STORAGE_BUCKET
+        sync: false
+      - key: VITE_APP_FIREBASE_MESSAGING_SENDER_ID
+        sync: false
+      - key: VITE_APP_FIREBASE_APP_ID
+        sync: false
+      - key: VITE_APP_FIREBASE_MEASUREMENT_ID
+        sync: false
 
   - type: web
-    runtime: docker
     name: fitness-networking-backend
-    image: 
-     url: docker.io/fitness-networking-backend:latest
+    runtime: docker
     region: oregon
     plan: free
+    branch: main
+    dockerfilePath: ./server/Dockerfile
+    dockerContext: ./server
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
-        value: 3000
+        value: "3000"
+      - key: DB_HOST
+        sync: false
+      - key: DB_NAME
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASS
+        sync: false
+      - key: ACCESS_TOKEN_SECRET
+        sync: false
+      - key: REFRESH_TOKEN_SECRET
+        sync: false
+      - key: GUSER
+        sync: false
+      - key: GPASS
+        sync: false
+      - key: BCRYPT_ROUNDS
+        sync: false
+      - key: FITNESS_NETWORKING_EMAIL
+        sync: false
 
 databases:
   - name: fitness-networking-db
