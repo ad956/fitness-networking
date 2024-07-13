@@ -1,4 +1,4 @@
-# Logs
+# Client Logs
 logs
 *.log
 npm-debug.log*
@@ -13,7 +13,7 @@ dist-ssr
 *.local
 .env
 
-# Editor directories and files
+# Client Editor directories and files
 .vscode/*
 !.vscode/extensions.json
 .idea
@@ -23,3 +23,13 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# root level
+ref
+todo.md
+backup.sql
+
+# Server
+node_modules
+.env
+firebase-admin-sdk.json

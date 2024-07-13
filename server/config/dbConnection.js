@@ -5,15 +5,10 @@ const sequelize = new Sequelize(
   process.env.DB_USER,
   process.env.DB_PASS,
   {
-    host: "localhost",
+    host: process.env.DB_HOST || "host.docker.internal",
     dialect: "mysql",
   }
 );
-
-// const sequelize = new Sequelize("mysql://localhost:3306/fitness", {
-//   username: "root",
-//   password: "1245",
-// });
 
 const connectDB = async () => {
   try {
