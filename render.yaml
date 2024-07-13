@@ -1,26 +1,29 @@
 services:
   - type: web
-    name: fitness-networking-frontend
     runtime: docker
+    name: fitness-networking-frontend
     image:
       url: docker.io/fitness-networking-frontend:latest
+    region: oregon
+    plan: free
     envVars:
       - key: NODE_ENV
         value: production
 
   - type: web
-    name: fitness-networking-backend
     runtime: docker
-    image:
-      url: docker.io/fitness-networking-backend:latest
+    name: fitness-networking-backend
+    image: 
+     url: docker.io/fitness-networking-backend:latest
+    region: oregon
+    plan: free
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
-        value: "3000"
+        value: 3000
 
 databases:
   - name: fitness-networking-db
     databaseName: fitness
-
-version: "1"
+    plan: free
