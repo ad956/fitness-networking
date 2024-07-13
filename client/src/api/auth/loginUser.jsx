@@ -1,10 +1,9 @@
-import axios from "axios";
-import { SERVER_URL } from "@constants";
+import { axios } from "@api";
 
 export default async function loginUser(user) {
-  const path = user.role === "user" ? "user/" : "partner/";
+  const path = user.role === "user" ? "user" : "partner";
   try {
-    const response = await axios.post(`${SERVER_URL}${path}login`, user, {
+    const response = await axios.post(`${path}/login`, user, {
       headers: {
         "Content-Type": "application/json",
       },

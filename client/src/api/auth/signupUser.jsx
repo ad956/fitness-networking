@@ -1,20 +1,20 @@
+import { axios } from "@api";
+
 export default async function signupUser({ email, password, role }) {
   try {
-    const response = await fetch("/api/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password, role }),
+    const response = await axios.post("/api/signup", {
+      email,
+      password,
+      role,
     });
 
-    if (!response.ok) {
+    if (!response.data.success) {
       throw new Error("signup failed");
     }
 
-    const data = await response.json();
-    return data;
+    return response.data;
   } catch (error) {
+    console.error(error);
     throw new Error("signup failed");
   }
 }
