@@ -7,15 +7,6 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
-      - key: VITE_APP_BASE_URL
-      - key: VITE_APP_SERVER_URL
-      - key: VITE_APP_FIREBASE_API_KEY
-      - key: VITE_APP_FIREBASE_AUTH_DOMAIN
-      - key: VITE_APP_FIREBASE_PROJECT_ID
-      - key: VITE_APP_FIREBASE_STORAGE_BUCKET
-      - key: VITE_APP_FIREBASE_MESSAGING_SENDER_ID
-      - key: VITE_APP_FIREBASE_APP_ID
-      - key: VITE_APP_FIREBASE_MEASUREMENT_ID
 
   - type: web
     runtime: docker
@@ -27,16 +18,6 @@ services:
         value: production
       - key: PORT
         value: 3000
-      - key: DB_HOST
-      - key: DB_NAME
-      - key: DB_USER
-      - key: DB_PASS
-      - key: ACCESS_TOKEN_SECRET
-      - key: REFRESH_TOKEN_SECRET
-      - key: GUSER
-      - key: GPASS
-      - key: BCRYPT_ROUNDS
-      - key: FITNESS_NETWORKING_EMAIL
 
 databases:
   - name: fitness-networking-db
