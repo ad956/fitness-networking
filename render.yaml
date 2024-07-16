@@ -7,6 +7,8 @@ services:
     branch: main
     dockerfilePath: ./client/Dockerfile
     dockerContext: ./client
+    autoDeploy: true
+    healthCheckPath: /health
     envVars:
       - key: NODE_ENV
         value: production
