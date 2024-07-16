@@ -2,12 +2,12 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-COPY package.json /app/
+COPY package.*json ./
 
-COPY . /app/
+RUN npm run ci
 
-RUN npm install
+COPY . .
 
-EXPOSE 3000
+ENV NODE_ENV=production
 
-CMD [ "npm","run","dev" ]
+CMD [ "npm","start" ]
