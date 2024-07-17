@@ -41,7 +41,7 @@ export default function Sidebar() {
     setSelected(index);
   }
 
-  const BaseURL = import.meta.env.VITE_APP_BASE_URL || "http://localhost:5173/";
+  const BaseURL = import.meta.env.VITE_BASE_URL || "http://localhost:5173/";
 
   return (
     <div shadow="lg" className="h-full w-44 border flex flex-col relative p-5">

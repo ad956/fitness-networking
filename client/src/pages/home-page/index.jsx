@@ -37,7 +37,7 @@ export default function HomePage() {
     e.preventDefault();
 
     try {
-      const SERVER_URL = import.meta.env.VITE_APP_SERVER_URL;
+      const SERVER_URL = import.meta.env.VITE_SERVER_URL;
       const response = await axios.post(
         `${SERVER_URL}admin/contact-us`,
         formData
