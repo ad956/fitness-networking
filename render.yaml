@@ -12,23 +12,23 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
-      - key: VITE_APP_BASE_URL
+      - key: VITE_BASE_URL
         sync: false
-      - key: VITE_APP_SERVER_URL
+      - key: VITE_SERVER_URL
         sync: false
-      - key: VITE_APP_FIREBASE_API_KEY
+      - key: VITE_FIREBASE_API_KEY
         sync: false
-      - key: VITE_APP_FIREBASE_AUTH_DOMAIN
+      - key: VITE_FIREBASE_AUTH_DOMAIN
         sync: false
-      - key: VITE_APP_FIREBASE_PROJECT_ID
+      - key: VITE_FIREBASE_PROJECT_ID
         sync: false
-      - key: VITE_APP_FIREBASE_STORAGE_BUCKET
+      - key: VITE_FIREBASE_STORAGE_BUCKET
         sync: false
-      - key: VITE_APP_FIREBASE_MESSAGING_SENDER_ID
+      - key: VITE_FIREBASE_MESSAGING_SENDER_ID
         sync: false
-      - key: VITE_APP_FIREBASE_APP_ID
+      - key: VITE_FIREBASE_APP_ID
         sync: false
-      - key: VITE_APP_FIREBASE_MEASUREMENT_ID
+      - key: VITE_FIREBASE_MEASUREMENT_ID
         sync: false
 
   - type: web
