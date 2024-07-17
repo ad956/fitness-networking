@@ -20,5 +20,16 @@ export default defineConfig({
       "@utils": "/src/utils",
     },
   },
+  build: {
+    outDir: "dist",
+    minify: "terser",
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
+  },
   plugins: [react()],
+  base: "./",
 });
