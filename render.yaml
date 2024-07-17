@@ -39,6 +39,8 @@ services:
     branch: main
     dockerfilePath: ./server/Dockerfile
     dockerContext: ./server
+    autoDeploy: true
+    healthCheckPath: /health
     envVars:
       - key: NODE_ENV
         value: production
