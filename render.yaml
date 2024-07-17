@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: fitness-networking-frontend
+    name: fitness-networking
     runtime: docker
     region: oregon
     plan: free
