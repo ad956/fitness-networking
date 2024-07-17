@@ -11,7 +11,7 @@ import {
 import { ResponsiveBar } from "@nivo/bar";
 import { ResponsivePie } from "@nivo/pie";
 import { ResponsiveLine } from "@nivo/line";
-import { useQRCode } from "next-qrcode";
+// import { useQRCode } from "next-qrcode";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -48,7 +48,7 @@ const gymLocations = [
 ];
 
 export default function Dashboard() {
-  const { SVG } = useQRCode();
+  // const { SVG } = useQRCode();
   const text = "fitnessnetworking-member-123456";
 
   return (
@@ -77,7 +77,7 @@ export default function Dashboard() {
             <IoFitnessOutline size={24} className="text-primary" />
           </div>
           <div className="flex justify-center bg-white p-4 rounded-lg">
-            <SVG
+            {/* <SVG
               text={text}
               options={{
                 margin: 2,
@@ -87,7 +87,8 @@ export default function Dashboard() {
                   light: "#ffffff",
                 },
               }}
-            />
+            /> */}
+            QR CODE
           </div>
         </Card>
 
