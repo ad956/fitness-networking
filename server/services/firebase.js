@@ -1,7 +1,17 @@
 const admin = require("firebase-admin");
 const { getAuth } = require("firebase-admin/auth");
+const fs = require("fs");
 
-var serviceAccount = require("../config/firebase-admin-sdk.json");
+let serviceAccount;
+if (fs.existsSync("/etc/secrets/firebase-admin-sdk.json")) {
+  // For production on Render
+  serviceAccount = JSON.parse(
+    fs.readFileSync("/etc/secrets/firebase-admin-sdk.json", "utf8")
+  );
+} else {
+  // For local development
+  serviceAccount = require("../config/firebase-admin-sdk.json");
+}
 
 const app = admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
