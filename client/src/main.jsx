@@ -10,9 +10,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ErrorBoundary, ErrorFallback } from "@components";
 const queryClient = new QueryClient();
 
-// initialize Firebase
-import "./components/Firebase";
-
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ReduxProvider store={store}>
