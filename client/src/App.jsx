@@ -40,6 +40,10 @@ function App() {
     { path: "*", element: <PageNotFound /> },
   ]);
 
+  console.log("project id : " + import.meta.env.VITE_FIREBASE_API_KEY);
+  console.log("client url : " + import.meta.env.VITE_BASE_URL);
+  console.log("server url : " + import.meta.env.VITE_SERVER_URL);
+
   return <RouterProvider router={router} />;
 }
 
