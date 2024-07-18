@@ -24,6 +24,7 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3000
+      - DB_URL=${DB_URL}
       - DB_HOST=${DB_HOST}
       - DB_NAME=${DB_NAME}
       - DB_USER=${DB_USER}
