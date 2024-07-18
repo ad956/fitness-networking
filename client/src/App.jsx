@@ -7,6 +7,8 @@ import { ErrorFallback, PageNotFound } from "@components";
 import ProtectedRoute from "./components/ProtectedRoute";
 import UserLayout from "./pages/user";
 
+import "./components/Firebase";
+
 function App() {
   const router = createBrowserRouter([
     { path: "/", element: <HomePage /> },
