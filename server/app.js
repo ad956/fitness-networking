@@ -28,6 +28,7 @@ app.use(
     credentials: true,
   })
 );
+
 connectDB();
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
