@@ -28,7 +28,7 @@ export default defineConfig(({ mode }) => {
       minify: "terser",
       terserOptions: {
         compress: {
-          drop_console: true,
+          // drop_console: true,
           drop_debugger: true,
         },
       },
@@ -36,19 +36,29 @@ export default defineConfig(({ mode }) => {
     plugins: [react()],
     base: "./",
     define: {
-      "process.env": {
-        NODE_ENV: env.NODE_ENV,
-        VITE_BASE_URL: env.VITE_BASE_URL,
-        VITE_SERVER_URL: env.VITE_SERVER_URL,
-        VITE_FIREBASE_API_KEY: env.VITE_FIREBASE_API_KEY,
-        VITE_FIREBASE_AUTH_DOMAIN: env.VITE_FIREBASE_AUTH_DOMAIN,
-        VITE_FIREBASE_PROJECT_ID: env.VITE_FIREBASE_PROJECT_ID,
-        VITE_FIREBASE_STORAGE_BUCKET: env.VITE_FIREBASE_STORAGE_BUCKET,
-        VITE_FIREBASE_MESSAGING_SENDER_ID:
-          env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-        VITE_FIREBASE_APP_ID: env.VITE_FIREBASE_APP_ID,
-        VITE_FIREBASE_MEASUREMENT_ID: env.VITE_FIREBASE_MEASUREMENT_ID,
-      },
+      "import.meta.env.VITE_BASE_URL": JSON.stringify(env.VITE_BASE_URL),
+      "import.meta.env.VITE_SERVER_URL": JSON.stringify(env.VITE_SERVER_URL),
+      "import.meta.env.VITE_FIREBASE_API_KEY": JSON.stringify(
+        env.VITE_FIREBASE_API_KEY
+      ),
+      "import.meta.env.VITE_FIREBASE_AUTH_DOMAIN": JSON.stringify(
+        env.VITE_FIREBASE_AUTH_DOMAIN
+      ),
+      "import.meta.env.VITE_FIREBASE_PROJECT_ID": JSON.stringify(
+        env.VITE_FIREBASE_PROJECT_ID
+      ),
+      "import.meta.env.VITE_FIREBASE_STORAGE_BUCKET": JSON.stringify(
+        env.VITE_FIREBASE_STORAGE_BUCKET
+      ),
+      "import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID": JSON.stringify(
+        env.VITE_FIREBASE_MESSAGING_SENDER_ID
+      ),
+      "import.meta.env.VITE_FIREBASE_APP_ID": JSON.stringify(
+        env.VITE_FIREBASE_APP_ID
+      ),
+      "import.meta.env.VITE_FIREBASE_MEASUREMENT_ID": JSON.stringify(
+        env.VITE_FIREBASE_MEASUREMENT_ID
+      ),
     },
   };
 });
