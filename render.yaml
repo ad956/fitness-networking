@@ -46,6 +46,8 @@ services:
         value: production
       - key: PORT
         value: "3000"
+      - key: DB_URL
+        sync: false
       - key: DB_HOST
         sync: false
       - key: DB_NAME
