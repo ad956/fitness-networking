@@ -12,8 +12,8 @@ import UserLayout from "./pages/user";
 function App() {
   const router = createBrowserRouter([
     { path: "/", element: <HomePage /> },
-    { path: "/login", element: <LoginPage /> },
-    { path: "/signup", element: <SignupPage /> },
+    // { path: "/login", element: <LoginPage /> },
+    // { path: "/signup", element: <SignupPage /> },
     {
       path: "/user/*",
       element: (
