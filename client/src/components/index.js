@@ -7,7 +7,7 @@ import PageNotFound from "./PageNotFound";
 import ErrorBoundary from "./ErrorBoundary";
 import ErrorFallback from "./ErrorFallback";
 import AuthErrorFallback from "./AuthErrorFallback";
-import GoogleAuthHandler from "./Firebase/GoogleAuthHandler";
+// import GoogleAuthHandler from "./Firebase/GoogleAuthHandler";
 import VerificationModal from "./VerificationModal";
 import ProtectedRoute from "./ProtectedRoute";
 
@@ -21,7 +21,7 @@ export {
   ErrorBoundary,
   ErrorFallback,
   AuthErrorFallback,
-  GoogleAuthHandler,
+  // GoogleAuthHandler,
   VerificationModal,
   ProtectedRoute,
 };

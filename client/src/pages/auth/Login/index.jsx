@@ -10,7 +10,7 @@ import {
 import { AiTwotoneEye, AiTwotoneEyeInvisible } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { signin_png } from "@images";
-import { SeoHelmet, GoogleAuthHandler, VerificationModal } from "@components";
+import { SeoHelmet, VerificationModal } from "@components"; // GoogleAuthHandler
 import { loginUser } from "@api";
 import toast, { Toaster } from "react-hot-toast";
 import { useDispatch } from "react-redux";
@@ -124,7 +124,7 @@ function LoginPage() {
       return;
     }
     try {
-      const res = await GoogleAuthHandler(user.role);
+      const res = { accessToken: "", userRole: "" }; //await GoogleAuthHandler(user.role);
 
       dispatch(
         setAuthData({
