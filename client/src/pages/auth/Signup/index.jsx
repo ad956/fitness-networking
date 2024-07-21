@@ -10,7 +10,7 @@ import {
 import { AiTwotoneEye, AiTwotoneEyeInvisible } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { signup_jpg } from "@images";
-import { SeoHelmet } from "@components"; // GoogleAuthHandler
+import { SeoHelmet, GoogleAuthHandler } from "@components";
 import { signupUser } from "@api";
 import toast, { Toaster } from "react-hot-toast";
 import { useMutation } from "@tanstack/react-query";
@@ -104,7 +104,7 @@ function SignupPage() {
 
   const handleGoogleSignInButton = async () => {
     try {
-      // await GoogleAuthHandler();
+      await GoogleAuthHandler();
     } catch (error) {
       console.error(error);
       toast.error(error);
