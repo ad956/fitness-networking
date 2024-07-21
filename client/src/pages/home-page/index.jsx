@@ -62,7 +62,6 @@ export default function HomePage() {
 
   console.log("========== PRINTING ALL ENVS =============");
   console.log(import.meta.env);
-  console.log("=<" + process.env.VITE_SERVER_URL);
 
   return (
     <div className="font-Inter h-full w-full">
