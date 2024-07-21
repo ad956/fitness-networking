@@ -42,6 +42,9 @@ function App() {
     { path: "*", element: <PageNotFound /> },
   ]);
 
+  console.log("========== PRINTING ALL ENVS =============");
+  console.log(import.meta.env);
+
   return <RouterProvider router={router} />;
 }
 
