@@ -50,8 +50,3 @@ services:
         sync: false
       - key: FITNESS_NETWORKING_EMAIL
         sync: false
-
-databases:
-  - name: fitness-networking-db
-    databaseName: fitness
-    plan: free
