@@ -8,7 +8,6 @@ services:
     dockerfilePath: ./client/Dockerfile
     dockerContext: ./client
     autoDeploy: true
-    rootDir: ./
     # healthCheckPath: /health
     envVars:
       - key: NODE_ENV
@@ -23,7 +22,6 @@ services:
     dockerfilePath: ./server/Dockerfile
     dockerContext: ./server
     autoDeploy: true
-    rootDir: ./
     # healthCheckPath: /health
     envVars:
       - key: NODE_ENV
