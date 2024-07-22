@@ -60,9 +60,6 @@ export default function HomePage() {
   const title = "Fitness Networking";
   const canonical = window.location.href;
 
-  console.log("========== PRINTING ALL ENVS =============");
-  console.log(import.meta.env);
-
   return (
     <div className="font-Inter h-full w-full">
       <SeoHelmet title={title} canonical={canonical} />
