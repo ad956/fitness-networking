@@ -1,78 +1,61 @@
 import React from "react";
-import { Card, Image, Button, Link } from "@nextui-org/react";
-import { fitness, tryy } from "@images";
+import { NavLink, useLocation } from "react-router-dom";
+import { Image } from "@nextui-org/react";
+import { fitness } from "@images";
 import { LuLogOut } from "react-icons/lu";
-import { useLocation } from "react-router-dom";
-
-/*
- const pathname = usePathname();
-
-
-
-
-*/
 
 export default function Sidebar() {
   const location = useLocation();
-  const { pathname } = location;
 
-  const [selected, setSelected] = React.useState(
-    getInitialSelectedIndex(pathname)
-  );
-
-  function getInitialSelectedIndex(pathname) {
-    switch (pathname) {
-      case "/user/":
-        return 0;
-      case "/user/qrcode":
-        return 1;
-      case "/user/membership":
-        return 2;
-      case "/user/transactions":
-        return 3;
-      case "/user/profile":
-        return 4;
-      default:
-        return 0;
-    }
-  }
-
-  function handleButtonClick(index) {
-    setSelected(index);
-  }
-
-  const BaseURL = import.meta.env.VITE_BASE_URL || "http://localhost:5173/";
+  const sidebarItems = [
+    { label: "Dashboard", path: "/user/", icon: DashboardIcon },
+    { label: "QR Code", path: "/user/qrcode", icon: QRCodeIcon },
+    { label: "Membership", path: "/user/membership", icon: MembershipIcon },
+    {
+      label: "Transactions",
+      path: "/user/transactions",
+      icon: TransactionsIcon,
+    },
+    { label: "Profile", path: "/user/profile", icon: ProfileIcon },
+  ];
 
   return (
-    <div shadow="lg" className="h-full w-44 border flex flex-col relative p-5">
-      <div className="flex gap-2 items-center">
-        <Image src={fitness} height={40} width={40} />
-        <p className="text-sm font-semibold">Fitness Networking</p>
+    <div className="h-full w-56 bg-white shadow-md flex flex-col relative p-5">
+      <div className="flex gap-2 items-center mb-8">
+        <Image src={fitness} height={40} width={40} alt="Fitness Networking" />
+        <p className="text-sm font-semibold text-gray-800">
+          Fitness Networking
+        </p>
       </div>
 
-      <div className="flex flex-col justify-around h-2/5 my-10">
-        {sidebarItems.map((item, index) => (
-          <Link
-            href={`${BaseURL}${item.path}`}
-            key={index}
-            variant="shadow"
-            className={`text-sm flex gap-2 tracking-wide font-medium rounded-md p-1 bg-white ${
-              selected === index ? "bg-gray-900  text-white" : "text-gray-700"
-            }`}
-            onClick={() => handleButtonClick(index)}
+      <nav className="flex flex-col gap-2 flex-grow">
+        {sidebarItems.map((item) => (
+          <NavLink
+            to={item.path}
+            key={item.label}
+            className={({ isActive }) =>
+              `flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                isActive
+                  ? "bg-blue-100 text-blue-600"
+                  : "text-gray-600 hover:bg-gray-100"
+              }`
+            }
           >
-            {getIcon(item.label)}
-            <span className="">{item.label}</span>
-          </Link>
+            <item.icon className="w-5 h-5" />
+            <span className="text-sm font-medium">{item.label}</span>
+          </NavLink>
         ))}
-      </div>
+      </nav>
 
-      <Button isIconOnly className="absolute bottom-5 bg-transparent">
-        <LuLogOut size={20} />
-      </Button>
+      <button className="flex items-center gap-3 px-4 py-3 mt-auto text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+        <LuLogOut className="w-5 h-5" />
+        <span className="text-sm font-medium">Logout</span>
+      </button>
     </div>
   );
 }
+
+// Icon components (DashboardIcon, QRCodeIcon, etc.) remain the same
 
 const sidebarItems = [
   {
