@@ -1,22 +1,24 @@
 import React from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Image } from "@nextui-org/react";
 import { fitness } from "@images";
 import { LuLogOut } from "react-icons/lu";
 
 export default function Sidebar() {
-  const location = useLocation();
-
   const sidebarItems = [
-    { label: "Dashboard", path: "/user/", icon: DashboardIcon },
-    { label: "QR Code", path: "/user/qrcode", icon: QRCodeIcon },
-    { label: "Membership", path: "/user/membership", icon: MembershipIcon },
+    { label: "Dashboard", path: "/user/dashboard", icon: getIcon("Dashboard") },
+    { label: "QR Code", path: "/user/qrcode", icon: getIcon("QRCode") },
+    {
+      label: "Membership",
+      path: "/user/membership",
+      icon: getIcon("Membership"),
+    },
     {
       label: "Transactions",
       path: "/user/transactions",
-      icon: TransactionsIcon,
+      icon: getIcon("Transactions"),
     },
-    { label: "Profile", path: "/user/profile", icon: ProfileIcon },
+    { label: "Profile", path: "/user/profile", icon: getIcon("Profile") },
   ];
 
   return (
@@ -36,12 +38,12 @@ export default function Sidebar() {
             className={({ isActive }) =>
               `flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                 isActive
-                  ? "bg-blue-100 text-blue-600"
+                  ? "bg-warning-100 text-warning-600"
                   : "text-gray-600 hover:bg-gray-100"
               }`
             }
           >
-            <item.icon className="w-5 h-5" />
+            {item.icon}
             <span className="text-sm font-medium">{item.label}</span>
           </NavLink>
         ))}
@@ -54,31 +56,6 @@ export default function Sidebar() {
     </div>
   );
 }
-
-// Icon components (DashboardIcon, QRCodeIcon, etc.) remain the same
-
-const sidebarItems = [
-  {
-    label: "Dashboard",
-    path: "user/",
-  },
-  {
-    label: "QR Code",
-    path: "user/qrcode",
-  },
-  {
-    label: "Membership",
-    path: "user/membership",
-  },
-  {
-    label: "Transactions",
-    path: "user/transactions",
-  },
-  {
-    label: "Profile",
-    path: "user/profile",
-  },
-];
 
 const getIcon = (label) => {
   switch (label) {
@@ -103,7 +80,7 @@ const getIcon = (label) => {
           <path d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1" />
         </svg>
       );
-    case "QR Code":
+    case "QRCode":
       return (
         <svg
           xmlns="http://www.w3.org/2000/svg"
