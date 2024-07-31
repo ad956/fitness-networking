@@ -1,8 +1,8 @@
-import Dashboard from "./dashboard";
-import Headbar from "./headbar";
-import Membership from "./membership";
-import Profile from "./profile";
-import QRCode from "./qr-code";
-import Transactions from "./transactions";
+import Dashboard from "./Dashboard";
+import Headbar from "./Headbar";
+import Membership from "./Membership";
+import Profile from "./Profile";
+import QRCode from "./QRCode";
+import Transactions from "./Transactions";
 
 export { Dashboard, Headbar, Membership, Profile, QRCode, Transactions };

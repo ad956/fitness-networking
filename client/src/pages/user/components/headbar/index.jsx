@@ -1,15 +1,15 @@
 import React from "react";
 import { FaCoins, FaUser } from "react-icons/fa";
-import { Image } from "@nextui-org/react";
+import { Image, User } from "@nextui-org/react";
+import { NavLink } from "react-router-dom";
 
-// export default function Headbar({ userData }) {
 export default function Headbar({ userData }) {
   return (
     <header className="bg-white shadow-md text-gray-800 py-3 px-8">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <div className="flex items-center gap-4">
           <Image
-            src="/images/fitconnect-logo.png"
+            src="https://i.pinimg.com/736x/fc/ce/92/fcce92b6dd2ebb5259426a424a6f983d.jpg"
             alt="FitConnect"
             width={40}
             height={40}
@@ -28,15 +28,19 @@ export default function Headbar({ userData }) {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <div className="text-right">
-              <p className="font-semibold">{userData.name}</p>
-              <button className="text-xs text-blue-500 hover:text-blue-600 transition">
-                View Profile
-              </button>
-            </div>
-            <div className="bg-gray-200 rounded-full p-2">
-              <FaUser className="text-gray-600 text-xl" />
-            </div>
+            <User
+              name={"Anand"}
+              avatarProps={{
+                src: "https://i.pinimg.com/736x/fc/ce/92/fcce92b6dd2ebb5259426a424a6f983d.jpg",
+              }}
+              className=""
+              description={
+                <NavLink
+                  href={`/settings`}
+                  className="text-xs text-primary"
+                >{`@${"ad956"}`}</NavLink>
+              }
+            />
           </div>
         </div>
       </div>
