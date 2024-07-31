@@ -23,63 +23,8 @@ export default function VerificationModal({ mutate, user }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // removing /api part not needed for socket
-  const ServerUrl = SERVER_URL.replace(/\/api\/$/, "");
-
-  function partnerVerified(response) {
-    console.log("Partner verification response:", response);
-    return (
-      response.role === "partner" &&
-      (response.mobile === user.identifier ||
-        response.email === user.identifier)
-    );
-  }
-
-  function userVerified(response) {
-    console.log("User verification response:", response);
-    return (
-      response.role === "user" &&
-      (response.mobile === user.identifier ||
-        response.email === user.identifier)
-    );
-  }
-
   React.useEffect(() => {
     onOpen();
-
-    const socket = io(`${ServerUrl}`);
-
-    socket.on("userVerified", (response) => {
-      if (userVerified(response)) {
-        dispatch(
-          setAuthData({
-            accessToken: response.accessToken,
-            userRole: response.role,
-          })
-        );
-        navigate(`/${response.role}`);
-      } else {
-        toast.error("User verification failed");
-      }
-    });
-
-    socket.on("partnerVerified", (response) => {
-      if (partnerVerified(response)) {
-        dispatch(
-          setAuthData({
-            accessToken: response.accessToken,
-            userRole: response.role,
-          })
-        );
-        navigate(`/${response.role}`);
-      } else {
-        toast.error("Partner verification failed");
-      }
-    });
-
-    return () => {
-      socket.disconnect();
-    };
   }, []);
 
   const handleResendClick = () => {
