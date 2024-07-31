@@ -1,10 +1,19 @@
+require("dotenv").config();
+
+const BASE_URLS = {
+  CLIENT: process.env.CLIENT_BASE_URL || "http://localhost:5173",
+  SERVER: process.env.SERVER_BASE_URL || "http://localhost:3000",
+};
+
 exports.constants = {
   MAIL_FROM: "Fitness Networking fitness@gmail.com",
-  CLIENT_ERROR_URL: "http://localhost:5173/error",
-  CLIENT_URL: "http://localhost:5173/",
-  USER_URL: "http://localhost:3000/api/user/",
-  PARTNER_URL: "http://localhost:3000/api/partner/",
-  ADMIN_URL: "http://localhost:3000/api/admin/",
+  CLIENT_BASE_URL: BASE_URLS.CLIENT,
+  SERVER_BASE_URL: BASE_URLS.SERVER,
+  CLIENT_ERROR_URL: `${BASE_URLS.CLIENT}/error`,
+  CLIENT_URL: `${BASE_URLS.CLIENT}/`,
+  USER_URL: `${BASE_URLS.SERVER}/api/user/`,
+  PARTNER_URL: `${BASE_URLS.SERVER}/api/partner/`,
+  ADMIN_URL: `${BASE_URLS.SERVER}/api/admin/`,
   VALIDATION_ERROR: 400,
   UNAUTHORIZED: 401,
   FORBIDDEN: 403,
