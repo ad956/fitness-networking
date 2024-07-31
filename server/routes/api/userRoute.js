@@ -3,7 +3,6 @@ const router = express.Router();
 
 const userController = require("../../controllers/userController");
 const validateToken = require("../../middleware/validateTokenHandler");
-const validatePasswordToken = require("../../middleware/passwordTokenHandler");
 const verifyGoogleIdToken = require("../../middleware/verifyGoogleIdToken");
 
 router.get("/", validateToken, userController.getUser);
