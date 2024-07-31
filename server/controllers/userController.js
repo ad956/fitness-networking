@@ -2,6 +2,7 @@ const { Op } = require("sequelize");
 const User = require("../models/userModel");
 const UserService = require("../services/userServices");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const asyncHandler = require("express-async-handler");
 const genratedOTP = require("../services/otpGenration");
 const mailTemplateGenrator = require("../services/emailTemplateGenrator");
@@ -69,9 +70,9 @@ const login = asyncHandler(async (req, res, next) => {
   }
 
   if (user && (await bcrypt.compare(password, user.password))) {
-    const loginSecret = genratedOTP;
+    const verificationSecret = genratedOTP;
 
-    user.otp = loginSecret;
+    user.otp = verificationSecret;
 
     const otpChanged = await user.save();
     if (!otpChanged) {
@@ -79,12 +80,12 @@ const login = asyncHandler(async (req, res, next) => {
       throw new Error("OTP sending failed");
     }
 
-    const loginLink = `${constants.USER_URL}login/${loginSecret}`;
+    const verificationLink = `${constants.USER_URL}verify/${verificationSecret}`;
 
     const introMsg =
       "You have received this email because a login request for your account was received.";
     const instuctMsg = "Click the button below to login to your account:";
-    const link = loginLink;
+    const link = verificationLink;
     const msg = "Login to your account";
     const outro =
       "If you did not request a login, no further action is required on your part.";
@@ -118,6 +119,51 @@ const login = asyncHandler(async (req, res, next) => {
   }
 });
 
+// user verification after login
+const verifyUser = asyncHandler(async (req, res) => {
+  const { token } = req.params;
+
+  const user = await User.findOne({ where: { otp: token } });
+
+  if (!user) {
+    res
+      .status(401)
+      .redirect(
+        `${constants.CLIENT_ERROR_URL}?msg=TOKEN%20IS%20NOT%20VALID%20OR%20EXPIRED`
+      );
+
+    return;
+  }
+
+  // Clear the OTP after successful verification
+  user.otp = null;
+  await user.save();
+
+  const accessToken = tokens.generateAccessToken(user.id);
+  const refreshToken = tokens.generateRefreshToken(user.id);
+
+  res
+    .cookie("refreshToken", refreshToken, {
+      maxAge: constants.COOKIE_MAX_AGE_MS,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    })
+    .cookie("accessToken", accessToken, {
+      maxAge: constants.COOKIE_MAX_AGE_MS,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    })
+    .status(200)
+    // .json({
+    //   message: "Login successful",
+    //   accessToken: accessToken,
+    //   userRole: user.role,
+    // })
+    .send(templates.verifiedUserTemplate);
+});
+
 //sign in using google
 const googleAuth = asyncHandler(async (req, res, next) => {
   const email = req.email;
@@ -143,34 +189,6 @@ const googleAuth = asyncHandler(async (req, res, next) => {
     })
     .status(200)
     .json({ accessToken });
-  return;
-});
-
-// user verification after login
-const checkUserVerificationStatus = asyncHandler(async (req, res) => {
-  const io = req.app.get("io");
-  const user = req.user;
-
-  const accessToken = tokens.generateAccessToken(user.user_id);
-  const refreshToken = tokens.generateRefreshToken(user.user_id);
-
-  io.emit("userVerified", {
-    role: "user",
-    email: user.email,
-    mobile: user.mobile,
-    accessToken,
-    message: "User verification successful",
-  });
-
-  res
-    .cookie("refreshToken", refreshToken, {
-      maxAge: constants.COOKIE_MAX_AGE_MS,
-      httpOnly: true,
-      secure: false,
-    })
-    .status(200)
-    .send(templates.verifiedUserTemplate);
-
   return;
 });
 
@@ -513,7 +531,7 @@ const purchaseCredits = asyncHandler(async (req, res) => {
 module.exports = {
   login,
   googleAuth,
-  checkUserVerificationStatus,
+  verifyUser,
   registerUser,
   allUsers,
   getUser,
