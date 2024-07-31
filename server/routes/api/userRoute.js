@@ -14,11 +14,7 @@ router.post("/google-auth", verifyGoogleIdToken, userController.googleAuth);
 router.post("/register", userController.registerUser);
 router.post("/forgot-password", userController.forgetPassword); // at login
 router.post("/reset-password", validateToken, userController.resetPassword); // using profile
-router.get(
-  "/reset-password/:token",
-  validatePasswordToken,
-  userController.setPassword
-);
+router.get("/reset-password/:token", validateToken, userController.setPassword);
 
 router.get("/credit", validateToken, userController.availableCredits);
 router.post("/credit/:plan", validateToken, userController.purchaseCredits);

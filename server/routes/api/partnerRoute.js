@@ -15,7 +15,7 @@ router.post("/forgot-password", partnerController.forgetPassword); // at login
 router.post("/reset-password", validateToken, partnerController.resetPassword); // using profile
 router.get(
   "/reset-password/:token",
-  validatePasswordToken,
+  validateToken,
   partnerController.setPassword
 );
 module.exports = router;
