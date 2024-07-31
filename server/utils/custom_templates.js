@@ -35,8 +35,8 @@ const verifiedUserTemplate = `
     </script>
   </head>
   <body>
-    <h1>Email Verification Successful</h1>
-    <p>Your email has been successfully verified. This tab will close automatically in <span id="countdown">5</span> seconds.</p>
+    <h1>Login Verification Successful</h1>
+    <p>This tab will close automatically in <span id="countdown">5</span> seconds.</p>
   </body>
 </html>
 `;
