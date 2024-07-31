@@ -39,7 +39,7 @@ export default function UserLayout() {
         <Headbar userData={userData} />
         <section className="flex-1 overflow-y-auto">
           <Routes>
-            <Route path="/" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/qrcode" element={<p>Profile</p>} />
             <Route path="/membership" element={<Membership />} />
             <Route path="/transactions" element={<Transactions />} />
