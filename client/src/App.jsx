@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import PartnerRoutes from "./routes/partnerRoutes";
 import AdminRoutes from "./routes/adminRoutes";
-import HomePage from "@pages/home-page";
+import HomePage from "@pages/home";
 import { LoginPage, SignupPage } from "@pages/auth";
 import { ErrorFallback, PageNotFound } from "@components";
 import ProtectedRoute from "./components/ProtectedRoute";
