@@ -1,27 +1,33 @@
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../index";
-import { googleAuthToken } from "@api";
+import { useGoogleAuth } from "@queries/authQueries";
 
-const GoogleAuthHandler = async (userRole) => {
-  try {
-    const result = await signInWithPopup(auth, provider);
+const GoogleAuthHandler = () => {
+  const googleAuthMutation = useGoogleAuth();
 
-    if (!result) {
-      throw new Error("Something went wrong");
+  const handleGoogleAuth = async (userRole) => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+
+      if (!result) {
+        throw new Error("Something went wrong");
+      }
+
+      const token = await auth.currentUser.getIdToken(true);
+
+      const res = await googleAuthMutation.mutateAsync({ token, userRole });
+
+      if (res.message) {
+        throw new Error(res.message);
+      }
+
+      return res;
+    } catch (error) {
+      throw new Error(error.message);
     }
+  };
 
-    const token = await auth.currentUser.getIdToken(true);
-
-    const res = await googleAuthToken(token, userRole);
-
-    if (res.message) {
-      throw new Error(res.message);
-    }
-
-    return res;
-  } catch (error) {
-    throw new Error(error.message);
-  }
+  return handleGoogleAuth;
 };
 
 export default GoogleAuthHandler;
