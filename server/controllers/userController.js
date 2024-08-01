@@ -119,7 +119,7 @@ const login = asyncHandler(async (req, res, next) => {
   }
 });
 
-// user verification after login
+// login link user verification
 const verifyUser = asyncHandler(async (req, res) => {
   const { token } = req.params;
 
@@ -156,12 +156,33 @@ const verifyUser = asyncHandler(async (req, res) => {
       sameSite: "strict",
     })
     .status(200)
-    // .json({
-    //   message: "Login successful",
-    //   accessToken: accessToken,
-    //   userRole: user.role,
-    // })
     .send(templates.verifiedUserTemplate);
+});
+
+// check if a user's login attempt has been verified
+const checkVerification = asyncHandler(async (req, res) => {
+  const { identifier } = req.params;
+  const email_mobile = identifier;
+
+  if (!email_mobile) {
+    res.status(400);
+    throw new Error("identifier field is mandatory");
+  }
+
+  const user = await User.findOne({
+    where: { [Op.or]: [{ email: email_mobile }, { mobile: email_mobile }] },
+  });
+
+  if (!user) {
+    res.status(400);
+    throw new Error("User doesn't exists");
+  }
+
+  if (user.otp === null) {
+    res.status(200).json({ verified: true });
+  } else {
+    res.status(200).json({ verified: false });
+  }
 });
 
 //sign in using google
@@ -532,6 +553,7 @@ module.exports = {
   login,
   googleAuth,
   verifyUser,
+  checkVerification,
   registerUser,
   allUsers,
   getUser,
