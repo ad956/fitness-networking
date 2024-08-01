@@ -7,6 +7,7 @@ export default defineConfig(({ mode }) => {
       alias: {
         "@app": "/src/app",
         "@api": "/src/api",
+        "@queries": "/src/api/queries",
         "@assets": "/src/assets",
         "@components": "/src/components",
         "@constants": "/src/utils/constants",
