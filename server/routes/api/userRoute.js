@@ -9,6 +9,7 @@ router.get("/", validateToken, userController.getUser);
 router.get("/all", validateToken, userController.allUsers);
 router.post("/login", userController.login);
 router.get("/verify/:token", userController.verifyUser); // verify user after login
+router.get("/check-verification/:identifier", userController.checkVerification); // verify user after login
 
 router.post("/google-auth", verifyGoogleIdToken, userController.googleAuth);
 router.post("/register", userController.registerUser);
