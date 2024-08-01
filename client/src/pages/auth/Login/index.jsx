@@ -11,14 +11,12 @@ import { AiTwotoneEye, AiTwotoneEyeInvisible } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { signin_png } from "@images";
 import { SeoHelmet, GoogleAuthHandler, VerificationModal } from "@components";
-import { loginUser } from "@api";
 import toast, { Toaster } from "react-hot-toast";
-import { useDispatch } from "react-redux";
-import { setAuthData } from "../../../features/auth/authSlice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "@features/auth/authSlice";
 import { isLoggedIn } from "@utils";
-import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { useLogin, useGoogleAuth } from "@queries/authQueries";
 
 function LoginPage() {
   const authState = useSelector((state) => state.auth);
@@ -41,13 +39,8 @@ function LoginPage() {
   const toggleVisibility = () => setIsVisible(!isVisible);
   const dispatch = useDispatch();
 
-  const { mutate, isError, error } = useMutation({
-    mutationFn: loginUser,
-    onSuccess: () => {
-      toast.dismiss();
-      setshowVerifyModal(true);
-    },
-  });
+  const { mutate: loginMutate, isError, error } = useLogin();
+  const { mutate: googleAuthMutate } = useGoogleAuth();
 
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -91,7 +84,6 @@ function LoginPage() {
       return;
     }
 
-    // checks wether identifer is email
     if (!digitsOnly(user.identifier)) {
       if (!validateEmail(user.identifier)) {
         toast.error("Please enter a valid email address.");
@@ -106,7 +98,6 @@ function LoginPage() {
       }
     }
 
-    // add ! (update passwords)
     if (validatePassword(user.password)) {
       toast.error(
         "Password must be at least 8 characters with at least one uppercase letter, one lowercase letter, one number, and one special character."
@@ -115,7 +106,16 @@ function LoginPage() {
     }
 
     toast.loading("Please wait...");
-    mutate(user);
+    loginMutate(user, {
+      onSuccess: () => {
+        toast.dismiss();
+        setshowVerifyModal(true);
+      },
+      onError: (error) => {
+        toast.dismiss();
+        toast.error(error.message);
+      },
+    });
   };
 
   const handleGoogleSignInButton = async () => {
@@ -124,15 +124,22 @@ function LoginPage() {
       return;
     }
     try {
-      const res = await GoogleAuthHandler(user.role);
-
-      dispatch(
-        setAuthData({
-          accessToken: res.accessToken,
-          userRole: user.role,
-        })
-      );
-      navigate(`/${user.role}`);
+      googleAuthMutate(user.role, {
+        onSuccess: (res) => {
+          dispatch(
+            loginUser({
+              user: {
+                role: user.role,
+              },
+              isAuthenticated: true,
+            })
+          );
+          navigate(`/${user.role}`);
+        },
+        onError: (error) => {
+          toast.error(error.message);
+        },
+      });
     } catch (error) {
       toast.error(error.message);
     }
@@ -147,10 +154,11 @@ function LoginPage() {
   }
 
   return (
-    <section className=" bg-white/75 font-outfit min-h-screen min-w-screen flex justify-around items-center px-4 sm:px-6 lg:px-8">
+    <section className="bg-white/75 font-outfit min-h-screen min-w-screen flex justify-around items-center px-4 sm:px-6 lg:px-8">
       <SeoHelmet title={title} canonical={canonical} />
       <Toaster />
       <Image src={signin_png} className="hidden md:block h-3/5 w-4/5" />
+
       <div className="max-w-md w-full space-y-8 lg:mr-10">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-zinc-900">

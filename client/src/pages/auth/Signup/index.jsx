@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Image,
   Button,
@@ -11,20 +11,19 @@ import { AiTwotoneEye, AiTwotoneEyeInvisible } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { signup_jpg } from "@images";
 import { SeoHelmet, GoogleAuthHandler } from "@components";
-import { signupUser } from "@api";
 import toast, { Toaster } from "react-hot-toast";
-import { useMutation } from "@tanstack/react-query";
 import { isLoggedIn } from "@utils";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useSignup, useGoogleAuth } from "@queries/authQueries";
 
 function SignupPage() {
   const navigate = useNavigate();
   const authState = useSelector((state) => state.auth);
 
-  React.useEffect(() => {
+  useEffect(() => {
     isLoggedIn(navigate, authState);
-  }, []);
+  }, [navigate, authState]);
 
   const [user, setUser] = useState({
     name: "",
@@ -57,9 +56,8 @@ function SignupPage() {
     return reg.test(String(password));
   };
 
-  const { mutate, isLoading, isError, error, data } = useMutation({
-    mutationFn: signupUser,
-  });
+  const { mutate: signupMutate, isLoading, isError, error } = useSignup();
+  const { mutate: googleAuthMutate } = useGoogleAuth();
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
@@ -89,25 +87,33 @@ function SignupPage() {
       return;
     }
 
-    mutate(user);
-
-    if (isError || error) {
-      toast.error(error.message);
-    }
-
-    if (data) {
-      toast.success(
-        "Your login link has been successfully sent to your email address."
-      );
-    }
+    signupMutate(user, {
+      onSuccess: (data) => {
+        toast.success(
+          "Your login link has been successfully sent to your email address."
+        );
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    });
   };
 
   const handleGoogleSignInButton = async () => {
     try {
-      await GoogleAuthHandler();
+      googleAuthMutate(user.role, {
+        onSuccess: (data) => {
+          // Handle successful Google sign-in
+          toast.success("Successfully signed up with Google");
+          // You might want to navigate or update the state here
+        },
+        onError: (error) => {
+          toast.error(error.message);
+        },
+      });
     } catch (error) {
       console.error(error);
-      toast.error(error);
+      toast.error(error.message);
     }
   };
 
@@ -115,7 +121,7 @@ function SignupPage() {
   const canonical = window.location.href;
 
   return (
-    <section className="bg-white/75  font-outfit min-h-screen min-w-screen flex justify-around items-center px-4 sm:px-6 lg:px-8">
+    <section className="bg-white/75 font-outfit min-h-screen min-w-screen flex justify-around items-center px-4 sm:px-6 lg:px-8">
       <SeoHelmet title={title} canonical={canonical} />
       <Toaster />
       <div className="w-full lg:w-2/6 space-y-5">
