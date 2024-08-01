@@ -1,4 +1,4 @@
-import { axios } from "@api";
+import axios from "@api";
 
 export default async function googleAuthToken(token, userRole) {
   const headers = {

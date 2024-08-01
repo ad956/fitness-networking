@@ -1,4 +1,4 @@
-import { axios } from "@api";
+import axios from "@api";
 
 export default async function loginUser(user) {
   const path = user.role === "user" ? "user" : "partner";
