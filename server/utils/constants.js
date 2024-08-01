@@ -1,8 +1,14 @@
 require("dotenv").config();
 
 const BASE_URLS = {
-  CLIENT: process.env.CLIENT_BASE_URL || "http://localhost:5173",
-  SERVER: process.env.SERVER_BASE_URL || "http://localhost:3000",
+  CLIENT:
+    process.env.NODE_ENV === "production"
+      ? process.env.CLIENT_BASE_URL
+      : "http://localhost:5173",
+  SERVER:
+    process.env.NODE_ENV === "production"
+      ? process.env.SERVER_BASE_URL
+      : "http://localhost:3000",
 };
 
 exports.constants = {
