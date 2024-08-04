@@ -26,11 +26,25 @@ export default function HomePage() {
   }, [authState]);
 
   const title = "Fitness Networking";
+  const description =
+    "Fitness Networking is your ultimate platform to connect with fitness enthusiasts, track your progress, and achieve your health goals together.";
+  const keywords = [
+    "fitness",
+    "networking",
+    "health tracking",
+    "social fitness",
+    "wellness community",
+  ];
   const canonical = window.location.href;
 
   return (
     <div className="font-Inter h-full w-full">
-      <SeoHelmet title={title} canonical={canonical} />
+      <SeoHelmet
+        title={title}
+        description={description}
+        keywords={keywords}
+        canonical={canonical}
+      />
       <Header />
       <main className="flex-1 mx-auto">
         {/* intro */}

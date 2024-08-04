@@ -118,11 +118,18 @@ function SignupPage() {
   };
 
   const title = "Sign Up | Fitness Networking";
+  const description = "Signup page of fitness networking";
+  const keywords = ["fitness", "networking", "signup", "page"];
   const canonical = window.location.href;
 
   return (
     <section className="bg-white/75 font-outfit min-h-screen min-w-screen flex justify-around items-center px-4 sm:px-6 lg:px-8">
-      <SeoHelmet title={title} canonical={canonical} />
+      <SeoHelmet
+        title={title}
+        description={description}
+        keywords={keywords}
+        canonical={canonical}
+      />
       <Toaster />
       <div className="w-full lg:w-2/6 space-y-5">
         <div>

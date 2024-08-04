@@ -146,6 +146,8 @@ function LoginPage() {
   };
 
   const title = "Login | Fitness Networking";
+  const description = "Login page of fitness networking";
+  const keywords = ["fitness", "networking", "login", "page"];
   const canonical = window.location.href;
 
   if (isError || error) {
@@ -155,7 +157,12 @@ function LoginPage() {
 
   return (
     <section className="bg-white/75 font-outfit min-h-screen min-w-screen flex justify-around items-center px-4 sm:px-6 lg:px-8">
-      <SeoHelmet title={title} canonical={canonical} />
+      <SeoHelmet
+        title={title}
+        description={description}
+        keywords={keywords}
+        canonical={canonical}
+      />
       <Toaster />
       <Image src={signin_png} className="hidden md:block h-3/5 w-4/5" />
 
@@ -285,8 +292,10 @@ function LoginPage() {
           </p>
         </div>
       </div>
-
-      {showVerifyModal && <VerificationModal mutate={mutate} user={user} />}
+      {/* 
+      {showVerifyModal && (
+        <VerificationModal mutate={loginMutate} user={user} />
+      )} */}
     </section>
   );
 }
