@@ -292,10 +292,10 @@ function LoginPage() {
           </p>
         </div>
       </div>
-      {/* 
+
       {showVerifyModal && (
         <VerificationModal mutate={loginMutate} user={user} />
-      )} */}
+      )}
     </section>
   );
 }
