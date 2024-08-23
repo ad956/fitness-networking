@@ -119,6 +119,14 @@ const login = asyncHandler(async (req, res, next) => {
   }
 });
 
+// logout
+const logout = asyncHandler(async (req, res, next) => {
+  res.clearCookie("accessToken");
+  res.clearCookie("refreshToken");
+
+  res.status(200).json({ message: "Logged out successfully" });
+});
+
 // login link user verification
 const verifyUser = asyncHandler(async (req, res) => {
   const { token } = req.params;
@@ -178,11 +186,7 @@ const checkVerification = asyncHandler(async (req, res) => {
     throw new Error("User doesn't exists");
   }
 
-  if (user.otp === null) {
-    res.status(200).json({ verified: true });
-  } else {
-    res.status(200).json({ verified: false });
-  }
+  res.status(200).json({ verified: user.otp === null });
 });
 
 //sign in using google
@@ -551,6 +555,7 @@ const purchaseCredits = asyncHandler(async (req, res) => {
 
 module.exports = {
   login,
+  logout,
   googleAuth,
   verifyUser,
   checkVerification,
