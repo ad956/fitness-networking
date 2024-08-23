@@ -27,6 +27,12 @@ connectDB();
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
+// for cron-job
+app.get("/ping", (req, res) => {
+  res.status(200).send("Active");
+});
+
 app.use("/api", initialRoute);
 
 app.use(errorHandler);
