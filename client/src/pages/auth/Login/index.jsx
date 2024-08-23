@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Image,
   Button,
@@ -12,8 +12,6 @@ import { FcGoogle } from "react-icons/fc";
 import { signin_png } from "@images";
 import { SeoHelmet, GoogleAuthHandler, VerificationModal } from "@components";
 import toast, { Toaster } from "react-hot-toast";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { useLogin } from "@queries/authQueries";
 
 function LoginPage() {
