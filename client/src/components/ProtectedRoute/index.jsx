@@ -3,20 +3,19 @@ import { useSelector } from "react-redux";
 import AuthErrorFallback from "../AuthErrorFallback";
 
 const ProtectedRoute = ({ requiredRole, children }) => {
-  const accessToken = useSelector((state) => state.auth.accessToken);
-  const userRole = useSelector((state) => state.auth.userRole);
+  const user = useSelector((state) => state.auth.user);
   const [statusCode, setStatusCode] = useState(null);
 
   useEffect(() => {
-    if (accessToken) {
-      if (requiredRole === "admin" && userRole !== "admin") {
+    if (user.isAuthenticated) {
+      if (requiredRole === "admin" && user.role !== "admin") {
         setStatusCode(403); // Forbidden
         return;
       }
 
       if (
         (requiredRole === "user" || requiredRole === "partner") &&
-        userRole !== requiredRole
+        user.role !== requiredRole
       ) {
         setStatusCode(401); // Unauthorized
         return;
@@ -24,9 +23,9 @@ const ProtectedRoute = ({ requiredRole, children }) => {
     } else {
       setStatusCode(401); // Unauthorized
     }
-  }, [accessToken, userRole, requiredRole]);
+  }, [user.isAuthenticated, user.role, requiredRole]);
 
-  if (!accessToken) {
+  if (!user.isAuthenticated) {
     return <AuthErrorFallback statusCode={statusCode} />;
   }
 
