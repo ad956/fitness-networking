@@ -13,37 +13,20 @@ import {
   PricingSection,
 } from "./components";
 
-import { isLoggedIn } from "@utils";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-
 export default function HomePage() {
-  const navigate = useNavigate();
-  const authState = useSelector((state) => state.auth);
-
-  React.useEffect(() => {
-    isLoggedIn(navigate, authState);
-  }, [authState]);
-
-  const title = "Fitness Networking";
-  const description =
-    "Fitness Networking is your ultimate platform to connect with fitness enthusiasts, track your progress, and achieve your health goals together.";
-  const keywords = [
-    "fitness",
-    "networking",
-    "health tracking",
-    "social fitness",
-    "wellness community",
-  ];
-  const canonical = window.location.href;
-
   return (
     <div className="font-Inter h-full w-full">
       <SeoHelmet
-        title={title}
-        description={description}
-        keywords={keywords}
-        canonical={canonical}
+        title="Fitness Networking"
+        description="Fitness Networking is your ultimate platform to connect with fitness enthusiasts, track your progress, and achieve your health goals together."
+        keywords={[
+          "fitness",
+          "networking",
+          "health tracking",
+          "social fitness",
+          "wellness community",
+        ]}
+        canonical={window.location.href}
       />
       <Header />
       <main className="flex-1 mx-auto">
