@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Image,
   Button,
@@ -12,19 +12,9 @@ import { FcGoogle } from "react-icons/fc";
 import { signup_jpg } from "@images";
 import { SeoHelmet, GoogleAuthHandler } from "@components";
 import toast, { Toaster } from "react-hot-toast";
-import { isLoggedIn } from "@utils";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { useSignup, useGoogleAuth } from "@queries/authQueries";
+import { useSignup } from "@queries/authQueries";
 
 function SignupPage() {
-  const navigate = useNavigate();
-  const authState = useSelector((state) => state.auth);
-
-  useEffect(() => {
-    isLoggedIn(navigate, authState);
-  }, [navigate, authState]);
-
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -57,7 +47,6 @@ function SignupPage() {
   };
 
   const { mutate: signupMutate, isLoading, isError, error } = useSignup();
-  const { mutate: googleAuthMutate } = useGoogleAuth();
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
@@ -99,36 +88,24 @@ function SignupPage() {
     });
   };
 
-  const handleGoogleSignInButton = async () => {
-    try {
-      googleAuthMutate(user.role, {
-        onSuccess: (data) => {
-          // Handle successful Google sign-in
-          toast.success("Successfully signed up with Google");
-          // You might want to navigate or update the state here
-        },
-        onError: (error) => {
-          toast.error(error.message);
-        },
-      });
-    } catch (error) {
-      console.error(error);
-      toast.error(error.message);
-    }
-  };
+  const handleGoogleAuth = GoogleAuthHandler();
 
-  const title = "Sign Up | Fitness Networking";
-  const description = "Signup page of fitness networking";
-  const keywords = ["fitness", "networking", "signup", "page"];
-  const canonical = window.location.href;
+  const handleGoogleSignUp = () => {
+    if (!user.role) {
+      toast.error("Please select your user role before signing up!");
+      return;
+    }
+
+    handleGoogleAuth(user.role);
+  };
 
   return (
     <section className="bg-white/75 font-outfit min-h-screen min-w-screen flex justify-around items-center px-4 sm:px-6 lg:px-8">
       <SeoHelmet
-        title={title}
-        description={description}
-        keywords={keywords}
-        canonical={canonical}
+        title="Sign Up | Fitness Networking"
+        description="Signup page of fitness networking"
+        keywords={["fitness", "networking", "signup", "page"]}
+        canonical={window.location.href}
       />
       <Toaster />
       <div className="w-full lg:w-2/6 space-y-5">
@@ -143,7 +120,7 @@ function SignupPage() {
             <Button
               variant="bordered"
               radius="full"
-              onClick={handleGoogleSignInButton}
+              onClick={handleGoogleSignUp}
               className="w-full flex justify-center items-center p-6 text-sm font-medium"
             >
               <FcGoogle size={25} />
