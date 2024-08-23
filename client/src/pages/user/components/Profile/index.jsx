@@ -418,7 +418,7 @@ export default function ProfileSettings() {
 
     if (Object.keys(filteredFields).length > 0) {
       try {
-        const response = await updateAddress(filteredFields);
+        const response = await updateAddressInfo(filteredFields);
 
         toast.dismiss();
 
@@ -428,7 +428,6 @@ export default function ProfileSettings() {
           toast.error("Failed to update address information");
         }
       } catch (error) {
-        console.error("Error updating address information:", error);
         toast.error("An error occurred while updating address information");
       }
     } else {
@@ -456,7 +455,6 @@ export default function ProfileSettings() {
           });
         }
       } catch (error) {
-        console.error("Error updating password:", error);
         toast.error("An error occurred while updating password");
       }
     } else if (currentPassword === newPassword) {
