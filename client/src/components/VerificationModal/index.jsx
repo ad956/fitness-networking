@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   Button,
   Modal,
@@ -14,60 +14,53 @@ import { useDispatch } from "react-redux";
 import { loginUser } from "@features/auth/authSlice";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { useCheckVerification, useSignup } from "@queries/authQueries";
+import { useCheckVerification, useLogin } from "@queries/authQueries";
 
 export default function VerificationModal({ user }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [verificationStatus, setVerificationStatus] = useState("pending");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { refetch: checkVerification } = useCheckVerification(user.identifier);
-  // const { mutate: resendVerification } = useSignup();
+  const {
+    data: verificationData,
+    isLoading: isCheckingVerification,
+    isError: isVerificationError,
+    error: verificationError,
+    refetch: refetchVerification,
+  } = useCheckVerification(user.identifier);
+
+  const { mutate: loginMutate, isLoading: isResending } = useLogin();
 
   useEffect(() => {
     onOpen();
-    const checkVerificationStatus = async () => {
-      try {
-        const { data } = await checkVerification();
-        if (data.verified) {
-          setVerificationStatus("verified");
-          dispatch(
-            loginUser({
-              user: {
-                role: user.role,
-              },
-              isAuthenticated: true,
-            })
-          );
-          toast.success("Email verified successfully!");
-          setTimeout(() => {
-            onOpenChange(false);
-            navigate("/dashboard"); // redirect user
-          }, 2000);
-        }
-      } catch (error) {
-        console.error("Error checking verification status:", error);
-      }
-    };
+  }, [onOpen]);
 
-    const intervalId = setInterval(checkVerificationStatus, 5000); // every 5 seconds
-
-    return () => clearInterval(intervalId);
-  }, [checkVerification, dispatch, navigate, onOpenChange, user]);
+  useEffect(() => {
+    if (verificationData?.verified) {
+      dispatch(
+        loginUser({
+          role: user.role,
+          isAuthenticated: true,
+        })
+      );
+      toast.success("Email verified successfully!");
+      setTimeout(() => {
+        onOpenChange(false);
+        navigate(`/${user.role}`);
+      }, 2000);
+    }
+  }, [verificationData, dispatch, navigate, onOpenChange, user]);
 
   const handleResendClick = () => {
-    // resendVerification(user);
-    toast.promise(
-      new Promise((resolve) => {
-        setTimeout(resolve, 1000);
-      }),
-      {
-        loading: "Resending verification link...",
-        success: "Verification link has been resent",
-        error: "Error resending verification link",
-      }
-    );
+    loginMutate(user, {
+      onSuccess: () => {
+        toast.success("Verification link has been resent");
+        refetchVerification();
+      },
+      onError: (error) => {
+        toast.error(error.message || "Error resending verification link");
+      },
+    });
   };
 
   return (
@@ -106,30 +99,36 @@ export default function VerificationModal({ user }) {
               <div className="flex justify-center">
                 <Image src={email_gif} alt="Email" className="w-36 h-36" />
               </div>
-              {verificationStatus === "pending" ? (
+              {isCheckingVerification ? (
                 <p className="text-md font-medium text-black/80 text-center">
-                  An email with a verification link has been sent to your inbox.
-                  Please check both your inbox and spam/junk folder.
+                  Checking verification status...
                 </p>
-              ) : verificationStatus === "verified" ? (
+              ) : isVerificationError ? (
+                <p className="text-md font-medium text-red-600 text-center">
+                  {verificationError.message ||
+                    "There was an error checking your verification status. Please try again."}
+                </p>
+              ) : verificationData?.verified ? (
                 <p className="text-md font-medium text-green-600 text-center">
                   Your email has been verified successfully! Redirecting...
                 </p>
               ) : (
-                <p className="text-md font-medium text-red-600 text-center">
-                  There was an error verifying your email. Please try again.
+                <p className="text-md font-medium text-black/80 text-center">
+                  An email with a verification link has been sent to your inbox.
+                  Please check both your inbox and spam/junk folder.
                 </p>
               )}
             </ModalBody>
             <ModalFooter>
               <div className="flex justify-center space-x-4">
-                {verificationStatus === "pending" && (
+                {!isCheckingVerification && !verificationData?.verified && (
                   <Button
                     color="primary"
                     variant="light"
                     onClick={handleResendClick}
+                    disabled={isResending}
                   >
-                    Resend
+                    {isResending ? "Resending..." : "Resend"}
                   </Button>
                 )}
                 <Button color="danger" variant="light" onPress={onClose}>
