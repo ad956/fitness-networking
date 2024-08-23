@@ -1,17 +1,40 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import PartnerRoutes from "./routes/partnerRoutes";
-import AdminRoutes from "./routes/adminRoutes";
 import HomePage from "@pages/home";
 import { LoginPage, SignupPage } from "@pages/auth";
-import { ErrorFallback, PageNotFound } from "@components";
-import ProtectedRoute from "./components/ProtectedRoute";
-import UserLayout from "./pages/user";
+import {
+  ErrorFallback,
+  PageNotFound,
+  ProtectedRoute,
+  PublicRoute,
+} from "@components";
+import { AdminLayout, PartnerLayout, UserLayout } from "./pages";
 
 function App() {
   const router = createBrowserRouter([
-    { path: "/", element: <HomePage /> },
-    { path: "/login", element: <LoginPage /> },
-    { path: "/signup", element: <SignupPage /> },
+    {
+      path: "/",
+      element: (
+        <PublicRoute>
+          <HomePage />
+        </PublicRoute>
+      ),
+    },
+    {
+      path: "/login",
+      element: (
+        <PublicRoute>
+          <LoginPage />
+        </PublicRoute>
+      ),
+    },
+    {
+      path: "/signup",
+      element: (
+        <PublicRoute>
+          <SignupPage />
+        </PublicRoute>
+      ),
+    },
     {
       path: "/user/*",
       element: (
@@ -24,7 +47,7 @@ function App() {
       path: "/partner/*",
       element: (
         <ProtectedRoute requiredRole="partner">
-          <PartnerRoutes />
+          <PartnerLayout />
         </ProtectedRoute>
       ),
     },
@@ -32,7 +55,7 @@ function App() {
       path: "/admin/*",
       element: (
         <ProtectedRoute requiredRole="admin">
-          <AdminRoutes />
+          <AdminLayout />
         </ProtectedRoute>
       ),
     },
