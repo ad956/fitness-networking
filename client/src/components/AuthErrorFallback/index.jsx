@@ -2,7 +2,7 @@ import { Image, Button, Link } from "@nextui-org/react";
 import { useSelector } from "react-redux";
 
 export default function AuthErrorFallback({ statusCode }) {
-  const userRole = useSelector((state) => state.auth.userRole);
+  const userRole = useSelector((state) => state.auth.user.role);
 
   let errorMessage, imageUrl;
 
