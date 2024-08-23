@@ -1,9 +1,15 @@
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../index";
 import { useGoogleAuth } from "@queries/authQueries";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { loginUser } from "@features/auth/authSlice";
+import toast from "react-hot-toast";
 
 const GoogleAuthHandler = () => {
   const googleAuthMutation = useGoogleAuth();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleGoogleAuth = async (userRole) => {
     try {
@@ -21,9 +27,12 @@ const GoogleAuthHandler = () => {
         throw new Error(res.message);
       }
 
+      dispatch(loginUser({ role: userRole, isAuthenticated: true }));
+      navigate(`/${userRole}`);
+
       return res;
     } catch (error) {
-      throw new Error(error.message);
+      toast.error(error.message);
     }
   };
 
