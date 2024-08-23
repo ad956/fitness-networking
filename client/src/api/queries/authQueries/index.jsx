@@ -1,31 +1,55 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "@api";
-
-import googleAuthToken from "./googleAuthToken";
 import loginUser from "./loginUser";
+import googleAuthToken from "./googleAuthToken";
 import signupUser from "./signupUser";
 
-export const useLogin = () => useMutation({ mutationFn: loginUser });
+export const useLogin = () =>
+  useMutation({
+    mutationFn: loginUser,
+    onError: (error) => {
+      throw error;
+    },
+  });
 
-export const useGoogleAuth = () => useMutation({ mutationFn: googleAuthToken });
+export const useLogout = (userRole) => {
+  const queryClient = useQueryClient();
 
-export const useSignup = () => useMutation({ mutationFn: signupUser });
+  return useMutation({
+    mutationFn: () => axios.post(`/${userRole}/logout`),
+    onSuccess: () => {
+      queryClient.removeQueries({ queryKey: ["user"] });
+    },
+  });
+};
 
-export const useLogout = () =>
-  useMutation({ mutationFn: () => axios.post("/logout") });
+export const useGoogleAuth = () =>
+  useMutation({
+    mutationFn: googleAuthToken,
+  });
+
+export const useSignup = () =>
+  useMutation({
+    mutationFn: signupUser,
+  });
 
 export const useCheckAuth = () =>
-  useQuery("auth", () => axios.get("/check-auth"), {
+  useQuery({
+    queryKey: ["auth"],
+    queryFn: () => axios.get("/check-auth"),
     retry: false,
     refetchOnWindowFocus: false,
   });
 
 export const useCheckVerification = (identifier) =>
-  useQuery(
-    ["verification", identifier],
-    () => axios.get(`user/check-verification/${identifier}`),
-    {
-      enabled: false,
-      retry: false,
-    }
-  );
+  useQuery({
+    queryKey: ["verification", identifier],
+    queryFn: async () => {
+      const response = await axios.get(
+        `/user/check-verification/${identifier}`
+      );
+      return response.data;
+    },
+    enabled: !!identifier,
+    refetchInterval: 5000,
+  });
