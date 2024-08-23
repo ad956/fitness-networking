@@ -2,7 +2,7 @@ import axios from "@api";
 
 export default async function signupUser({ email, password, role }) {
   try {
-    const response = await axios.post("/api/signup", {
+    const response = await axios.post(`/api/${role}/signup`, {
       email,
       password,
       role,
@@ -14,7 +14,6 @@ export default async function signupUser({ email, password, role }) {
 
     return response.data;
   } catch (error) {
-    console.error(error);
     throw new Error("signup failed");
   }
 }
