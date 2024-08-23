@@ -8,6 +8,8 @@ const verifyGoogleIdToken = require("../../middleware/verifyGoogleIdToken");
 router.get("/", validateToken, userController.getUser);
 router.get("/all", validateToken, userController.allUsers);
 router.post("/login", userController.login);
+router.post("/logout", userController.logout);
+
 router.get("/verify/:token", userController.verifyUser); // verify user after login
 router.get("/check-verification/:identifier", userController.checkVerification); // verify user after login
 
