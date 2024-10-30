@@ -36,7 +36,7 @@ export default function Sidebar() {
   };
 
   const sidebarItems = [
-    { label: "Dashboard", path: "/user/dashboard", icon: getIcon("Dashboard") },
+    { label: "Dashboard", path: "/user/", icon: getIcon("Dashboard") },
     { label: "QR Code", path: "/user/qrcode", icon: getIcon("QRCode") },
     {
       label: "Membership",
