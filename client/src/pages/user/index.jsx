@@ -1,4 +1,4 @@
-import { Layout } from "@components";
+import { Layout, PageNotFound } from "@components";
 import { Routes, Route } from "react-router-dom";
 import {
   Dashboard,
@@ -39,11 +39,12 @@ export default function UserLayout() {
         <Headbar userData={userData} />
         <section className="flex-1 overflow-y-auto">
           <Routes>
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/" element={<Dashboard />} />
             <Route path="/qrcode" element={<p>Profile</p>} />
             <Route path="/membership" element={<Membership />} />
             <Route path="/transactions" element={<Transactions />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="*" element={<PageNotFound />} />
           </Routes>
         </section>
       </div>
