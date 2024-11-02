@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   client:
     image: ad956/fitness-networking-frontend:latest
