@@ -11,13 +11,13 @@ The **Fitness Networking App** is a comprehensive platform designed to cater to 
 ### Frontend
 
 <p>
-  <img src="https://skillicons.dev/icons?i=react,tailwindcss,redux,nginx&perline=10&theme=dark" />
+  <img src="https://go-skill-icons.vercel.app/api/icons?i=react,tailwindcss,reactquery,redux,nginx&perline=10&theme=dark" />
   <img src="https://avatars.githubusercontent.com/u/86160567?s=280&v=4" height="48" width="48" alt="nextui" />
 </p>
 
 ### Backend
 
-![Backend](https://skillicons.dev/icons?i=nodejs,expressjs,sequelize,redis,mysql&perline=10&theme=dark)
+![Backend](https://go-skill-icons.vercel.app/api/icons?i=nodejs,expressjs,sequelize,redis,mysql&perline=10&theme=dark)
 
 ---
 
