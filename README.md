@@ -17,7 +17,7 @@ The **Fitness Networking App** is a comprehensive platform designed to cater to 
 
 ### Backend
 
-![Backend](https://go-skill-icons.vercel.app/api/icons?i=nodejs,expressjs,sequelize,redis,mysql&perline=10&theme=dark)
+![Backend](https://go-skill-icons.vercel.app/api/icons?i=nodejs,expressjs,sequelize,redis,mysql,render&perline=10&theme=dark)
 
 ---
 
