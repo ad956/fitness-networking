@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, CardBody } from "@nextui-org/react";
-import { TrendingUp, TrendingDown, CreditCard } from "react-icons/lu";
+import { LuTrendingUp, LuTrendingDown, LuCreditCard } from "react-icons/lu";
 
 export function CreditStats({ purchased, spent, remaining }) {
   return (
@@ -12,7 +12,7 @@ export function CreditStats({ purchased, spent, remaining }) {
               <p className="text-sm opacity-80">Purchased Credits</p>
               <h3 className="text-2xl font-bold">{purchased}</h3>
             </div>
-            <CreditCard className="w-8 h-8 opacity-80" />
+            <LuCreditCard className="w-8 h-8 opacity-80" />
           </div>
         </CardBody>
       </Card>
@@ -24,7 +24,7 @@ export function CreditStats({ purchased, spent, remaining }) {
               <p className="text-sm opacity-80">Spent Credits</p>
               <h3 className="text-2xl font-bold">{spent}</h3>
             </div>
-            <TrendingDown className="w-8 h-8 opacity-80" />
+            <LuTrendingDown className="w-8 h-8 opacity-80" />
           </div>
         </CardBody>
       </Card>
@@ -36,7 +36,7 @@ export function CreditStats({ purchased, spent, remaining }) {
               <p className="text-sm opacity-80">Remaining Credits</p>
               <h3 className="text-2xl font-bold">{remaining}</h3>
             </div>
-            <TrendingUp className="w-8 h-8 opacity-80" />
+            <LuTrendingUp className="w-8 h-8 opacity-80" />
           </div>
         </CardBody>
       </Card>

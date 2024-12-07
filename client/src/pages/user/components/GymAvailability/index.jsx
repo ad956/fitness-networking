@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, CardBody, CardHeader, Progress } from "@nextui-org/react";
-import { Users } from "react-icons/lu";
+import { LuUsers } from "react-icons/lu";
 
 export function GymAvailability({ currentUsers, maxCapacity }) {
   const availableSpots = maxCapacity - currentUsers;
@@ -9,7 +9,7 @@ export function GymAvailability({ currentUsers, maxCapacity }) {
   return (
     <Card>
       <CardHeader className="flex gap-3">
-        <Users className="w-6 h-6" />
+        <LuUsers className="w-6 h-6" />
         <div className="flex flex-col">
           <p className="text-md">Current Gym Occupancy</p>
           <p className="text-small text-default-500">

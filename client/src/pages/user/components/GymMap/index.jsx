@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, CardBody, CardHeader, Input } from "@nextui-org/react";
-import { Search, MapPin } from "react-icons/lu";
+import { LuSearch, LuMapPin } from "react-icons/lu";
 
 export function GymMap() {
   return (
@@ -16,10 +16,10 @@ export function GymMap() {
               inputWrapper:
                 "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
             }}
-            placeholder="Search locations..."
+            placeholder="LuSearch locations..."
             size="sm"
-            startContent={<Search size={18} />}
-            type="search"
+            startContent={<LuSearch size={18} />}
+            type="Lusearch"
           />
         </div>
       </CardHeader>
@@ -27,7 +27,7 @@ export function GymMap() {
         <div className="relative w-full h-[400px] bg-gray-100 rounded-lg overflow-hidden">
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center">
-              <MapPin className="w-12 h-12 mx-auto text-gray-400" />
+              <LuMapPin className="w-12 h-12 mx-auto text-gray-400" />
               <p className="mt-2 text-gray-500">
                 Map view will be displayed here
               </p>
