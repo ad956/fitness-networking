@@ -6,6 +6,11 @@ import {
   Transactions,
   Profile,
   Headbar,
+  CreditStats,
+  GymAvailability,
+  GymMap,
+  UpcomingClasses,
+  WorkoutStats,
 } from "./components/";
 
 export default function UserLayout() {
@@ -35,7 +40,7 @@ export default function UserLayout() {
 
   return (
     <Layout>
-      <div className="flex flex-col h-screen">
+      {/* <div className="flex flex-col h-screen">
         <Headbar userData={userData} />
         <section className="flex-1 overflow-y-auto">
           <Routes>
@@ -47,6 +52,23 @@ export default function UserLayout() {
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </section>
+      </div> */}
+
+      <div className="flex-1 ml-64">
+        <div className="p-8">
+          <Headbar />
+
+          <CreditStats purchased={100} spent={45} remaining={55} />
+
+          <WorkoutStats />
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <GymAvailability currentUsers={15} maxCapacity={20} />
+            <UpcomingClasses />
+          </div>
+
+          <GymMap />
+        </div>
       </div>
     </Layout>
   );
