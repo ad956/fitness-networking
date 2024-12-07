@@ -2,7 +2,7 @@ import React from "react";
 import { Card, CardBody, CardHeader, Input } from "@nextui-org/react";
 import { LuSearch, LuMapPin } from "react-icons/lu";
 
-export function GymMap() {
+export default function GymMap() {
   return (
     <Card className="w-full mb-6">
       <CardHeader className="flex gap-3">

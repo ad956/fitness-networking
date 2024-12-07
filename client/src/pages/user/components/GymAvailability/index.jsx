@@ -2,7 +2,7 @@ import React from "react";
 import { Card, CardBody, CardHeader, Progress } from "@nextui-org/react";
 import { LuUsers } from "react-icons/lu";
 
-export function GymAvailability({ currentUsers, maxCapacity }) {
+export default function GymAvailability({ currentUsers, maxCapacity }) {
   const availableSpots = maxCapacity - currentUsers;
   const occupancyPercentage = (currentUsers / maxCapacity) * 100;
 

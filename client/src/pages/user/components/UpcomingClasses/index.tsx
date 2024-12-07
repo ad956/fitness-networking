@@ -26,7 +26,7 @@ const classes = [
   },
 ];
 
-export function UpcomingClasses() {
+export default function UpcomingClasses() {
   return (
     <Card className="w-full">
       <CardHeader className="flex justify-between items-center">

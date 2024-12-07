@@ -48,7 +48,7 @@ import {
 } from "@nextui-org/react";
 import { LuBell, LuSearch } from "react-icons/lu";
 
-export function Headbar() {
+export default function Headbar() {
   return (
     <div className="flex items-center justify-between mb-8">
       <div>

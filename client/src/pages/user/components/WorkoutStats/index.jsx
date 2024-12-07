@@ -1,26 +1,38 @@
 import React from "react";
 import { Card, CardBody, CardHeader } from "@nextui-org/react";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
+import { ResponsiveLine } from "@nivo/line";
 import { LuClock, LuFlame, LuTrophy } from "react-icons/lu";
 
 const workoutData = [
-  { day: "Mon", duration: 45, calories: 320 },
-  { day: "Tue", duration: 60, calories: 450 },
-  { day: "Wed", duration: 30, calories: 280 },
-  { day: "Thu", duration: 75, calories: 520 },
-  { day: "Fri", duration: 45, calories: 380 },
-  { day: "Sat", duration: 90, calories: 650 },
-  { day: "Sun", duration: 0, calories: 0 },
+  {
+    id: "duration",
+    color: "#3b82f6",
+    data: [
+      { x: "Mon", y: 45 },
+      { x: "Tue", y: 60 },
+      { x: "Wed", y: 30 },
+      { x: "Thu", y: 75 },
+      { x: "Fri", y: 45 },
+      { x: "Sat", y: 90 },
+      { x: "Sun", y: 0 },
+    ],
+  },
+  {
+    id: "calories",
+    color: "#ef4444",
+    data: [
+      { x: "Mon", y: 320 },
+      { x: "Tue", y: 450 },
+      { x: "Wed", y: 280 },
+      { x: "Thu", y: 520 },
+      { x: "Fri", y: 380 },
+      { x: "Sat", y: 650 },
+      { x: "Sun", y: 0 },
+    ],
+  },
 ];
 
-export function WorkoutStats() {
+export default function WorkoutStats() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
       <Card className="w-full">
@@ -35,26 +47,76 @@ export function WorkoutStats() {
         </CardHeader>
         <CardBody>
           <div className="h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={workoutData}>
-                <XAxis dataKey="day" />
-                <YAxis yAxisId="left" />
-                <YAxis yAxisId="right" orientation="right" />
-                <Tooltip />
-                <Line
-                  yAxisId="left"
-                  type="monotone"
-                  dataKey="duration"
-                  stroke="#3b82f6"
-                />
-                <Line
-                  yAxisId="right"
-                  type="monotone"
-                  dataKey="calories"
-                  stroke="#ef4444"
-                />
-              </LineChart>
-            </ResponsiveContainer>
+            <ResponsiveLine
+              data={workoutData}
+              margin={{ top: 20, right: 60, bottom: 50, left: 60 }}
+              xScale={{ type: "point" }}
+              yScale={{
+                type: "linear",
+                min: "auto",
+                max: "auto",
+                stacked: false,
+              }}
+              curve="monotoneX"
+              axisTop={null}
+              axisRight={null}
+              axisBottom={{
+                tickSize: 5,
+                tickPadding: 5,
+                tickRotation: 0,
+              }}
+              axisLeft={{
+                tickSize: 5,
+                tickPadding: 5,
+                tickRotation: 0,
+              }}
+              enablePoints={true}
+              pointSize={8}
+              pointColor={{ theme: "background" }}
+              pointBorderWidth={2}
+              pointBorderColor={{ from: "serieColor" }}
+              pointLabelYOffset={-12}
+              enableArea={true}
+              areaOpacity={0.1}
+              useMesh={true}
+              legends={[
+                {
+                  anchor: "top-right",
+                  direction: "row",
+                  justify: false,
+                  translateX: 0,
+                  translateY: -20,
+                  itemsSpacing: 0,
+                  itemDirection: "left-to-right",
+                  itemWidth: 80,
+                  itemHeight: 20,
+                  symbolSize: 12,
+                  symbolShape: "circle",
+                },
+              ]}
+              theme={{
+                axis: {
+                  ticks: {
+                    text: {
+                      fontSize: 12,
+                      fill: "#6b7280",
+                    },
+                  },
+                },
+                grid: {
+                  line: {
+                    stroke: "#e5e7eb",
+                    strokeWidth: 1,
+                  },
+                },
+                legends: {
+                  text: {
+                    fontSize: 12,
+                    fill: "#4b5563",
+                  },
+                },
+              }}
+            />
           </div>
         </CardBody>
       </Card>

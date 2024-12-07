@@ -2,7 +2,7 @@ import React from "react";
 import { Card, CardBody } from "@nextui-org/react";
 import { LuTrendingUp, LuTrendingDown, LuCreditCard } from "react-icons/lu";
 
-export function CreditStats({ purchased, spent, remaining }) {
+export default function CreditStats({ purchased, spent, remaining }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
       <Card className="bg-gradient-to-br from-green-500 to-green-600">
