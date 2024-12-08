@@ -3,31 +3,275 @@ import { Card, CardBody, CardHeader } from "@nextui-org/react";
 import { ResponsiveLine } from "@nivo/line";
 import { LuClock, LuFlame, LuTrophy } from "react-icons/lu";
 
-const workoutData = [
+const data = [
   {
-    id: "duration",
-    color: "#3b82f6",
+    id: "japan",
+    color: "hsl(148, 70%, 50%)",
     data: [
-      { x: "Mon", y: 45 },
-      { x: "Tue", y: 60 },
-      { x: "Wed", y: 30 },
-      { x: "Thu", y: 75 },
-      { x: "Fri", y: 45 },
-      { x: "Sat", y: 90 },
-      { x: "Sun", y: 0 },
+      {
+        x: "plane",
+        y: 206,
+      },
+      {
+        x: "helicopter",
+        y: 178,
+      },
+      {
+        x: "boat",
+        y: 228,
+      },
+      {
+        x: "train",
+        y: 57,
+      },
+      {
+        x: "subway",
+        y: 13,
+      },
+      {
+        x: "bus",
+        y: 294,
+      },
+      {
+        x: "car",
+        y: 249,
+      },
+      {
+        x: "moto",
+        y: 289,
+      },
+      {
+        x: "bicycle",
+        y: 249,
+      },
+      {
+        x: "horse",
+        y: 162,
+      },
+      {
+        x: "skateboard",
+        y: 279,
+      },
+      {
+        x: "others",
+        y: 61,
+      },
     ],
   },
   {
-    id: "calories",
-    color: "#ef4444",
+    id: "france",
+    color: "hsl(88, 70%, 50%)",
     data: [
-      { x: "Mon", y: 320 },
-      { x: "Tue", y: 450 },
-      { x: "Wed", y: 280 },
-      { x: "Thu", y: 520 },
-      { x: "Fri", y: 380 },
-      { x: "Sat", y: 650 },
-      { x: "Sun", y: 0 },
+      {
+        x: "plane",
+        y: 129,
+      },
+      {
+        x: "helicopter",
+        y: 285,
+      },
+      {
+        x: "boat",
+        y: 37,
+      },
+      {
+        x: "train",
+        y: 19,
+      },
+      {
+        x: "subway",
+        y: 295,
+      },
+      {
+        x: "bus",
+        y: 114,
+      },
+      {
+        x: "car",
+        y: 182,
+      },
+      {
+        x: "moto",
+        y: 119,
+      },
+      {
+        x: "bicycle",
+        y: 9,
+      },
+      {
+        x: "horse",
+        y: 112,
+      },
+      {
+        x: "skateboard",
+        y: 46,
+      },
+      {
+        x: "others",
+        y: 113,
+      },
+    ],
+  },
+  {
+    id: "us",
+    color: "hsl(304, 70%, 50%)",
+    data: [
+      {
+        x: "plane",
+        y: 271,
+      },
+      {
+        x: "helicopter",
+        y: 292,
+      },
+      {
+        x: "boat",
+        y: 250,
+      },
+      {
+        x: "train",
+        y: 181,
+      },
+      {
+        x: "subway",
+        y: 137,
+      },
+      {
+        x: "bus",
+        y: 18,
+      },
+      {
+        x: "car",
+        y: 225,
+      },
+      {
+        x: "moto",
+        y: 21,
+      },
+      {
+        x: "bicycle",
+        y: 280,
+      },
+      {
+        x: "horse",
+        y: 199,
+      },
+      {
+        x: "skateboard",
+        y: 81,
+      },
+      {
+        x: "others",
+        y: 283,
+      },
+    ],
+  },
+  {
+    id: "germany",
+    color: "hsl(79, 70%, 50%)",
+    data: [
+      {
+        x: "plane",
+        y: 296,
+      },
+      {
+        x: "helicopter",
+        y: 265,
+      },
+      {
+        x: "boat",
+        y: 258,
+      },
+      {
+        x: "train",
+        y: 104,
+      },
+      {
+        x: "subway",
+        y: 23,
+      },
+      {
+        x: "bus",
+        y: 52,
+      },
+      {
+        x: "car",
+        y: 133,
+      },
+      {
+        x: "moto",
+        y: 190,
+      },
+      {
+        x: "bicycle",
+        y: 107,
+      },
+      {
+        x: "horse",
+        y: 218,
+      },
+      {
+        x: "skateboard",
+        y: 170,
+      },
+      {
+        x: "others",
+        y: 15,
+      },
+    ],
+  },
+  {
+    id: "norway",
+    color: "hsl(114, 70%, 50%)",
+    data: [
+      {
+        x: "plane",
+        y: 280,
+      },
+      {
+        x: "helicopter",
+        y: 35,
+      },
+      {
+        x: "boat",
+        y: 164,
+      },
+      {
+        x: "train",
+        y: 199,
+      },
+      {
+        x: "subway",
+        y: 7,
+      },
+      {
+        x: "bus",
+        y: 212,
+      },
+      {
+        x: "car",
+        y: 22,
+      },
+      {
+        x: "moto",
+        y: 113,
+      },
+      {
+        x: "bicycle",
+        y: 178,
+      },
+      {
+        x: "horse",
+        y: 46,
+      },
+      {
+        x: "skateboard",
+        y: 241,
+      },
+      {
+        x: "others",
+        y: 54,
+      },
     ],
   },
 ];
@@ -48,74 +292,69 @@ export default function WorkoutStats() {
         <CardBody>
           <div className="h-[300px]">
             <ResponsiveLine
-              data={workoutData}
-              margin={{ top: 20, right: 60, bottom: 50, left: 60 }}
-              xScale={{ type: "point" }}
-              yScale={{
-                type: "linear",
-                min: "auto",
-                max: "auto",
-                stacked: false,
-              }}
-              curve="monotoneX"
-              axisTop={null}
-              axisRight={null}
-              axisBottom={{
-                tickSize: 5,
-                tickPadding: 5,
-                tickRotation: 0,
-              }}
-              axisLeft={{
-                tickSize: 5,
-                tickPadding: 5,
-                tickRotation: 0,
-              }}
-              enablePoints={true}
-              pointSize={8}
-              pointColor={{ theme: "background" }}
-              pointBorderWidth={2}
-              pointBorderColor={{ from: "serieColor" }}
-              pointLabelYOffset={-12}
-              enableArea={true}
-              areaOpacity={0.1}
-              useMesh={true}
-              legends={[
-                {
-                  anchor: "top-right",
-                  direction: "row",
-                  justify: false,
-                  translateX: 0,
-                  translateY: -20,
-                  itemsSpacing: 0,
-                  itemDirection: "left-to-right",
-                  itemWidth: 80,
-                  itemHeight: 20,
-                  symbolSize: 12,
-                  symbolShape: "circle",
-                },
-              ]}
+              data={data}
               theme={{
                 axis: {
                   ticks: {
+                    line: {
+                      stroke: "#777777",
+                      strokeWidth: 1,
+                    },
                     text: {
                       fontSize: 12,
-                      fill: "#6b7280",
+                      fill: "#333333",
+                    },
+                  },
+                  legend: {
+                    text: {
+                      fontSize: 12,
+                      fill: "#333333",
                     },
                   },
                 },
                 grid: {
                   line: {
-                    stroke: "#e5e7eb",
+                    stroke: "#dddddd",
                     strokeWidth: 1,
                   },
                 },
-                legends: {
-                  text: {
-                    fontSize: 12,
-                    fill: "#4b5563",
-                  },
-                },
               }}
+              margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
+              xScale={{ type: "point" }}
+              yScale={{
+                type: "linear",
+                min: "auto",
+                max: "auto",
+                stacked: true,
+                reverse: false,
+              }}
+              legends={[
+                {
+                  anchor: "bottom-right",
+                  direction: "column",
+                  justify: false,
+                  translateX: 100,
+                  translateY: 0,
+                  itemsSpacing: 0,
+                  itemDirection: "left-to-right",
+                  itemWidth: 80,
+                  itemHeight: 20,
+                  itemOpacity: 0.75,
+                  symbolSize: 12,
+                  symbolShape: "circle",
+                  symbolBorderColor: "rgba(0, 0, 0, .5)",
+                  effects: [
+                    {
+                      on: "hover",
+                      style: {
+                        itemBackground: "rgba(0, 0, 0, .03)",
+                        itemOpacity: 1,
+                      },
+                    },
+                  ],
+                },
+              ]}
+              // {...otherProps}
             />
           </div>
         </CardBody>
