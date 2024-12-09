@@ -61,7 +61,7 @@ export default function UserLayout() {
 
           <CreditStats purchased={100} spent={45} remaining={55} />
 
-          {/* <WorkoutStats /> */}
+          <WorkoutStats />
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             <GymAvailability currentUsers={15} maxCapacity={20} />
