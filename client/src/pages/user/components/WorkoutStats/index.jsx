@@ -16,7 +16,9 @@ export default function WorkoutStats() {
             </p>
           </div>
         </CardHeader>
-        <CardBody>{/* <LineChart /> */}</CardBody>
+        <CardBody>
+          <LineChart />
+        </CardBody>
       </Card>
 
       <Card className="w-full">
