@@ -1,10 +1,8 @@
 import { Layout, PageNotFound } from "@components";
 import { Routes, Route } from "react-router-dom";
 import {
-  Dashboard,
   Membership,
   Transactions,
-  Profile,
   Headbar,
   CreditStats,
   GymAvailability,
@@ -51,6 +49,8 @@ export default function UserLayout() {
           </div>
           <GymMap />
         </div>
+        {/* <Membership />
+        <Transactions /> */}
       </div>
     </Layout>
   );
