@@ -1,5 +1,12 @@
-import React from "react";
-import { Card, CardBody, CardHeader, cn } from "@nextui-org/react";
+import React, { useState } from "react";
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  cn,
+  Select,
+  SelectItem,
+} from "@nextui-org/react";
 import {
   LuClock,
   LuDumbbell,
@@ -120,6 +127,16 @@ function StatCard({
 }
 
 function WorkoutCalendar() {
+  const currentYear = new Date().getFullYear();
+  const [selectedYear, setSelectedYear] = useState(currentYear);
+
+  const years = Array.from({ length: currentYear - 2019 }, (_, i) =>
+    (currentYear - i).toString()
+  );
+
+  const startDate = `${selectedYear}-01-01`;
+  const endDate = `${selectedYear}-12-31`;
+
   const generateWorkoutData = () => {
     const data = [];
     const end = new Date();
@@ -137,36 +154,48 @@ function WorkoutCalendar() {
     }
     return data;
   };
+
   return (
-    <div className="h-[300px]">
-      <ResponsiveCalendar
-        data={generateWorkoutData()}
-        from={
-          new Date(new Date().setFullYear(new Date().getFullYear() - 1))
-            .toISOString()
-            .split("T")[0]
-        }
-        to={new Date().toISOString().split("T")[0]}
-        emptyColor="#eeeeee"
-        colors={["#a8e6cf", "#69d2e7", "#3498db", "#2980b9"]}
-        margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
-        yearSpacing={40}
-        monthBorderColor="#ffffff"
-        dayBorderWidth={2}
-        dayBorderColor="#ffffff"
-        legends={[
-          {
-            anchor: "bottom-right",
-            direction: "row",
-            translateY: 36,
-            itemCount: 4,
-            itemWidth: 42,
-            itemHeight: 36,
-            itemsSpacing: 14,
-            itemDirection: "right-to-left",
-          },
-        ]}
-      />
+    <div className="space-y-4">
+      <Select
+        label="Select Year"
+        selectedKeys={[selectedYear.toString()]}
+        onChange={(e) => setSelectedYear(parseInt(e.target.value))}
+        className="max-w-xs"
+      >
+        {years.map((year) => (
+          <SelectItem key={year} value={year}>
+            {year}
+          </SelectItem>
+        ))}
+      </Select>
+
+      <div className="h-[300px]">
+        <ResponsiveCalendar
+          data={generateWorkoutData(selectedYear)}
+          from={startDate}
+          to={endDate}
+          emptyColor="#eeeeee"
+          colors={["#a8e6cf", "#69d2e7", "#3498db", "#2980b9"]}
+          margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
+          yearSpacing={40}
+          monthBorderColor="#ffffff"
+          dayBorderWidth={2}
+          dayBorderColor="#ffffff"
+          legends={[
+            {
+              anchor: "bottom-right",
+              direction: "row",
+              translateY: 36,
+              itemCount: 4,
+              itemWidth: 42,
+              itemHeight: 36,
+              itemsSpacing: 14,
+              itemDirection: "right-to-left",
+            },
+          ]}
+        />
+      </div>
     </div>
   );
 }
