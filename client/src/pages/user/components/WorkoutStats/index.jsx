@@ -7,7 +7,7 @@ import {
   LuHeart,
   LuTrophy,
 } from "react-icons/lu";
-import { ResponsiveLine } from "@nivo/line";
+import { ResponsiveCalendar } from "@nivo/calendar";
 
 export default function WorkoutStats() {
   return (
@@ -16,14 +16,14 @@ export default function WorkoutStats() {
         <CardHeader className="flex gap-3">
           <LuTrophy className="w-6 h-6 text-yellow-500" />
           <div className="flex flex-col">
-            <p className="text-md">Weekly Progress</p>
+            <p className="text-md">Workout Calendar</p>
             <p className="text-small text-default-500">
-              Last 7 days performance
+              Your training consistency
             </p>
           </div>
         </CardHeader>
         <CardBody>
-          <LineChart />
+          <WorkoutCalendar />
         </CardBody>
       </Card>
 
@@ -115,6 +115,58 @@ function StatCard({
           <p className="text-xs text-muted-foreground mt-1">{subtext}</p>
         )}
       </div>
+    </div>
+  );
+}
+
+function WorkoutCalendar() {
+  const generateWorkoutData = () => {
+    const data = [];
+    const end = new Date();
+    const start = new Date(end);
+    start.setFullYear(start.getFullYear() - 1);
+
+    for (let d = start; d <= end; d.setDate(d.getDate() + 1)) {
+      if (Math.random() > 0.3) {
+        // 70% chance of having a workout
+        data.push({
+          value: Math.floor(Math.random() * 120) + 30, // Random workout duration 30-150 minutes
+          day: d.toISOString().split("T")[0],
+        });
+      }
+    }
+    return data;
+  };
+  return (
+    <div className="h-[300px]">
+      <ResponsiveCalendar
+        data={generateWorkoutData()}
+        from={
+          new Date(new Date().setFullYear(new Date().getFullYear() - 1))
+            .toISOString()
+            .split("T")[0]
+        }
+        to={new Date().toISOString().split("T")[0]}
+        emptyColor="#eeeeee"
+        colors={["#a8e6cf", "#69d2e7", "#3498db", "#2980b9"]}
+        margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
+        yearSpacing={40}
+        monthBorderColor="#ffffff"
+        dayBorderWidth={2}
+        dayBorderColor="#ffffff"
+        legends={[
+          {
+            anchor: "bottom-right",
+            direction: "row",
+            translateY: 36,
+            itemCount: 4,
+            itemWidth: 42,
+            itemHeight: 36,
+            itemsSpacing: 14,
+            itemDirection: "right-to-left",
+          },
+        ]}
+      />
     </div>
   );
 }
