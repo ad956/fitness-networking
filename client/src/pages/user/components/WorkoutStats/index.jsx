@@ -162,8 +162,10 @@ function WorkoutCalendar() {
           label="Select Year"
           selectedKeys={[selectedYear.toString()]}
           onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-          className="w-32"
+          className="w-40"
           size="sm"
+          variant="bordered"
+          labelPlacement="outside"
         >
           {years.map((year) => (
             <SelectItem key={year} value={year}>
