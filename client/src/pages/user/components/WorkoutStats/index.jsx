@@ -156,28 +156,31 @@ function WorkoutCalendar() {
   };
 
   return (
-    <div className="space-y-4">
-      <Select
-        label="Select Year"
-        selectedKeys={[selectedYear.toString()]}
-        onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-        className="max-w-xs"
-      >
-        {years.map((year) => (
-          <SelectItem key={year} value={year}>
-            {year}
-          </SelectItem>
-        ))}
-      </Select>
+    <div className="flex flex-col">
+      <div className="flex justify-end mb-2">
+        <Select
+          label="Select Year"
+          selectedKeys={[selectedYear.toString()]}
+          onChange={(e) => setSelectedYear(parseInt(e.target.value))}
+          className="w-32"
+          size="sm"
+        >
+          {years.map((year) => (
+            <SelectItem key={year} value={year}>
+              {year}
+            </SelectItem>
+          ))}
+        </Select>
+      </div>
 
-      <div className="h-[300px]">
+      <div className="h-[250px]">
         <ResponsiveCalendar
           data={generateWorkoutData(selectedYear)}
           from={startDate}
           to={endDate}
           emptyColor="#eeeeee"
           colors={["#a8e6cf", "#69d2e7", "#3498db", "#2980b9"]}
-          margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
+          margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
           yearSpacing={40}
           monthBorderColor="#ffffff"
           dayBorderWidth={2}
