@@ -1,16 +1,21 @@
 import { Layout } from "@components";
-import { CreditStats, GymMap, WorkoutStats } from "./components/";
+import { Route, Routes } from "react-router-dom";
+import Dashboard from "./Dashboard";
+import QRCode from "./QRCode";
+import Membership from "./Membership";
+import Transactions from "./Transactions";
+import Profile from "./Profile";
 
 export default function UserLayout() {
   return (
     <Layout>
-      <div className="flex flex-col h-screen overflow-y-scroll">
-        <div className="p-8">
-          <CreditStats purchased={100} spent={45} remaining={55} />
-          <WorkoutStats />
-          <GymMap />
-        </div>
-      </div>
+      <Routes>
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="qr-code" element={<QRCode />} />
+        <Route path="membership" element={<Membership />} />
+        <Route path="transactions" element={<Transactions />} />
+        <Route path="profile" element={<Profile />} />
+      </Routes>
     </Layout>
   );
 }
