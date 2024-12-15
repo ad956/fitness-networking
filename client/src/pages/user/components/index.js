@@ -1,4 +1,3 @@
-import Headbar from "./Headbar";
 import ProfileSettings from "./Profile";
 import QRCode from "./QRCode";
 
@@ -9,7 +8,6 @@ import UpcomingClasses from "./UpcomingClasses";
 import WorkoutStats from "./WorkoutStats";
 
 export {
-  Headbar,
   ProfileSettings,
   QRCode,
   CreditStats,
