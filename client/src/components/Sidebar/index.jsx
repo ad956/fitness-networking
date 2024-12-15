@@ -7,6 +7,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "@features/auth/authSlice";
 import toast from "react-hot-toast";
 import { useLogout } from "@queries/authQueries";
+import {
+  LuLayoutDashboard,
+  LuQrCode,
+  LuDumbbell,
+  LuWallet,
+  LuUser,
+} from "react-icons/lu";
 
 export default function Sidebar() {
   const dispatch = useDispatch();
@@ -36,19 +43,31 @@ export default function Sidebar() {
   };
 
   const sidebarItems = [
-    { label: "Dashboard", path: "/user/", icon: getIcon("Dashboard") },
-    { label: "QR Code", path: "/user/qrcode", icon: getIcon("QRCode") },
+    {
+      label: "Dashboard",
+      icon: <LuLayoutDashboard className="w-5 h-5" />,
+      path: "/dashboard",
+    },
+    {
+      label: "QR Code",
+      icon: <LuQrCode className="w-5 h-5" />,
+      path: "/qr-code",
+    },
     {
       label: "Membership",
-      path: "/user/membership",
-      icon: getIcon("Membership"),
+      icon: <LuDumbbell className="w-5 h-5" />,
+      path: "/membership",
     },
     {
       label: "Transactions",
-      path: "/user/transactions",
-      icon: getIcon("Transactions"),
+      icon: <LuWallet className="w-5 h-5" />,
+      path: "/transactions",
     },
-    { label: "Profile", path: "/user/profile", icon: getIcon("Profile") },
+    {
+      label: "Profile",
+      icon: <LuUser className="w-5 h-5" />,
+      path: "/profile",
+    },
   ];
 
   return (
@@ -89,127 +108,3 @@ export default function Sidebar() {
     </div>
   );
 }
-
-const getIcon = (label) => {
-  switch (label) {
-    case "Dashboard":
-      return (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="icon icon-tabler icons-tabler-outline icon-tabler-layout-dashboard"
-        >
-          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-          <path d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1" />
-          <path d="M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1" />
-          <path d="M15 12h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1" />
-          <path d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1" />
-        </svg>
-      );
-    case "QRCode":
-      return (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="icon icon-tabler icons-tabler-outline icon-tabler-qrcode"
-        >
-          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-          <path d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
-          <path d="M7 17l0 .01" />
-          <path d="M14 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
-          <path d="M7 7l0 .01" />
-          <path d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
-          <path d="M17 7l0 .01" />
-          <path d="M14 14l3 0" />
-          <path d="M20 14l0 .01" />
-          <path d="M14 14l0 3" />
-          <path d="M14 20l3 0" />
-          <path d="M17 17l3 0" />
-          <path d="M20 17l0 3" />
-        </svg>
-      );
-    case "Membership":
-      return (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="icon icon-tabler icons-tabler-outline icon-tabler-barbell"
-        >
-          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-          <path d="M2 12h1" />
-          <path d="M6 8h-2a1 1 0 0 0 -1 1v6a1 1 0 0 0 1 1h2" />
-          <path d="M6 7v10a1 1 0 0 0 1 1h1a1 1 0 0 0 1 -1v-10a1 1 0 0 0 -1 -1h-1a1 1 0 0 0 -1 1z" />
-          <path d="M9 12h6" />
-          <path d="M15 7v10a1 1 0 0 0 1 1h1a1 1 0 0 0 1 -1v-10a1 1 0 0 0 -1 -1h-1a1 1 0 0 0 -1 1z" />
-          <path d="M18 8h2a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-2" />
-          <path d="M22 12h-1" />
-        </svg>
-      );
-    case "Transactions":
-      return (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="icon icon-tabler icons-tabler-outline icon-tabler-transaction-rupee"
-        >
-          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-          <path d="M21 12h-6h1a3 3 0 0 1 0 6h-1l3 3" />
-          <path d="M15 15h6" />
-          <path d="M5 5m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-          <path d="M17 5m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-          <path d="M7 5h8" />
-          <path d="M7 5v8a3 3 0 0 0 3 3h1" />
-        </svg>
-      );
-    case "Profile":
-      return (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="icon icon-tabler icons-tabler-outline icon-tabler-user-circle"
-        >
-          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-          <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-          <path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
-          <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855" />
-        </svg>
-      );
-    default:
-      return null;
-  }
-};
