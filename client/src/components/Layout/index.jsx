@@ -8,7 +8,9 @@ const Layout = ({ children }) => {
       <Sidebar />
       <main className="h-screen w-full flex flex-col">
         <Headbar />
-        {children}
+        <div className="flex flex-col h-screen overflow-y-scroll">
+          {children}
+        </div>
       </main>
     </div>
   );
