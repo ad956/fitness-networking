@@ -1,44 +1,67 @@
-import { Card, Input, User, Button } from "@nextui-org/react";
 import React from "react";
+import {
+  Input,
+  Button,
+  Avatar,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+} from "@nextui-org/react";
+import { LuBell, LuSearch } from "react-icons/lu";
 
 export default function Headbar() {
   return (
-    <div className="h-16 w-fullflex flex-row justify-between items-center px-10">
-      <div className="flex flex-col">
-        <p className="font-medium text-tiny">Good Morning</p>
-        <h2 className="font-semibold text-sm">Welcome Back</h2>
+    <div className="flex items-center justify-between mb-8">
+      <div>
+        <h1 className="text-2xl font-bold">Welcome back, John!</h1>
+        <p className="text-gray-500">
+          Track your fitness journey and gym activities
+        </p>
       </div>
 
-      {/* <div className="flex w-2/5 justify-between items-center"> */}
-      <Button isIconOnly className="bg-transparent">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="icon icon-tabler icons-tabler-outline icon-tabler-bell"
-        >
-          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-          <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />
-          <path d="M9 17v1a3 3 0 0 0 6 0v-1" />
-        </svg>
-      </Button>
+      <div className="flex items-center gap-6">
+        <Input
+          classNames={{
+            base: "max-w-full sm:max-w-[15rem]",
+            mainWrapper: "h-full",
+            input: "text-small",
+            inputWrapper:
+              "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
+          }}
+          placeholder="Search..."
+          size="sm"
+          startContent={<LuSearch size={18} />}
+          type="search"
+        />
 
-      <User
-        name="Anand Suthar"
-        avatarProps={{
-          src: "https://cdn-icons-png.freepik.com/256/2936/2936886.png?semt=ais_hybrid",
-        }}
-        classNames={{
-          name: "font-medium",
-        }}
-      />
-      {/* </div> */}
+        <Button isIconOnly variant="light" className="relative">
+          <LuBell className="w-5 h-5" />
+          <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+        </Button>
+
+        <Dropdown placement="bottom-end">
+          <DropdownTrigger>
+            <Avatar
+              isBordered
+              as="button"
+              className="transition-transform"
+              src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=100&h=100&fit=crop"
+            />
+          </DropdownTrigger>
+          <DropdownMenu aria-label="Profile Actions" variant="flat">
+            <DropdownItem key="profile" className="h-14 gap-2">
+              <p className="font-semibold">Signed in as</p>
+              <p className="font-semibold">john@example.com</p>
+            </DropdownItem>
+            <DropdownItem key="settings">My Settings</DropdownItem>
+            <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
+            <DropdownItem key="logout" color="danger">
+              Log Out
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+      </div>
     </div>
   );
 }
