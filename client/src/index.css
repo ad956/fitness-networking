@@ -2,41 +2,67 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-    font-family: 'Outfit';
-    src: url('./assets/fonts/Outfit-VariableFont_wght.ttf'); 
+@layer utilities {
+  .animate-fadeIn {
+    animation: fadeIn 0.5s ease-in-out;
   }
-@font-face {
-    font-family: 'Inter';
-    src: url('./assets/fonts/Inter.ttf'); 
+  .animate-slideIn {
+    animation: slideIn 0.5s ease-out forwards;
+    opacity: 0;
+    transform: translateX(-20px);
   }
+}
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 
-  ::-webkit-scrollbar {
-    width: 15px;
-    height: 15px;
+@keyframes slideIn {
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
-  
-  ::-webkit-scrollbar-track {
-    border-radius: 100vh;
-    background: #f7f4ed; 
-  }
-  
-  ::-webkit-scrollbar-thumb {
-    background: #535963; 
-    border-radius: 100vh;
-    border: 5px solid #f6f7ed;
-  }
-  
-  ::-webkit-scrollbar-thumb:hover {
-    background: #000; 
-  }
-  
+}
+
+@font-face {
+  font-family: "Outfit";
+  src: url("./assets/fonts/Outfit-VariableFont_wght.ttf");
+}
+@font-face {
+  font-family: "Inter";
+  src: url("./assets/fonts/Inter.ttf");
+}
+
+::-webkit-scrollbar {
+  width: 15px;
+  height: 15px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 100vh;
+  background: #f7f4ed;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #535963;
+  border-radius: 100vh;
+  border: 5px solid #f6f7ed;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #000;
+}
+
 :root {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
-scroll-behavior: smooth;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
 }
 
 /* html,body{
