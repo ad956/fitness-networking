@@ -1,12 +1,7 @@
 import React from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Image } from "@nextui-org/react";
 import { fitness } from "@images";
-import { LuLogOut } from "react-icons/lu";
-import { useDispatch, useSelector } from "react-redux";
-import { clearUser } from "@features/auth/authSlice";
-import toast from "react-hot-toast";
-import { useLogout } from "@queries/authQueries";
 import {
   LuLayoutDashboard,
   LuQrCode,
@@ -16,32 +11,6 @@ import {
 } from "react-icons/lu";
 
 export default function Sidebar() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const userRole = useSelector((state) => state.auth.user?.role);
-
-  const { mutate: logoutMutate, isLoading } = useLogout(userRole);
-
-  const handleLogout = () => {
-    logoutMutate(undefined, {
-      onSuccess: () => {
-        // Clear Redux state
-        dispatch(clearUser());
-
-        // Clear localStorage
-        localStorage.removeItem("userRole");
-        localStorage.removeItem("isAuthenticated");
-
-        toast.success("Logged out successfully");
-        navigate("/login");
-      },
-      onError: (error) => {
-        toast.error("Logout failed: " + error.message);
-      },
-    });
-  };
-
   const sidebarItems = [
     {
       label: "Dashboard",
@@ -97,14 +66,6 @@ export default function Sidebar() {
           </NavLink>
         ))}
       </nav>
-
-      <button
-        onClick={handleLogout}
-        className="flex items-center gap-3 px-4 py-3 mt-auto text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
-      >
-        <LuLogOut className="w-5 h-5" />
-        <span className="text-sm font-medium">Logout</span>
-      </button>
     </div>
   );
 }
