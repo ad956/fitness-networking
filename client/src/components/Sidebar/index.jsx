@@ -19,7 +19,7 @@ export default function Sidebar() {
     {
       label: "Dashboard",
       icon: <LuLayoutDashboard className="w-5 h-5" />,
-      path: "/user",
+      path: "/user/dashboard",
     },
     {
       label: "QR Code",
