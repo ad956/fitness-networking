@@ -13,6 +13,7 @@ export default defineConfig(({ mode }) => {
         "@constants": "/src/utils/constants",
         "@images": "/src/assets/images",
         "@features": "/src/features",
+        "@hooks": "/src/hooks",
         "@pages": "/src/pages",
         "@admin": "/src/pages/admin",
         "@user": "/src/pages/user",
