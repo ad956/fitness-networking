@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { useLogout } from "@queries/authQueries";
 import { clearUser } from "@features/auth/authSlice";
 
-export const useLogoutUser = () => {
+const useLogoutUser = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -33,3 +33,5 @@ export const useLogoutUser = () => {
 
   return { logout, isLoading };
 };
+
+export default useLogoutUser;
