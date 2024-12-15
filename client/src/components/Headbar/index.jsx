@@ -9,10 +9,13 @@ import {
   DropdownItem,
 } from "@nextui-org/react";
 import { LuBell, LuSearch } from "react-icons/lu";
+import { useLogoutUser } from "@hooks";
 
 export default function Headbar() {
+  const { logout, isLoading } = useLogoutUser();
+
   return (
-    <div className="flex items-center justify-between mb-8">
+    <div className="flex items-center justify-between p-6">
       <div>
         <h1 className="text-2xl font-bold">Welcome back, John!</h1>
         <p className="text-gray-500">
@@ -56,7 +59,12 @@ export default function Headbar() {
             </DropdownItem>
             <DropdownItem key="settings">My Settings</DropdownItem>
             <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-            <DropdownItem key="logout" color="danger">
+            <DropdownItem
+              key="logout"
+              color="danger"
+              onClick={logout}
+              isLoading={isLoading}
+            >
               Log Out
             </DropdownItem>
           </DropdownMenu>
