@@ -1,3 +1,3 @@
-import useLogoutUser from "./useLogout";
+import { useLogoutUser } from "./useLogout";
 
 export { useLogoutUser };

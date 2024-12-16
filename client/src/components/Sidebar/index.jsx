@@ -12,9 +12,13 @@ import {
   LuLogOut,
   LuGithub,
 } from "react-icons/lu";
+import { useLogoutUser } from "@hooks";
 import { motion } from "framer-motion";
+import { Toaster } from "react-hot-toast";
 
 export default function Sidebar() {
+  const { logout, isLoading } = useLogoutUser();
+
   const sidebarItems = [
     {
       label: "Dashboard",
@@ -126,9 +130,22 @@ export default function Sidebar() {
           <span className="text-sm font-medium">Settings</span>
         </NavLink>
 
-        <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 group transition-all duration-300">
-          <LuLogOut className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
-          <span className="text-sm font-medium">Log Out</span>
+        <button
+          onClick={logout}
+          disabled={isLoading}
+          className={cn(
+            "w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-500 group transition-all duration-300",
+            isLoading ? "cursor-not-allowed opacity-50" : "hover:bg-red-50"
+          )}
+        >
+          {isLoading ? (
+            <span className="loader w-5 h-5 border-2 border-t-red-500 border-gray-200 rounded-full animate-spin"></span>
+          ) : (
+            <LuLogOut className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+          )}
+          <span className="text-sm font-medium">
+            {isLoading ? "Logging out..." : "Log Out"}
+          </span>
         </button>
       </div>
 
@@ -148,6 +165,7 @@ export default function Sidebar() {
         </a>
         <div className="text-sm text-gray-400 animate-bounce">⚡️</div>
       </motion.div>
+      <Toaster />
     </div>
   );
 }
