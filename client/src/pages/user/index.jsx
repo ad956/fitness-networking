@@ -1,5 +1,5 @@
 import { Layout } from "@components";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Dashboard from "./Dashboard";
 import QRCode from "./QRCode";
 import Membership from "./Membership";
@@ -10,6 +10,7 @@ export default function UserLayout() {
   return (
     <Layout>
       <Routes>
+        <Route index element={<Navigate to="/user/dashboard" replace />} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="qr-code" element={<QRCode />} />
         <Route path="membership" element={<Membership />} />
