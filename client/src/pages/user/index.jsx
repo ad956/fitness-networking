@@ -5,6 +5,7 @@ import QRCode from "./QRCode";
 import Membership from "./Membership";
 import Transactions from "./Transactions";
 import Profile from "./Profile";
+import { PageNotFound } from "@components";
 
 export default function UserLayout() {
   return (
@@ -16,6 +17,7 @@ export default function UserLayout() {
         <Route path="membership" element={<Membership />} />
         <Route path="transactions" element={<Transactions />} />
         <Route path="profile" element={<Profile />} />
+        {/* <Route path="*" element={<PageNotFound />} /> */}
       </Routes>
     </Layout>
   );
