@@ -25,7 +25,7 @@ export const useLogout = (userRole) => {
 
 export const useGoogleAuth = () =>
   useMutation({
-    mutationFn: googleAuthToken,
+    mutationFn: (data) => googleAuthToken(data.token, data.userRole),
   });
 
 export const useSignup = () =>
