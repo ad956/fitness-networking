@@ -209,8 +209,8 @@ const googleAuth = asyncHandler(async (req, res, next) => {
     .cookie("refreshToken", refreshToken, {
       maxAge: constants.COOKIE_MAX_AGE_MS,
       httpOnly: true,
-      secure: false,
-      sameSite: "None",
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
     })
     .status(200)
     .json({ accessToken });
