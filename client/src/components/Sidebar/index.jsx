@@ -14,6 +14,7 @@ import {
 } from "react-icons/lu";
 import { useLogoutUser } from "@hooks";
 import { motion } from "framer-motion";
+import { Toaster } from "react-hot-toast";
 
 export default function Sidebar() {
   const { logout, isLoading } = useLogoutUser();
@@ -164,6 +165,7 @@ export default function Sidebar() {
         </a>
         <div className="text-sm text-gray-400 animate-bounce">⚡️</div>
       </motion.div>
+      <Toaster />
     </div>
   );
 }
