@@ -6,8 +6,10 @@ import {
   Select,
   SelectItem,
 } from "@nextui-org/react";
-import { LuTrophy } from "react-icons/lu";
+import { LuQrCode, LuTrophy } from "react-icons/lu";
 import { ResponsiveCalendar } from "@nivo/calendar";
+import { motion } from "framer-motion";
+import { QRCodeSVG } from "qrcode.react";
 
 export default function WorkoutStats() {
   return (
@@ -26,6 +28,7 @@ export default function WorkoutStats() {
           <WorkoutCalendar />
         </CardBody>
       </Card>
+      <AnimatedQRCode />
     </div>
   );
 }
@@ -108,3 +111,56 @@ function WorkoutCalendar() {
     </div>
   );
 }
+
+const AnimatedQRCode = ({
+  url = "https://example.com",
+  size = 250,
+  bgColor = "white",
+  fgColor = "black",
+}) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <Card className="w-full">
+      <CardHeader className="flex gap-3">
+        <LuQrCode className="w-6 h-6 text-purple-500" />
+        <div className="flex flex-col">
+          <p className="text-md">Workout QR Code</p>
+          <p className="text-small text-default-500">
+            Share your fitness journey
+          </p>
+        </div>
+      </CardHeader>
+      <CardBody>
+        <motion.div
+          className="flex items-center justify-center perspective-1000"
+          onHoverStart={() => setIsHovered(true)}
+          onHoverEnd={() => setIsHovered(false)}
+        >
+          <motion.div
+            animate={{
+              rotateX: isHovered ? 15 : 0,
+              rotateY: isHovered ? -15 : 0,
+              scale: isHovered ? 1.05 : 1,
+            }}
+            transition={{
+              type: "spring",
+              stiffness: 300,
+              damping: 10,
+            }}
+            className="transform-style-3d"
+          >
+            <QRCodeSVG
+              value={url}
+              size={size}
+              bgColor={bgColor}
+              fgColor={fgColor}
+              level="H"
+              className="shadow-md rounded-lg mx-auto"
+            />
+          </motion.div>
+        </motion.div>
+      </CardBody>
+    </Card>
+  );
+};
