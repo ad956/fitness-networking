@@ -114,15 +114,8 @@ function WorkoutCalendar() {
   );
 }
 
-const qrTypes = {
-  profile: "https://example.com/profile",
-  workout: "https://example.com/last-workout",
-  stats: "https://example.com/stats",
-};
-
 const AnimatedQRCode = () => {
   const [isHovered, setIsHovered] = useState(false);
-  const [activeQRType, setActiveQRType] = useState("profile");
 
   const handleDownload = () => {
     const svg = document.querySelector("#workout-qr-code");
@@ -132,7 +125,7 @@ const AnimatedQRCode = () => {
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = `workout-qr-${activeQRType}.svg`;
+      link.download = `workout-qr.svg`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -153,20 +146,6 @@ const AnimatedQRCode = () => {
       </CardHeader>
       <CardBody>
         <div className="flex flex-col items-center gap-4">
-          <div className="flex gap-2 mb-4">
-            {Object.keys(qrTypes).map((type) => (
-              <Button
-                key={type}
-                size="sm"
-                variant={activeQRType === type ? "solid" : "bordered"}
-                color={activeQRType === type ? "primary" : "default"}
-                onPress={() => setActiveQRType(type)}
-              >
-                {type.charAt(0).toUpperCase() + type.slice(1)}
-              </Button>
-            ))}
-          </div>
-
           <motion.div
             className="perspective-1000"
             onHoverStart={() => setIsHovered(true)}
@@ -187,13 +166,12 @@ const AnimatedQRCode = () => {
             >
               <QRCodeSVG
                 id="workout-qr-code"
-                value={qrTypes[activeQRType]}
+                value={"user@mail.com"}
                 size={200}
                 bgColor="white"
                 fgColor="black"
                 level="H"
-                className="shadow-lg rounded-lg p-2 bg-white"
-                includeMargin={true}
+                className="shadow-lg rounded-lg p-4 bg-white"
               />
             </motion.div>
           </motion.div>
@@ -218,7 +196,7 @@ const AnimatedQRCode = () => {
                   if (navigator.share) {
                     navigator.share({
                       title: "My Workout QR Code",
-                      url: qrTypes[activeQRType],
+                      url: "https://github.com/ad956",
                     });
                   }
                 }}
@@ -229,7 +207,7 @@ const AnimatedQRCode = () => {
           </div>
 
           <p className="text-small text-default-500 text-center mt-2">
-            Scan to view your {activeQRType} details
+            Scan this QR at the gym for entry.
           </p>
         </div>
       </CardBody>
