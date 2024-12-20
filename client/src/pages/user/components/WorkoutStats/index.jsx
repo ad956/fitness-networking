@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import {
+  Button,
   Card,
   CardBody,
   CardHeader,
   Select,
   SelectItem,
+  Tooltip,
 } from "@nextui-org/react";
-import { LuQrCode, LuTrophy } from "react-icons/lu";
+import { LuDownload, LuQrCode, LuShare2, LuTrophy } from "react-icons/lu";
 import { ResponsiveCalendar } from "@nivo/calendar";
 import { motion } from "framer-motion";
 import { QRCodeSVG } from "qrcode.react";
@@ -112,13 +114,31 @@ function WorkoutCalendar() {
   );
 }
 
-const AnimatedQRCode = ({
-  url = "https://example.com",
-  size = 250,
-  bgColor = "white",
-  fgColor = "black",
-}) => {
+const qrTypes = {
+  profile: "https://example.com/profile",
+  workout: "https://example.com/last-workout",
+  stats: "https://example.com/stats",
+};
+
+const AnimatedQRCode = () => {
   const [isHovered, setIsHovered] = useState(false);
+  const [activeQRType, setActiveQRType] = useState("profile");
+
+  const handleDownload = () => {
+    const svg = document.querySelector("#workout-qr-code");
+    if (svg) {
+      const svgData = new XMLSerializer().serializeToString(svg);
+      const blob = new Blob([svgData], { type: "image/svg+xml" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `workout-qr-${activeQRType}.svg`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
+  };
 
   return (
     <Card className="w-full">
@@ -132,34 +152,86 @@ const AnimatedQRCode = ({
         </div>
       </CardHeader>
       <CardBody>
-        <motion.div
-          className="flex items-center justify-center perspective-1000"
-          onHoverStart={() => setIsHovered(true)}
-          onHoverEnd={() => setIsHovered(false)}
-        >
+        <div className="flex flex-col items-center gap-4">
+          <div className="flex gap-2 mb-4">
+            {Object.keys(qrTypes).map((type) => (
+              <Button
+                key={type}
+                size="sm"
+                variant={activeQRType === type ? "solid" : "bordered"}
+                color={activeQRType === type ? "primary" : "default"}
+                onPress={() => setActiveQRType(type)}
+              >
+                {type.charAt(0).toUpperCase() + type.slice(1)}
+              </Button>
+            ))}
+          </div>
+
           <motion.div
-            animate={{
-              rotateX: isHovered ? 15 : 0,
-              rotateY: isHovered ? -15 : 0,
-              scale: isHovered ? 1.05 : 1,
-            }}
-            transition={{
-              type: "spring",
-              stiffness: 300,
-              damping: 10,
-            }}
-            className="transform-style-3d"
+            className="perspective-1000"
+            onHoverStart={() => setIsHovered(true)}
+            onHoverEnd={() => setIsHovered(false)}
           >
-            <QRCodeSVG
-              value={url}
-              size={size}
-              bgColor={bgColor}
-              fgColor={fgColor}
-              level="H"
-              className="shadow-md rounded-lg mx-auto"
-            />
+            <motion.div
+              animate={{
+                rotateX: isHovered ? 15 : 0,
+                rotateY: isHovered ? -15 : 0,
+                scale: isHovered ? 1.05 : 1,
+              }}
+              transition={{
+                type: "spring",
+                stiffness: 300,
+                damping: 10,
+              }}
+              className="transform-style-3d"
+            >
+              <QRCodeSVG
+                id="workout-qr-code"
+                value={qrTypes[activeQRType]}
+                size={200}
+                bgColor="white"
+                fgColor="black"
+                level="H"
+                className="shadow-lg rounded-lg p-2 bg-white"
+                includeMargin={true}
+              />
+            </motion.div>
           </motion.div>
-        </motion.div>
+
+          <div className="flex gap-2 mt-4">
+            <Tooltip content="Download QR Code">
+              <Button
+                isIconOnly
+                size="sm"
+                variant="light"
+                onPress={handleDownload}
+              >
+                <LuDownload className="w-4 h-4" />
+              </Button>
+            </Tooltip>
+            <Tooltip content="Share">
+              <Button
+                isIconOnly
+                size="sm"
+                variant="light"
+                onPress={() => {
+                  if (navigator.share) {
+                    navigator.share({
+                      title: "My Workout QR Code",
+                      url: qrTypes[activeQRType],
+                    });
+                  }
+                }}
+              >
+                <LuShare2 className="w-4 h-4" />
+              </Button>
+            </Tooltip>
+          </div>
+
+          <p className="text-small text-default-500 text-center mt-2">
+            Scan to view your {activeQRType} details
+          </p>
+        </div>
       </CardBody>
     </Card>
   );
