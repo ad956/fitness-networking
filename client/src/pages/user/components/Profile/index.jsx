@@ -193,31 +193,8 @@ class FormValidator {
   }
 }
 
-// export default function ProfileSettings({ user }) {
-export default function ProfileSettings() {
+export default function ProfileSettings({ user }) {
   const [formValidator] = useState(new FormValidator());
-
-  const user = {
-    firstname: "Anand",
-    lastname: "Suthar",
-    username: "ad956",
-    email: "ad@exmaple.com",
-    currentPassword: "",
-    newPassword: "",
-    profilePicture:
-      "https://i.pinimg.com/736x/fc/ce/92/fcce92b6dd2ebb5259426a424a6f983d.jpg",
-    dob: "",
-    contact: "7898653422",
-    gender: "Male",
-    address: {
-      address_line_1: "user.address.address_line_1",
-      address_line_2: "user.address.address_line_2",
-      city: "user.address.city",
-      state: "user.address.state",
-      zip_code: "user.address.zip_code",
-      country: "user.address.country",
-    },
-  };
 
   const [firstname, setFirstName] = useState(user.firstname);
   const [lastname, setLastName] = useState(user.lastname);
