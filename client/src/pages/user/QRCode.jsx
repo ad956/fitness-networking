@@ -1,14 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { QRCodeCanvas } from "qrcode.react";
-import { Input, Button, Card } from "@nextui-org/react";
-import {
-  LuDownload,
-  LuQrCode,
-  LuScan,
-  LuShare2,
-  LuUsers,
-} from "react-icons/lu";
+import { Button, Card } from "@nextui-org/react";
+import { LuDownload, LuScan, LuShare2, LuUsers } from "react-icons/lu";
 
 export default function QRCodePage() {
   return (
