@@ -1,7 +1,15 @@
-import ProfileSettings from "./Profile";
-import QRCode from "./QRCode";
+import AnimatedQRCode from "./AnimatedQRCode";
 import CreditStats from "./CreditStats";
 import GymMap from "./GymMap";
-import WorkoutStats from "./WorkoutStats";
+import GymMembership from "./GymMembership";
+import ProfileSettings from "./Profile";
+import QRCode from "./QRCode";
 
-export { ProfileSettings, QRCode, CreditStats, GymMap, WorkoutStats };
+export {
+  AnimatedQRCode,
+  CreditStats,
+  GymMap,
+  GymMembership,
+  ProfileSettings,
+  QRCode,
+};
