@@ -4,7 +4,7 @@ import {
   CreditStats,
   GymMap,
   GymMembership,
-} from "./components/";
+} from "./components";
 
 const Dashboard = () => {
   return (
