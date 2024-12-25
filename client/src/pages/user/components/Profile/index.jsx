@@ -459,11 +459,7 @@ export default function ProfileSettings({ user }) {
   }, []);
 
   return (
-    <Card
-      // radius="lg"
-      shadow="lg"
-      className="flex flex-col md:flex-row gap-5 items-start p-2 md:p-5 h-full w-full overflow-y-auto"
-    >
+    <div className="flex flex-col md:flex-row gap-5 items-start p-2 md:p-5 h-full w-full overflow-y-hidden">
       {/* Sidebar */}
       <div
         className={`w-full md:w-1/4 bg-white p-4 md:p-6 ${
@@ -779,6 +775,6 @@ export default function ProfileSettings({ user }) {
         </div>
       </div>
       <Toaster />
-    </Card>
+    </div>
   );
 }
