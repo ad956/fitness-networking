@@ -1,29 +1,31 @@
-import Layout from "./Layout";
-import Headbar from "./Headbar";
+import AuthErrorFallback from "./AuthErrorFallback";
+import ErrorBoundary from "./ErrorBoundary";
+import ErrorFallback from "./ErrorFallback";
 import Footer from "./Footer";
-import Sidebar from "./Sidebar";
-import SeoHelmet from "./SeoHelmet";
+import GoogleAuthHandler from "./Firebase/GoogleAuthHandler";
+import Headbar from "./Headbar";
+import Layout from "./Layout";
 import PageNotFound from "./PageNotFound";
 import ProtectedRoute from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
-import ErrorBoundary from "./ErrorBoundary";
-import ErrorFallback from "./ErrorFallback";
-import AuthErrorFallback from "./AuthErrorFallback";
-import GoogleAuthHandler from "./Firebase/GoogleAuthHandler";
+import SeoHelmet from "./SeoHelmet";
+import Settings from "./Settings";
+import Sidebar from "./Sidebar";
 import VerificationModal from "./VerificationModal";
 
 export {
-  Layout,
-  Sidebar,
-  Headbar,
+  AuthErrorFallback,
+  ErrorBoundary,
+  ErrorFallback,
   Footer,
-  SeoHelmet,
+  GoogleAuthHandler,
+  Headbar,
+  Layout,
   PageNotFound,
   ProtectedRoute,
   PublicRoute,
-  ErrorBoundary,
-  ErrorFallback,
-  AuthErrorFallback,
-  GoogleAuthHandler,
+  SeoHelmet,
+  Settings,
+  Sidebar,
   VerificationModal,
 };
