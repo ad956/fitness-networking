@@ -71,7 +71,7 @@ const GymQRCodePage = () => {
                 {
                   icon: <LuCreditCard className="w-6 h-6 text-purple-500" />,
                   title: "Credits Deducted",
-                  desc: "10 credits will be automatically deducted per visit",
+                  desc: "Credits will be automatically deducted per visit",
                 },
                 {
                   icon: <LuDumbbell className="w-6 h-6 text-green-500" />,
