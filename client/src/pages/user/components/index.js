@@ -4,6 +4,7 @@ import GymMap from "./GymMap";
 import GymMembership from "./GymMembership";
 import PlansGrid from "./MembershipPlans";
 import ProfileSettings from "./Profile";
+import TransactionsList from "./Transactions";
 import QRCode from "./QRCode";
 
 export {
@@ -13,5 +14,6 @@ export {
   GymMembership,
   PlansGrid,
   ProfileSettings,
+  TransactionsList,
   QRCode,
 };
