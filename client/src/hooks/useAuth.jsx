@@ -1,6 +1,8 @@
 import axios from "@api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { auth, provider } from "@utils";
+import { signInWithPopup } from "firebase/auth";
 
 const authApi = {
   login: async (user) => {
@@ -18,15 +20,29 @@ const authApi = {
     return response.data;
   },
 
-  googleAuth: async (token, userRole) => {
-    const response = await axios.post(`${userRole}/google-auth`, null, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      validateStatus: (status) => status < 500,
-    });
+  googleAuth: async (userRole) => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      if (!result) {
+        throw new Error("Firebase authentication failed");
+      }
 
-    return response.data;
+      const firebaseToken = await auth.currentUser.getIdToken(true);
+      const response = await axios.post(`${userRole}/google-auth`, null, {
+        headers: {
+          Authorization: `Bearer ${firebaseToken}`,
+        },
+        validateStatus: (status) => status < 500,
+      });
+
+      if (response.message) {
+        throw new Error(response.message);
+      }
+
+      return response.data;
+    } catch (error) {
+      throw new Error(error.message);
+    }
   },
 
   signup: async ({ email, password, role }) => {
@@ -93,8 +109,13 @@ export function useLogout() {
 }
 
 export function useGoogleAuth() {
+  const navigate = useNavigate();
+
   return useMutation({
-    mutationFn: (data) => authApi.googleAuth(data.token, data.userRole),
+    mutationFn: (data) => authApi.googleAuth(data.userRole),
+    onSuccess: (data, variables) => {
+      navigate(`/${variables.userRole}`);
+    },
   });
 }
 
