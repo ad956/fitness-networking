@@ -11,6 +11,7 @@ import PublicRoute from "./PublicRoute";
 import SeoHelmet from "./SeoHelmet";
 import Settings from "./Settings";
 import Sidebar from "./Sidebar";
+import SpinnerLoader from "./SpinnerLoader";
 import VerificationModal from "./VerificationModal";
 
 export {
@@ -27,5 +28,6 @@ export {
   SeoHelmet,
   Settings,
   Sidebar,
+  SpinnerLoader,
   VerificationModal,
 };
