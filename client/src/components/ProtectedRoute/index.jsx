@@ -1,31 +1,43 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useCheckAuth } from "@hooks";
+import { SpinnerLoader } from "@components";
 import AuthErrorFallback from "../AuthErrorFallback";
 
 const ProtectedRoute = ({ requiredRole, children }) => {
-  const user = useSelector((state) => state.auth.user);
+  const { data: authData, isLoading } = useCheckAuth();
   const [statusCode, setStatusCode] = useState(null);
 
   useEffect(() => {
-    if (user.isAuthenticated) {
-      if (requiredRole === "admin" && user.role !== "admin") {
-        setStatusCode(403); // Forbidden
-        return;
-      }
+    if (!isLoading) {
+      if (authData?.user?.isAuthenticated) {
+        if (requiredRole === "admin" && authData.user.role !== "admin") {
+          setStatusCode(403); // Forbidden
+          return;
+        }
 
-      if (
-        (requiredRole === "user" || requiredRole === "partner") &&
-        user.role !== requiredRole
-      ) {
+        if (
+          (requiredRole === "user" || requiredRole === "partner") &&
+          authData.user.role !== requiredRole
+        ) {
+          setStatusCode(401); // Unauthorized
+          return;
+        }
+      } else {
         setStatusCode(401); // Unauthorized
-        return;
       }
-    } else {
-      setStatusCode(401); // Unauthorized
     }
-  }, [user.isAuthenticated, user.role, requiredRole]);
+  }, [
+    isLoading,
+    authData?.user?.isAuthenticated,
+    authData?.user?.role,
+    requiredRole,
+  ]);
 
-  if (!user.isAuthenticated) {
+  if (isLoading) {
+    return <SpinnerLoader />;
+  }
+
+  if (!authData?.user?.isAuthenticated) {
     return <AuthErrorFallback statusCode={statusCode} />;
   }
 
