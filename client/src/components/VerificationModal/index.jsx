@@ -10,15 +10,12 @@ import {
   Image,
 } from "@nextui-org/react";
 import { email_gif } from "@images";
-import { useDispatch } from "react-redux";
-import { loginUser } from "@features/auth/authSlice";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { useCheckVerification, useLogin } from "@queries/authQueries";
+import { useCheckVerification, useLogin } from "@hooks";
 
 export default function VerificationModal({ user }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const {
@@ -37,19 +34,13 @@ export default function VerificationModal({ user }) {
 
   useEffect(() => {
     if (verificationData?.verified) {
-      dispatch(
-        loginUser({
-          role: user.role,
-          isAuthenticated: true,
-        })
-      );
       toast.success("Email verified successfully!");
       setTimeout(() => {
         onOpenChange(false);
         navigate(`/${user.role}`);
       }, 2000);
     }
-  }, [verificationData, dispatch, navigate, onOpenChange, user]);
+  }, [verificationData, navigate, onOpenChange, user.role]);
 
   const handleResendClick = () => {
     loginMutate(user, {
