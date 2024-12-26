@@ -1,8 +1,9 @@
 import { Image, Button, Link } from "@nextui-org/react";
-import { useSelector } from "react-redux";
+import { useCheckAuth } from "@hooks";
 
 export default function AuthErrorFallback({ statusCode }) {
-  const userRole = useSelector((state) => state.auth.user.role);
+  const { data: authData } = useCheckAuth();
+  const userRole = authData?.user?.role;
 
   let errorMessage, imageUrl;
 
