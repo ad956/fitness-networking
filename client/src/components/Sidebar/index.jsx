@@ -12,14 +12,14 @@ import {
   LuLogOut,
   LuGithub,
 } from "react-icons/lu";
-import { useLogoutUser } from "@hooks";
+import { useLogout } from "@hooks";
 import { motion } from "framer-motion";
 import { Toaster } from "react-hot-toast";
 import { Settings } from "@components";
 
 export default function Sidebar() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const { logout, isLoading } = useLogoutUser();
+  const { logout, isLoading } = useLogout();
 
   const sidebarItems = [
     {
