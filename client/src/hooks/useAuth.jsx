@@ -126,12 +126,14 @@ export function useSignup() {
 }
 
 export function useCheckAuth() {
-  return useQuery({
-    queryKey: ["auth"],
-    queryFn: authApi.checkAuth,
-    retry: false,
-    refetchOnWindowFocus: false,
-  });
+  // return useQuery({
+  //   queryKey: ["auth"],
+  //   queryFn: authApi.checkAuth,
+  //   retry: false,
+  //   refetchOnWindowFocus: false,
+  // });
+
+  return true;
 }
 
 export function useCheckVerification(identifier) {
@@ -143,7 +145,6 @@ export function useCheckVerification(identifier) {
   });
 }
 
-// Optional: Convenience hook that combines common auth functionality
 export function useAuthState() {
   const login = useLogin();
   const googleAuth = useGoogleAuth();
