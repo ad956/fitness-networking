@@ -10,9 +10,9 @@ import {
 import { AiTwotoneEye, AiTwotoneEyeInvisible } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { signup_jpg } from "@images";
-import { SeoHelmet, GoogleAuthHandler } from "@components";
+import { SeoHelmet } from "@components";
 import toast, { Toaster } from "react-hot-toast";
-import { useSignup } from "@queries/authQueries";
+import { useGoogleAuth, useSignup } from "@hooks";
 
 function SignupPage() {
   const [user, setUser] = useState({
@@ -25,6 +25,9 @@ function SignupPage() {
 
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
+
+  const { mutate: googleAuth } = useGoogleAuth();
+  const { mutate: signupMutate, isLoading, isError, error } = useSignup();
 
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -45,8 +48,6 @@ function SignupPage() {
       /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[a-zA-Z]).{8,}$/;
     return reg.test(String(password));
   };
-
-  const { mutate: signupMutate, isLoading, isError, error } = useSignup();
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
@@ -88,15 +89,13 @@ function SignupPage() {
     });
   };
 
-  const handleGoogleAuth = GoogleAuthHandler();
-
   const handleGoogleSignUp = () => {
     if (!user.role) {
       toast.error("Please select your user role before signing up!");
       return;
     }
 
-    handleGoogleAuth(user.role);
+    googleAuth({ userRole: user.role });
   };
 
   return (

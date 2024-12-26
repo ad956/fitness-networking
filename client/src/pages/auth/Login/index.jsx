@@ -10,9 +10,9 @@ import {
 import { AiTwotoneEye, AiTwotoneEyeInvisible } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { signin_png } from "@images";
-import { SeoHelmet, GoogleAuthHandler, VerificationModal } from "@components";
+import { SeoHelmet, VerificationModal } from "@components";
 import toast, { Toaster } from "react-hot-toast";
-import { useLogin } from "@queries/authQueries";
+import { useGoogleAuth, useLogin } from "@hooks";
 
 function LoginPage() {
   const [user, setUser] = useState({
@@ -24,14 +24,8 @@ function LoginPage() {
   const [isDigitsOnly, setIsDigitsOnly] = useState(false);
   const [showVerifyModal, setShowVerifyModal] = useState(false);
 
-  const {
-    mutate: loginMutate,
-    isLoading: isLoginLoading,
-    isError: isLoginError,
-    error: loginError,
-  } = useLogin();
-
-  const handleGoogleAuth = GoogleAuthHandler();
+  const { mutate: googleAuth } = useGoogleAuth();
+  const { mutate: loginMutate, isLoading: isLoginLoading } = useLogin();
 
   const handleChange = (e) =>
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -91,8 +85,7 @@ function LoginPage() {
       toast.error("Please select your user role before signing in!");
       return;
     }
-
-    handleGoogleAuth(user.role);
+    googleAuth({ userRole: user.role });
   };
 
   return (
