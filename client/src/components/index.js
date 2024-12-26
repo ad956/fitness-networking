@@ -2,7 +2,6 @@ import AuthErrorFallback from "./AuthErrorFallback";
 import ErrorBoundary from "./ErrorBoundary";
 import ErrorFallback from "./ErrorFallback";
 import Footer from "./Footer";
-import GoogleAuthHandler from "./Firebase/GoogleAuthHandler";
 import Headbar from "./Headbar";
 import Layout from "./Layout";
 import PageNotFound from "./PageNotFound";
@@ -19,7 +18,6 @@ export {
   ErrorBoundary,
   ErrorFallback,
   Footer,
-  GoogleAuthHandler,
   Headbar,
   Layout,
   PageNotFound,
