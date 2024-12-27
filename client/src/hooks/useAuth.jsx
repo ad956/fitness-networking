@@ -6,8 +6,7 @@ import { signInWithPopup } from "firebase/auth";
 
 const authApi = {
   login: async (user) => {
-    const path = user.role === "user" ? "user" : "partner";
-    const response = await axios.post(`${path}/login`, user, {
+    const response = await axios.post(`auth/login`, user, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -28,7 +27,7 @@ const authApi = {
       }
 
       const firebaseToken = await auth.currentUser.getIdToken(true);
-      const response = await axios.post(`${userRole}/google-auth`, null, {
+      const response = await axios.post(`auth/google-auth`, null, {
         headers: {
           Authorization: `Bearer ${firebaseToken}`,
         },
@@ -45,11 +44,11 @@ const authApi = {
     }
   },
 
-  signup: async ({ email, password, role }) => {
-    const response = await axios.post(`/api/${role}/signup`, {
-      email,
-      password,
-      role,
+  signup: async (user) => {
+    const response = await axios.post(`auth/signup`, user, {
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
 
     if (!response.data.success) {
@@ -60,15 +59,19 @@ const authApi = {
   },
 
   logout: async (userRole) => {
-    return axios.post(`/${userRole}/logout`);
+    return axios.post(`auth/logout`);
   },
 
   checkAuth: async () => {
-    return axios.get("/check-auth");
+    return axios.get("auth/check-auth");
   },
 
-  checkVerification: async (identifier) => {
-    const response = await axios.get(`/user/check-verification/${identifier}`);
+  checkVerification: async (user) => {
+    const response = await axios.post("auth/validate-login", user, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     return response.data;
   },
 };
@@ -136,11 +139,11 @@ export function useCheckAuth() {
   return true;
 }
 
-export function useCheckVerification(identifier) {
+export function useCheckVerification(user) {
   return useQuery({
-    queryKey: ["verification", identifier],
-    queryFn: () => authApi.checkVerification(identifier),
-    enabled: !!identifier,
+    queryKey: ["verification", user],
+    queryFn: () => authApi.checkVerification(user),
+    enabled: !!user,
     refetchInterval: 5000,
   });
 }
