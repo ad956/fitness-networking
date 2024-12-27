@@ -65,7 +65,7 @@ class AuthService {
       throw new Error("Invalid credentials");
     }
 
-    const verificationSecret = generateOTP;
+    const verificationSecret = genratedOTP;
     user.otp = verificationSecret;
     await user.save();
 
@@ -74,6 +74,7 @@ class AuthService {
     return user;
   }
 
+  // performs email login-link verification
   async verifyUserToken(token, userType) {
     const Model = this.getModel(userType);
     const user = await Model.findOne({ where: { otp: token } });
@@ -88,6 +89,7 @@ class AuthService {
     return user;
   }
 
+  // checks if login attempt is success or not
   async validateLogin(identifier, userType) {
     const Model = this.getModel(userType);
     const user = await Model.findOne({
@@ -141,7 +143,7 @@ class AuthService {
   }
 
   async sendLoginVerificationEmail(user, verificationSecret, userType) {
-    const verificationLink = `${constants.USER_URL}${userType}/verify/${verificationSecret}`;
+    const verificationLink = `${constants.AUTH_URL}verify?token=${verificationSecret}&role=${userType}`;
 
     const mail = templateGenrator(
       user.name,
@@ -187,4 +189,4 @@ class AuthService {
   }
 }
 
-module.exports = AuthService;
+module.exports = new AuthService();
