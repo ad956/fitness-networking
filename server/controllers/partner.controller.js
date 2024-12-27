@@ -1,31 +1,27 @@
-const Partner = require("../models/partner.modal");
+const partnerService = require("../services/partner.service");
 const asyncHandler = require("express-async-handler");
 
-// get all partners details
-const allPartners = asyncHandler(async (req, res, next) => {
-  const currentUser = req.user;
-  const partners = await Partner.findAll();
-  res.status(201).json({ currentUser, partners });
-  return;
-});
-
-const getPartner = asyncHandler(async (req, res) => {
-  const user = req.user;
-
-  const partner = await Partner.findOne({
-    where: { gym_id: user.id },
-  });
-
-  if (!partner) {
-    res.status(400).json({ msg: "Partner doesn't exists" });
-    return;
+class PartnerController {
+  constructor(partnerService) {
+    this.partnerService = partnerService;
   }
 
-  res.json({ msg: partner });
-  return;
-});
+  allPartners = asyncHandler(async (req, res) => {
+    const currentUser = req.user;
+    const partners = await this.partnerService.getAllPartners();
+    res.status(200).json({ currentUser, partners });
+  });
 
-module.exports = {
-  allPartners,
-  getPartner,
-};
+  getPartner = asyncHandler(async (req, res) => {
+    const user = req.user;
+    const partner = await this.partnerService.getPartnerById(user.id);
+
+    if (!partner) {
+      return res.status(404).json({ msg: "Partner doesn't exist" });
+    }
+
+    res.status(200).json({ msg: partner });
+  });
+}
+
+module.exports = new PartnerController(partnerService);
