@@ -8,8 +8,8 @@ const cookieParser = require("cookie-parser");
 const port = process.env.PORT || 3000;
 
 const initialRoute = require("./routes");
-const errorHandler = require("./middleware/errorHandler");
-const { connectDB } = require("./config/dbConnection");
+const errorHandler = require("./middleware/error-handler.middleware");
+const { connectDB } = require("./config/db.config");
 
 const app = express();
 
