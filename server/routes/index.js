@@ -1,18 +1,21 @@
 const express = require("express");
 const router = express.Router();
+const validateToken = require("../middleware/validate-token.middleware");
 
-const userRoutes = require("./api/userRoute");
-const partnerRoutes = require("./api/partnerRoute");
-const adminRoutes = require("./api/adminRoute");
+const adminRoutes = require("./api/admin.routes");
+const authRoutes = require("./api/auth.routes");
+const partnerRoutes = require("./api/partner.routes");
+const userRoutes = require("./api/user.routes");
 
 /*
-  - '/user'   : for gym members
-  - '/partner': for gym owners
-  - '/admin'  : for administrative tasks
+- '/admin'  : for administrative tasks
+- '/partner': for gym owners
+- '/user'   : for gym members
 */
 
-router.use("/user", userRoutes);
-router.use("/partner", partnerRoutes);
-router.use("/admin", adminRoutes);
+router.use("/auth", authRoutes);
+router.use("/admin", validateToken, adminRoutes);
+router.use("/partner", validateToken, partnerRoutes);
+router.use("/user", validateToken, userRoutes);
 
 module.exports = router;

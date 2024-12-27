@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
-const { sequelize } = require("../config/dbConnection");
-const Status = require("./statusModel");
+const { sequelize } = require("../config/db.config");
+const Status = require("./status.modal");
 
 const Admin = sequelize.define(
   "Admin",

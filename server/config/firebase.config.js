@@ -10,7 +10,7 @@ if (fs.existsSync("/etc/secrets/firebase-admin-sdk.json")) {
   );
 } else {
   // For local development
-  serviceAccount = require("../config/firebase-admin-sdk.json");
+  serviceAccount = require("./firebase-admin-sdk.json");
 }
 
 const app = admin.initializeApp({

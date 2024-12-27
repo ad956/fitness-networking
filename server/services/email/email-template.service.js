@@ -1,6 +1,6 @@
 const Mailgen = require("mailgen");
 
-function mailTemplateGenerator(
+function TemplateGenerator(
   name,
   introMsg,
   instructMsg,
@@ -34,4 +34,4 @@ function mailTemplateGenerator(
   return MailGenerator.generate(emailContent);
 }
 
-module.exports = mailTemplateGenerator;
+module.exports = TemplateGenerator;

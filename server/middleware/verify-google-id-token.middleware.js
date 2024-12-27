@@ -1,9 +1,10 @@
 const asyncHandler = require("express-async-handler");
-const { auth } = require("../services/firebase");
+const { auth } = require("../config/firebase.config");
 
 const verifyGoogleIdToken = asyncHandler(async (req, res, next) => {
   let token;
   let authHeader = req.headers.Authorization || req.headers.authorization;
+  const { role } = req.query;
 
   if (authHeader && authHeader.startsWith("Bearer")) {
     token = authHeader.split(" ")[1];
@@ -18,7 +19,7 @@ const verifyGoogleIdToken = asyncHandler(async (req, res, next) => {
       res.status(500);
       throw new Error(decodedToken.error);
     }
-    req.email = decodedToken.email;
+    req.user = { email: decodedToken.email, role };
     next();
   }
 

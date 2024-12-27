@@ -24,7 +24,7 @@ export default function VerificationModal({ user }) {
     isError: isVerificationError,
     error: verificationError,
     refetch: refetchVerification,
-  } = useCheckVerification(user.identifier);
+  } = useCheckVerification({ identifier: user.identifier, role: user.role });
 
   const { mutate: loginMutate, isLoading: isResending } = useLogin();
 

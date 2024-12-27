@@ -1,4 +1,4 @@
-const { transporter, nodemailer } = require("../config/emailConfig");
+const { transporter, nodemailer } = require("../../config/email.config");
 
 const sendEmail = async (message) => {
   const info = await transporter.sendMail(message);

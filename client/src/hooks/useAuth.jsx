@@ -6,8 +6,7 @@ import { signInWithPopup } from "firebase/auth";
 
 const authApi = {
   login: async (user) => {
-    const path = user.role === "user" ? "user" : "partner";
-    const response = await axios.post(`${path}/login`, user, {
+    const response = await axios.post(`auth/login`, user, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -28,12 +27,16 @@ const authApi = {
       }
 
       const firebaseToken = await auth.currentUser.getIdToken(true);
-      const response = await axios.post(`${userRole}/google-auth`, null, {
-        headers: {
-          Authorization: `Bearer ${firebaseToken}`,
-        },
-        validateStatus: (status) => status < 500,
-      });
+      const response = await axios.post(
+        `auth/google-auth?role=${userRole}`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${firebaseToken}`,
+          },
+          validateStatus: (status) => status < 500,
+        }
+      );
 
       if (response.message) {
         throw new Error(response.message);
@@ -45,11 +48,11 @@ const authApi = {
     }
   },
 
-  signup: async ({ email, password, role }) => {
-    const response = await axios.post(`/api/${role}/signup`, {
-      email,
-      password,
-      role,
+  signup: async (user) => {
+    const response = await axios.post(`auth/signup`, user, {
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
 
     if (!response.data.success) {
@@ -60,15 +63,15 @@ const authApi = {
   },
 
   logout: async (userRole) => {
-    return axios.post(`/${userRole}/logout`);
+    return axios.post(`auth/logout`);
   },
 
-  checkAuth: async () => {
-    return axios.get("/check-auth");
-  },
-
-  checkVerification: async (identifier) => {
-    const response = await axios.get(`/user/check-verification/${identifier}`);
+  checkVerification: async (user) => {
+    const response = await axios.post("auth/validate-login", user, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     return response.data;
   },
 };
@@ -126,21 +129,37 @@ export function useSignup() {
 }
 
 export function useCheckAuth() {
-  // return useQuery({
-  //   queryKey: ["auth"],
-  //   queryFn: authApi.checkAuth,
-  //   retry: false,
-  //   refetchOnWindowFocus: false,
-  // });
+  return useQuery({
+    queryKey: ["auth"],
+    queryFn: () => {
+      // Simply check localStorage for auth state
+      const isAuthenticated =
+        localStorage.getItem("isAuthenticated") === "true";
+      const userRole = localStorage.getItem("userRole");
 
-  return true;
+      if (isAuthenticated && userRole) {
+        return {
+          isAuthenticated,
+          role: userRole,
+        };
+      }
+
+      return null;
+    },
+    // No need for retries since we're just checking localStorage
+    retry: false,
+    // No need to refetch on window focus
+    refetchOnWindowFocus: false,
+    // Keep the data fresh for longer since it only changes on login/logout
+    staleTime: Infinity,
+  });
 }
 
-export function useCheckVerification(identifier) {
+export function useCheckVerification(user) {
   return useQuery({
-    queryKey: ["verification", identifier],
-    queryFn: () => authApi.checkVerification(identifier),
-    enabled: !!identifier,
+    queryKey: ["verification", user],
+    queryFn: () => authApi.checkVerification(user),
+    enabled: !!user,
     refetchInterval: 5000,
   });
 }
@@ -157,6 +176,7 @@ export function useAuthState() {
     signup,
     authData,
     isCheckingAuth,
-    isAuthenticated: !!authData?.user,
+    isAuthenticated: !!authData?.isAuthenticated,
+    userRole: authData?.role,
   };
 }
