@@ -10,6 +10,6 @@ router.post("/register", authController.register);
 router.post("/google-auth", verifyGoogleIdToken, authController.googleAuth);
 router.post("/forgot-password", authController.forgotPassword);
 router.get("/verify", authController.verifyUser);
-router.get("/validate-login/:identifier", authController.validateLogin);
+router.get("/validate-login", authController.validateLogin);
 
 module.exports = router;
