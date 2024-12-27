@@ -112,7 +112,6 @@ class AuthService {
     if (!user) {
       throw new Error(`${userType} not found. Please sign up.`);
     }
-
     return user;
   }
 

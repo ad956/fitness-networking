@@ -107,12 +107,17 @@ class AuthController {
   });
 
   googleAuth = asyncHandler(async (req, res) => {
-    const email = req.email; // Set by verifyGoogleIdToken middleware
+    const { email, role } = req.user; // Set by verifyGoogleIdToken middleware
 
-    const user = await this.authService.googleAuth(email);
-    const { accessToken, refreshToken } = this.authService.generateAuthTokens(
-      user.user_id
-    );
+    const user = await this.authService.googleAuth(email, role);
+
+    const primaryKey = user.constructor.primaryKeyAttribute; // Get the primary key field dynamically
+    const userId = user[primaryKey]; // Access the primary key value dynamically
+
+    const { accessToken, refreshToken } = this.authService.generateAuthTokens({
+      id: userId,
+      role,
+    });
 
     res
       .cookie("refreshToken", refreshToken, {
