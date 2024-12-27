@@ -167,8 +167,8 @@ const verifyUser = asyncHandler(async (req, res) => {
     .send(templates.verifiedUserTemplate);
 });
 
-// check if a user's login attempt has been verified
-const checkVerification = asyncHandler(async (req, res) => {
+// check if a user's login attempt was success
+const validateLogin = asyncHandler(async (req, res) => {
   const { identifier } = req.params;
   const email_mobile = identifier;
 
@@ -297,71 +297,6 @@ const forgetPassword = asyncHandler(async (req, res, next) => {
 
   const info = await sendEmail(message);
   res.status(201).json(info);
-  return;
-});
-
-//reset-password
-const resetPassword = asyncHandler(async (req, res, next) => {
-  const user = req.user;
-
-  const result = await User.findOne({ where: { user_id: user.id } });
-  const userEmail = result.email;
-
-  const resetToken = genratedOTP;
-  //  add otp to user
-  result.otp = resetToken;
-
-  const otpChanged = await result.save();
-  if (!otpChanged) {
-    res.status(500).json({ msg: "OTP sending failed" });
-    return;
-  }
-
-  // different for production
-  const passwordResetLink = `${constants.USER_URL}reset-password/${resetToken}`;
-
-  const introMsg =
-    "You have received this email because a password reset request for your account was received.";
-  const instuctMsg = "Click the button below to reset your password:";
-  const link = passwordResetLink;
-  const msg = "Reset your password";
-  const outro =
-    "If you did not request a password reset, no further action is required on your part.";
-
-  let mail = mailTemplateGenrator(
-    result.name,
-    introMsg,
-    instuctMsg,
-    link,
-    msg,
-    outro,
-    "#3457dc"
-  );
-
-  // sending an email ...
-  let message = {
-    from: constants.MAIL_FROM,
-    to: userEmail,
-    subject: "Reset Password",
-    html: mail,
-  };
-
-  const info = await sendEmail(message);
-  res.status(201).json(info);
-  return;
-});
-
-// after reset-pass/:token
-const setPassword = asyncHandler(async (req, res) => {
-  const user = req.user;
-  if (!user) {
-    console.log("User doesn't exist");
-    res
-      .status(401)
-      .redirect(`${constants.CLIENT_ERROR_URL}?msg=USER%20NOT%20EXISTS`);
-  }
-
-  res.redirect(`${constants.CLIENT_URL}login`); //set password route
   return;
 });
 
@@ -558,13 +493,11 @@ module.exports = {
   logout,
   googleAuth,
   verifyUser,
-  checkVerification,
+  validateLogin,
   registerUser,
   allUsers,
   getUser,
-  resetPassword,
   forgetPassword,
-  setPassword,
   availableCredits,
   purchaseCredits,
 };

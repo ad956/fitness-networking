@@ -10,14 +10,12 @@ router.get("/all", validateToken, userController.allUsers);
 router.post("/login", userController.login);
 router.post("/logout", userController.logout);
 
-router.get("/verify/:token", userController.verifyUser); // verify user after login
-router.get("/check-verification/:identifier", userController.checkVerification); // verify user after login
+router.get("/verify/:token", userController.verifyUser); // email login link verification
+router.get("/validate-login/:identifier", userController.validateLogin); // verify user's login attempt was success or not
 
 router.post("/google-auth", verifyGoogleIdToken, userController.googleAuth);
 router.post("/register", userController.registerUser);
-router.post("/forgot-password", userController.forgetPassword); // at login
-router.post("/reset-password", validateToken, userController.resetPassword); // using profile
-router.get("/reset-password/:token", validateToken, userController.setPassword);
+router.post("/forgot-password", userController.forgetPassword);
 
 router.get("/credit", validateToken, userController.availableCredits);
 router.post("/credit/:plan", validateToken, userController.purchaseCredits);
