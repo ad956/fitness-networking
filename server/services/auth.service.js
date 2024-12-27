@@ -5,8 +5,7 @@ const Admin = require("../models/admin.modal");
 const Partner = require("../models/partner.modal");
 const User = require("../models/user.modal");
 
-const sendEmail = require("../services/email/email.service");
-const mailTemplateGenerator = require("../services/email/email-template.service");
+const { sendEmail, templateGenrator } = require("../services/email/");
 const { constants, genratedOTP, tokens } = require("../utils/");
 
 class AuthService {

@@ -1,7 +1,6 @@
 const asyncHandler = require("express-async-handler");
-const Transaction = require("../models/transactionsModel");
-const mailTemplateGenrator = require("../services/emailTemplateGenrator");
-const sendEmail = require("../services/sendEmailService");
+const Transaction = require("../models/transactions.modal");
+const { sendEmail, templateGenrator } = require("../services/email/");
 const { constants } = require("../utils/constants");
 
 const purchaseCreditsTransaction = asyncHandler(async (transactionData) => {
