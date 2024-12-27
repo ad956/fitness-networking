@@ -17,6 +17,7 @@ exports.constants = {
   SERVER_BASE_URL: BASE_URLS.SERVER,
   CLIENT_ERROR_URL: `${BASE_URLS.CLIENT}/error`,
   CLIENT_URL: `${BASE_URLS.CLIENT}/`,
+  AUTH_URL: `${BASE_URLS.SERVER}/api/auth/`,
   USER_URL: `${BASE_URLS.SERVER}/api/user/`,
   PARTNER_URL: `${BASE_URLS.SERVER}/api/partner/`,
   ADMIN_URL: `${BASE_URLS.SERVER}/api/admin/`,
