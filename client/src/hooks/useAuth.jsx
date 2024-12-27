@@ -27,12 +27,16 @@ const authApi = {
       }
 
       const firebaseToken = await auth.currentUser.getIdToken(true);
-      const response = await axios.post(`auth/google-auth`, null, {
-        headers: {
-          Authorization: `Bearer ${firebaseToken}`,
-        },
-        validateStatus: (status) => status < 500,
-      });
+      const response = await axios.post(
+        `auth/google-auth?role=${userRole}`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${firebaseToken}`,
+          },
+          validateStatus: (status) => status < 500,
+        }
+      );
 
       if (response.message) {
         throw new Error(response.message);
