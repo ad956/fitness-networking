@@ -8,9 +8,9 @@ class AuthController {
   }
 
   register = asyncHandler(async (req, res) => {
-    const { name, email, password, mobile } = req.body;
+    const { role, name, email, password, mobile } = req.body;
 
-    if (!name || !email || !password || !mobile) {
+    if (!role || !name || !email || !password || !mobile) {
       res.status(400);
       throw new Error("All fields are mandatory");
     }
@@ -25,14 +25,14 @@ class AuthController {
   });
 
   login = asyncHandler(async (req, res) => {
-    const { identifier, password } = req.body;
+    const { role, identifier, password } = req.body;
 
-    if (!identifier || !password) {
+    if (!role || !identifier || !password) {
       res.status(400);
       throw new Error("All fields are mandatory");
     }
 
-    await this.authService.login(identifier, password);
+    await this.authService.login(identifier, password, role);
     res.status(200).json({ msg: "verification pending" });
   });
 
@@ -46,8 +46,8 @@ class AuthController {
   });
 
   verifyUser = asyncHandler(async (req, res) => {
-    const { token } = req.params;
-    const user = await this.authService.verifyUserToken(token);
+    const { token, role } = req.query;
+    const user = await this.authService.verifyUserToken(token, role);
 
     if (!user) {
       return res
