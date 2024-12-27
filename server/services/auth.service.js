@@ -1,25 +1,31 @@
 const bcrypt = require("bcrypt");
 const { Op } = require("sequelize");
-
-const Admin = require("../models/admin.modal");
-const Partner = require("../models/partner.modal");
-const User = require("../models/user.modal");
-
 const { sendEmail, templateGenrator } = require("../services/email/");
 const { constants, genratedOTP, tokens } = require("../utils/");
 
 class AuthService {
+  constructor() {
+    this.models = {
+      admin: require("../models/admin.modal"),
+      partner: require("../models/partner.modal"),
+      user: require("../models/user.modal"),
+    };
+
+    this.bcryptRounds = parseInt(process.env.BCRYPT_ROUNDS, 10) || 10;
+    this.emailService = sendEmail;
+    this.templateGenerator = templateGenrator;
+  }
+
   getModel(userType) {
-    switch (userType.toLowerCase()) {
-      case "admin":
-        return Admin;
-      case "partner":
-        return Partner;
-      case "user":
-        return User;
-      default:
-        throw new Error("Invalid user type");
+    const model = this.models[userType.toLowerCase()];
+    if (!model) {
+      throw new Error("Invalid user type");
     }
+    return model;
+  }
+
+  async hashPassword(password) {
+    return await bcrypt.hash(password, this.bcryptRounds);
   }
 
   async register(userData, userType) {
@@ -34,8 +40,7 @@ class AuthService {
       throw new Error(`${userType} already exists`);
     }
 
-    const bcryptRounds = parseInt(process.env.BCRYPT_ROUNDS, 10) || 10;
-    const hashedPassword = await bcrypt.hash(password, bcryptRounds);
+    const hashedPassword = await this.hashPassword(password);
 
     return Model.create({
       name,
@@ -45,9 +50,15 @@ class AuthService {
     });
   }
 
+  async validateCredentials(user, password) {
+    if (!user) {
+      return false;
+    }
+    return await bcrypt.compare(password, user.password);
+  }
+
   async login(identifier, password, userType) {
     const Model = this.getModel(userType);
-
     const user = await Model.findOne({
       where: { [Op.or]: [{ email: identifier }, { mobile: identifier }] },
     });
@@ -56,12 +67,12 @@ class AuthService {
       throw new Error(`${userType} doesn't exist`);
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await this.validateCredentials(user, password);
     if (!isPasswordValid) {
       throw new Error("Invalid credentials");
     }
 
-    const verificationSecret = generateOTP;
+    const verificationSecret = genratedOTP();
     user.otp = verificationSecret;
     await user.save();
 
@@ -84,62 +95,10 @@ class AuthService {
     return user;
   }
 
-  async validateLogin(identifier, userType) {
-    const Model = this.getModel(userType);
-    const user = await Model.findOne({
-      where: { [Op.or]: [{ email: identifier }, { mobile: identifier }] },
-    });
-
-    if (!user) {
-      throw new Error(`${userType} doesn't exist`);
-    }
-
-    return { verified: user.otp === null };
-  }
-
-  async googleAuth(email, userType) {
-    const Model = this.getModel(userType);
-    const user = await Model.findOne({
-      where: { email },
-    });
-
-    if (!user) {
-      throw new Error(`${userType} not found. Please sign up.`);
-    }
-
-    return user;
-  }
-
-  async forgotPassword(identifier, userType) {
-    const Model = this.getModel(userType);
-    const user = await Model.findOne({
-      where: { [Op.or]: [{ email: identifier }, { mobile: identifier }] },
-    });
-
-    if (!user) {
-      throw new Error(`${userType} doesn't exist`);
-    }
-
-    const forgotPasswordSecret = genratedOTP;
-    user.otp = forgotPasswordSecret;
-    await user.save();
-
-    await this.sendForgotPasswordEmail(user, forgotPasswordSecret, userType);
-
-    return true;
-  }
-
-  generateAuthTokens(userId, userType) {
-    return {
-      accessToken: tokens.generateAccessToken(userId, userType),
-      refreshToken: tokens.generateRefreshToken(userId, userType),
-    };
-  }
-
   async sendLoginVerificationEmail(user, verificationSecret, userType) {
     const verificationLink = `${constants.USER_URL}${userType}/verify/${verificationSecret}`;
 
-    const mail = mailTemplateGenerator(
+    const mail = this.templateGenerator(
       user.name,
       `You have received this email because a login request for your ${userType} account was received.`,
       "Click the button below to login to your account:",
@@ -156,30 +115,14 @@ class AuthService {
       html: mail,
     };
 
-    return sendEmail(message);
+    return this.emailService(message);
   }
 
-  async sendForgotPasswordEmail(user, forgotPasswordSecret, userType) {
-    const forgotPasswordLink = `${constants.USER_URL}${userType}/reset-password/${forgotPasswordSecret}`;
-
-    const mail = mailTemplateGenerator(
-      user.name,
-      `You have received this email because a forgot password request for your ${userType} account was received.`,
-      "Click the button below to reset your password:",
-      forgotPasswordLink,
-      "Reset your password",
-      "If you did not request a password reset, no further action is required on your part.",
-      "#3457dc"
-    );
-
-    const message = {
-      from: constants.MAIL_FROM,
-      to: user.email,
-      subject: `Reset Password for ${userType} Account`,
-      html: mail,
+  generateAuthTokens(userId, userType) {
+    return {
+      accessToken: tokens.generateAccessToken(userId, userType),
+      refreshToken: tokens.generateRefreshToken(userId, userType),
     };
-
-    return sendEmail(message);
   }
 }
 
