@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const { auth } = require("../services/firebase");
+const { auth } = require("../config/firebase.config");
 
 const verifyGoogleIdToken = asyncHandler(async (req, res, next) => {
   let token;
