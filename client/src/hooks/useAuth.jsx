@@ -66,10 +66,6 @@ const authApi = {
     return axios.post(`auth/logout`);
   },
 
-  checkAuth: async () => {
-    return axios.get("auth/check-auth");
-  },
-
   checkVerification: async (user) => {
     const response = await axios.post("auth/validate-login", user, {
       headers: {
@@ -133,14 +129,30 @@ export function useSignup() {
 }
 
 export function useCheckAuth() {
-  // return useQuery({
-  //   queryKey: ["auth"],
-  //   queryFn: authApi.checkAuth,
-  //   retry: false,
-  //   refetchOnWindowFocus: false,
-  // });
+  return useQuery({
+    queryKey: ["auth"],
+    queryFn: () => {
+      // Simply check localStorage for auth state
+      const isAuthenticated =
+        localStorage.getItem("isAuthenticated") === "true";
+      const userRole = localStorage.getItem("userRole");
 
-  return true;
+      if (isAuthenticated && userRole) {
+        return {
+          isAuthenticated,
+          role: userRole,
+        };
+      }
+
+      return null;
+    },
+    // No need for retries since we're just checking localStorage
+    retry: false,
+    // No need to refetch on window focus
+    refetchOnWindowFocus: false,
+    // Keep the data fresh for longer since it only changes on login/logout
+    staleTime: Infinity,
+  });
 }
 
 export function useCheckVerification(user) {
@@ -164,6 +176,7 @@ export function useAuthState() {
     signup,
     authData,
     isCheckingAuth,
-    isAuthenticated: !!authData?.user,
+    isAuthenticated: !!authData?.isAuthenticated,
+    userRole: authData?.role,
   };
 }
