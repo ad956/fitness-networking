@@ -5,7 +5,7 @@ const asyncHandler = require("express-async-handler");
 const genratedOTP = require("../services/otpGenration");
 const sendEmail = require("../services/sendEmailService");
 const mailTemplateGenrator = require("../services/emailTemplateGenrator");
-const { constants, templates, tokens } = require("../utils/");
+const { constants, templates, tokens } = require("../utils");
 
 //register
 const register = asyncHandler(async (req, res) => {

@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
-const userRoutes = require("./api/userRoute");
-const partnerRoutes = require("./api/partnerRoute");
-const adminRoutes = require("./api/adminRoute");
+const userRoutes = require("./api/user.routes");
+const partnerRoutes = require("./api/partner.routes");
+const adminRoutes = require("./api/admin.routes");
 
 /*
   - '/user'   : for gym members

@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const partnerController = require("../../controllers/partnerController");
+const partnerController = require("../../controllers/partner.controller");
 const validateToken = require("../../middleware/validateTokenHandler");
 const verifyGoogleIdToken = require("../../middleware/verifyGoogleIdToken");
 

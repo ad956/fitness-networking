@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const adminController = require("../../controllers/adminController");
+const adminController = require("../../controllers/admin.controller");
 const validateToken = require("../../middleware/validateTokenHandler");
 
 router.get("/", validateToken, adminController.getAdmin);
