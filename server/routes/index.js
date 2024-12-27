@@ -1,18 +1,20 @@
 const express = require("express");
 const router = express.Router();
 
-const userRoutes = require("./api/user.routes");
-const partnerRoutes = require("./api/partner.routes");
 const adminRoutes = require("./api/admin.routes");
+const authRoutes = require("./api/auth.routes");
+const partnerRoutes = require("./api/partner.routes");
+const userRoutes = require("./api/user.routes");
 
 /*
-  - '/user'   : for gym members
-  - '/partner': for gym owners
-  - '/admin'  : for administrative tasks
+- '/admin'  : for administrative tasks
+- '/partner': for gym owners
+- '/user'   : for gym members
 */
 
-router.use("/user", userRoutes);
-router.use("/partner", partnerRoutes);
+router.use("/auth", authRoutes);
 router.use("/admin", adminRoutes);
+router.use("/partner", partnerRoutes);
+router.use("/user", userRoutes);
 
 module.exports = router;
