@@ -1,10 +1,11 @@
 const { DataTypes } = require("sequelize");
-const { sequelize } = require("../config/dbConnection");
-const GymProfile = require("./gymProfileModel");
-const GymUsers = require("./gymUsersModel");
-const Service = require("./gymServicesModel");
-const Status = require("./statusModel");
-const User = require("./userModel");
+const { sequelize } = require("../config/db.config");
+
+const GymProfile = require("./gym-profile.modal");
+const GymUsers = require("./gym-users.modal");
+const Service = require("./gym-services.modal");
+const Status = require("./status.modal");
+const User = require("./user.modal");
 
 // Gym Model is used as Partner model throughout the app
 const Partner = sequelize.define(

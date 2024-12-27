@@ -1,8 +1,8 @@
 const { DataTypes } = require("sequelize");
-const { sequelize } = require("../config/dbConnection");
+const { sequelize } = require("../config/db.config");
 
-const User = require("./userModel");
-const Gym = require("./partnerModel");
+const User = require("./user.modal");
+const Gym = require("./partner.modal");
 
 const Transactions = sequelize.define(
   "Transactions",
