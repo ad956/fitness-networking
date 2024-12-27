@@ -1,16 +1,13 @@
 const { Op } = require("sequelize");
-const Admin = require("../models/adminModel");
-const User = require("../models/userModel");
-const Profile = require("../models/userProfileModel");
-const mailTemplateGenrator = require("../services/emailTemplateGenrator");
-const sendEmail = require("../services/sendEmailService");
-const { constants, tokens } = require("../utils");
-const Status = require("../models/statusModel");
-const Partner = require("../models/partnerModel");
+const Admin = require("../models/admin.modal");
+const User = require("../models/user.modal");
+const Profile = require("../models/user-profile.modal");
+const { sendEmail, templateGenrator } = require("../services/email/");
+const { constants, genratedOTP, tokens } = require("../utils");
+const Status = require("../models/status.modal");
+const Partner = require("../models/partner.modal");
 const bcrypt = require("bcrypt");
 const asyncHandler = require("express-async-handler");
-const genratedOTP = require("../services/otpGenration");
-const { generateAccessToken } = require("../utils/generateTokens");
 
 const register = asyncHandler(async (req, res) => {
   const { name, email, mobile, password } = req.body;

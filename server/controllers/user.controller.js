@@ -1,15 +1,9 @@
-const { Op } = require("sequelize");
-const User = require("../models/userModel");
-const UserService = require("../services/userServices");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const User = require("../models/user.modal");
+const UserService = require("../services/user.service");
 const asyncHandler = require("express-async-handler");
-const genratedOTP = require("../services/otpGenration");
-const mailTemplateGenrator = require("../services/emailTemplateGenrator");
-const { constants, templates, tokens } = require("../utils");
-const sendEmail = require("../services/sendEmailService");
-const Profile = require("../models/userProfileModel");
-const Transaction = require("../models/transactionsModel");
+const { constants } = require("../utils");
+const Profile = require("../models/user-profile.modal");
+const Transaction = require("../models/transactions.modal");
 
 // get all users details
 const allUsers = asyncHandler(async (req, res, next) => {
