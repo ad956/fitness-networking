@@ -15,12 +15,15 @@ class AuthController {
       throw new Error("All fields are mandatory");
     }
 
-    const newUser = await this.authService.register({
-      name,
-      email,
-      password,
-      mobile,
-    });
+    const newUser = await this.authService.register(
+      {
+        name,
+        email,
+        password,
+        mobile,
+      },
+      role
+    );
     res.status(201).json({ newUser });
   });
 
@@ -47,6 +50,12 @@ class AuthController {
 
   verifyUser = asyncHandler(async (req, res) => {
     const { token, role } = req.query;
+
+    if (!role || !token) {
+      res.status(400);
+      throw new Error("All fields are mandatory");
+    }
+
     const user = await this.authService.verifyUserToken(token, role);
 
     if (!user) {
@@ -57,9 +66,13 @@ class AuthController {
         );
     }
 
-    const { accessToken, refreshToken } = this.authService.generateAuthTokens(
-      user.id
-    );
+    const primaryKey = user.constructor.primaryKeyAttribute; // Get the primary key field dynamically
+    const userId = user[primaryKey]; // Access the primary key value dynamically
+
+    const { accessToken, refreshToken } = this.authService.generateAuthTokens({
+      id: userId,
+      role: role,
+    });
 
     res
       .cookie("refreshToken", refreshToken, {
@@ -79,14 +92,17 @@ class AuthController {
   });
 
   validateLogin = asyncHandler(async (req, res) => {
-    const { identifier } = req.params;
+    const { identifier, role } = req.body;
 
-    if (!identifier) {
+    if (!identifier || !role) {
       res.status(400);
-      throw new Error("Identifier field is mandatory");
+      throw new Error("Identifier & Role field are mandatory");
     }
 
-    const result = await this.authService.validateLogin(identifier);
+    const result = await this.authService.validateLogin({
+      identifier,
+      userType: role,
+    });
     res.status(200).json(result);
   });
 
