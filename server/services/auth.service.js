@@ -80,7 +80,7 @@ class AuthService {
     const user = await Model.findOne({ where: { otp: token } });
 
     if (!user) {
-      throw new Error("Invalid or expired token");
+      return null;
     }
 
     user.otp = null;
@@ -90,7 +90,7 @@ class AuthService {
   }
 
   // checks if login attempt is success or not
-  async validateLogin(identifier, userType) {
+  async validateLogin({ identifier, userType }) {
     const Model = this.getModel(userType);
     const user = await Model.findOne({
       where: { [Op.or]: [{ email: identifier }, { mobile: identifier }] },
@@ -135,10 +135,10 @@ class AuthService {
     return true;
   }
 
-  generateAuthTokens(userId, userType) {
+  generateAuthTokens(user) {
     return {
-      accessToken: tokens.generateAccessToken(userId, userType),
-      refreshToken: tokens.generateRefreshToken(userId, userType),
+      accessToken: tokens.generateAccessToken(user),
+      refreshToken: tokens.generateRefreshToken(user),
     };
   }
 
