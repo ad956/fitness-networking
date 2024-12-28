@@ -15,7 +15,7 @@ const errorHandler = (err, req, res, next) => {
   const statusCode = res.statusCode ?? 500;
   const errorTitle =
     Object.keys(constants).find((key) => constants[key] === statusCode) ||
-    "ERROR";
+    "ERROR : Defect";
 
   res.status(statusCode).json({
     title: errorTitle,
