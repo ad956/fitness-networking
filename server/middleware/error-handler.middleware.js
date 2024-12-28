@@ -1,53 +1,27 @@
+const HttpError = require("../errors/http-error");
 const { constants } = require("../utils/constants");
 
 const errorHandler = (err, req, res, next) => {
-  const statusCode = res.statusCode ?? 500;
-
-  switch (statusCode) {
-    case constants.VALIDATION_ERROR:
-      res.json({
-        title: "VALIDATION_ERROR",
-        message: err.message,
-        stackTrace: err.stack,
-      });
-      break;
-    case constants.UNAUTHORIZED:
-      res.json({
-        title: "UNAUTHORIZED",
-        message: err.message,
-        stackTrace: err.stack,
-      });
-      break;
-    case constants.FORBIDDEN:
-      res.json({
-        title: "FORBIDDEN",
-        message: err.message,
-        stackTrace: err.stack,
-      });
-      break;
-    case constants.NOT_FOUND:
-      res.json({
-        title: "Not Found",
-        message: err.message,
-        stackTrace: err.stack,
-      });
-      break;
-    case constants.SERVER_ERROR:
-      res.json({
-        title: "SERVER_ERROR",
-        message: err.message,
-        stackTrace: err.stack,
-      });
-      break;
-
-    default:
-      res.json({
-        title: "ERROR : Defect",
-        message: err.message,
-        stackTrace: err.stack,
-      });
-      break;
+  // handle our custom HttpError
+  if (err instanceof HttpError) {
+    return res.status(err.statusCode).json({
+      title: err.title,
+      message: err.message,
+      stackTrace: err.stack,
+    });
   }
+
+  // handle regular errors with status codes already set
+  const statusCode = res.statusCode ?? 500;
+  const errorTitle =
+    Object.keys(constants).find((key) => constants[key] === statusCode) ||
+    "ERROR";
+
+  res.status(statusCode).json({
+    title: errorTitle,
+    message: err.message,
+    stackTrace: err.stack,
+  });
 };
 
 module.exports = errorHandler;
