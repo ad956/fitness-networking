@@ -12,12 +12,13 @@ import {
 import { email_gif } from "@images";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { useCheckVerification, useLogin } from "@hooks";
+import { useAuthState, useLogin, useCheckVerification } from "@hooks";
 
 export default function VerificationModal({ user }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const navigate = useNavigate();
 
+  const { storeAccessToken, storeUserRole } = useAuthState();
   const {
     data: verificationData,
     isLoading: isCheckingVerification,
@@ -35,12 +36,24 @@ export default function VerificationModal({ user }) {
   useEffect(() => {
     if (verificationData?.verified) {
       toast.success("Email verified successfully!");
+
+      // store access token and user role using useAuthState hook
+      storeAccessToken(verificationData.accessToken);
+      storeUserRole(user.role);
+
       setTimeout(() => {
         onOpenChange(false);
         navigate(`/${user.role}`);
       }, 2000);
     }
-  }, [verificationData, navigate, onOpenChange, user.role]);
+  }, [
+    verificationData,
+    navigate,
+    onOpenChange,
+    user.role,
+    storeAccessToken,
+    storeUserRole,
+  ]);
 
   const handleResendClick = () => {
     loginMutate(user, {
