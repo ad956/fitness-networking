@@ -1,4 +1,5 @@
 const Partner = require("../models/partner.modal");
+const HttpError = require("../errors/http-error");
 
 class PartnerService {
   constructor() {

@@ -3,6 +3,7 @@ const { sendEmail, templateGenrator } = require("../services/email/");
 const { constants } = require("../utils/constants");
 const User = require("../models/user.modal");
 const Profile = require("../models/user-profile.modal");
+const HttpError = require("../errors/http-error");
 
 class UserService {
   // Credit plans configuration
@@ -47,11 +48,11 @@ class UserService {
   async processCreditsPurchase(userId, planId) {
     const user = await this.getUserProfile(userId);
     if (!user) {
-      throw new Error("User not found");
+      throw HttpError.notFound("User not found");
     }
 
     if (!this.validatePurchasePlan(planId)) {
-      throw new Error("Invalid purchase plan");
+      throw HttpError.badRequest("Invalid purchase plan");
     }
 
     const creditPointsToBeAdded = parseFloat(planId);

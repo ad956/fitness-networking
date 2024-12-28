@@ -4,6 +4,7 @@ const { Op } = require("sequelize");
 const Admin = require("../models/admin.modal");
 const Partner = require("../models/partner.modal");
 const User = require("../models/user.modal");
+const HttpError = require("../errors/http-error");
 
 const { sendEmail, templateGenrator } = require("../services/email/");
 const { constants, genratedOTP, tokens } = require("../utils/");
@@ -22,7 +23,7 @@ class AuthService {
       case "user":
         return User;
       default:
-        throw new Error("Invalid user type");
+        throw HttpError.badRequest("Invalid user type");
     }
   }
 
@@ -35,7 +36,7 @@ class AuthService {
     });
 
     if (userExists) {
-      throw new Error(`${userType} already exists`);
+      throw HttpError.badRequest(`${userType} already exists`);
     }
 
     const bcryptRounds = parseInt(process.env.BCRYPT_ROUNDS, 10) || 10;
@@ -57,12 +58,12 @@ class AuthService {
     });
 
     if (!user) {
-      throw new Error(`${userType} doesn't exist`);
+      throw HttpError.notFound(`${userType} doesn't exist`);
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      throw new Error("Invalid credentials");
+      throw HttpError.unauthorized("Invalid credentials");
     }
 
     const verificationSecret = genratedOTP;
@@ -97,7 +98,7 @@ class AuthService {
     });
 
     if (!user) {
-      throw new Error(`${userType} doesn't exist`);
+      throw HttpError.notFound(`${userType} doesn't exist`);
     }
 
     return { verified: user.otp === null };
@@ -110,7 +111,7 @@ class AuthService {
     });
 
     if (!user) {
-      throw new Error(`${userType} not found. Please sign up.`);
+      throw HttpError.notFound(`${userType} not found. Please sign up.`);
     }
     return user;
   }
@@ -122,7 +123,7 @@ class AuthService {
     });
 
     if (!user) {
-      throw new Error(`${userType} doesn't exist`);
+      throw HttpError.notFound(`${userType} doesn't exist`);
     }
 
     const forgotPasswordSecret = genratedOTP;

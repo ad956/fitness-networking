@@ -7,6 +7,7 @@ const Partner = require("../models/partner.modal");
 const { sendEmail } = require("./email/");
 const { constants } = require("../utils");
 const bcrypt = require("bcrypt");
+const HttpError = require("../errors/http-error");
 
 class AdminService {
   constructor() {
@@ -26,7 +27,7 @@ class AdminService {
     });
 
     if (adminExists) {
-      throw new Error("Admin already exists");
+      throw HttpError.badRequest("Admin already exists");
     }
 
     const hashedPassword = await bcrypt.hash(password, this.bcryptRounds);
@@ -47,12 +48,12 @@ class AdminService {
     });
 
     if (!admin) {
-      throw new Error("Admin not found");
+      throw HttpError.notFound("Admin not found");
     }
 
     const isPasswordValid = await bcrypt.compare(password, admin.password);
     if (!isPasswordValid) {
-      throw new Error("Invalid credentials");
+      throw HttpError.unauthorized("Invalid credentials");
     }
 
     return admin;
