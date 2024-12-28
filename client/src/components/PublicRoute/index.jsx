@@ -7,7 +7,11 @@ const PublicRoute = ({ children }) => {
   const { data: authData, isLoading } = useCheckAuth();
 
   if (isLoading) {
-    return <SpinnerLoader />;
+    return (
+      <div className="h-screen grid place-items-center">
+        <SpinnerLoader />
+      </div>
+    );
   }
 
   if (authData?.isAuthenticated) {

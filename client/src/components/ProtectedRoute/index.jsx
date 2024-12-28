@@ -32,7 +32,11 @@ const ProtectedRoute = ({ requiredRole, children }) => {
   }, [isLoading, authData?.isAuthenticated, authData?.role, requiredRole]);
 
   if (isLoading) {
-    return <SpinnerLoader />;
+    return (
+      <div className="h-screen grid place-items-center">
+        <SpinnerLoader />
+      </div>
+    );
   }
 
   // handle error state if user is not authenticated or doesn't have required role
