@@ -12,9 +12,7 @@ const authApi = {
       },
     });
 
-    if (response.message) {
-      throw new Error("Login failed");
-    }
+    if (response.data.message) throw new Error(response.data.message);
 
     return response.data;
   },
@@ -129,29 +127,23 @@ export function useSignup() {
 }
 
 export function useCheckAuth() {
+  const queryClient = useQueryClient();
+
   return useQuery({
     queryKey: ["auth"],
     queryFn: () => {
-      // Simply check localStorage for auth state
-      const isAuthenticated =
-        localStorage.getItem("isAuthenticated") === "true";
-      const userRole = localStorage.getItem("userRole");
+      const accessToken = sessionStorage.getItem("accessToken");
+      const userRole = queryClient.getQueryData("userRole");
 
-      if (isAuthenticated && userRole) {
-        return {
-          isAuthenticated,
-          role: userRole,
-        };
+      if (accessToken && userRole) {
+        return { isAuthenticated: true, role: userRole };
       }
 
-      return null;
+      return { isAuthenticated: false, role: null };
     },
-    // No need for retries since we're just checking localStorage
-    retry: false,
-    // No need to refetch on window focus
-    refetchOnWindowFocus: false,
-    // Keep the data fresh for longer since it only changes on login/logout
-    staleTime: Infinity,
+    retry: false, // No need to retry for auth check
+    refetchOnWindowFocus: false, // No need to refetch on window focus
+    staleTime: Infinity, // No need to refetch until logout
   });
 }
 
@@ -169,6 +161,22 @@ export function useAuthState() {
   const googleAuth = useGoogleAuth();
   const signup = useSignup();
   const { data: authData, isLoading: isCheckingAuth } = useCheckAuth();
+  const queryClient = useQueryClient();
+
+  const storeAccessToken = (accessToken) => {
+    // Store the access token in sessionStorage
+    sessionStorage.setItem("accessToken", accessToken);
+  };
+
+  const storeUserRole = (userRole) => {
+    // Store the user role in react-query
+    queryClient.setQueryData("userRole", userRole);
+  };
+
+  const removeAuthData = () => {
+    sessionStorage.removeItem("accessToken");
+    queryClient.removeQueries("userRole");
+  };
 
   return {
     login,
@@ -176,7 +184,8 @@ export function useAuthState() {
     signup,
     authData,
     isCheckingAuth,
-    isAuthenticated: !!authData?.isAuthenticated,
-    userRole: authData?.role,
+    storeAccessToken,
+    storeUserRole,
+    removeAuthData,
   };
 }
