@@ -94,11 +94,11 @@ export function useLogout() {
     mutationFn: (userRole) => authApi.logout(userRole),
     onSuccess: () => {
       // Clear React Query cache
-      queryClient.removeQueries({ queryKey: ["user"] });
+      queryClient.removeQueries({ queryKey: ["auth"] });
 
-      // Clear localStorage
-      localStorage.removeItem("userRole");
-      localStorage.removeItem("isAuthenticated");
+      // Clear sessionStorage
+      sessionStorage.removeItem("userRole");
+      sessionStorage.removeItem("accessToken");
 
       toast.success("Logged out successfully");
       navigate("/login");
@@ -133,7 +133,7 @@ export function useCheckAuth() {
     queryKey: ["auth"],
     queryFn: () => {
       const accessToken = sessionStorage.getItem("accessToken");
-      const userRole = queryClient.getQueryData("userRole");
+      const userRole = sessionStorage.getItem("userRole");
 
       if (accessToken && userRole) {
         return { isAuthenticated: true, role: userRole };
@@ -170,12 +170,12 @@ export function useAuthState() {
 
   const storeUserRole = (userRole) => {
     // Store the user role in react-query
-    queryClient.setQueryData("userRole", userRole);
+    sessionStorage.setItem("userRole", userRole);
   };
 
   const removeAuthData = () => {
     sessionStorage.removeItem("accessToken");
-    queryClient.removeQueries("userRole");
+    sessionStorage.removeItem("userRole");
   };
 
   return {

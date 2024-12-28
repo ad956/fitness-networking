@@ -43,7 +43,8 @@ export default function VerificationModal({ user }) {
 
       setTimeout(() => {
         onOpenChange(false);
-        navigate(`/${user.role}`);
+        // navigate(`/${user.role}`);
+        window.location.reload();
       }, 2000);
     }
   }, [
