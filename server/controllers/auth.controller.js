@@ -66,29 +66,7 @@ class AuthController {
         );
     }
 
-    const primaryKey = user.constructor.primaryKeyAttribute; // Get the primary key field dynamically
-    const userId = user[primaryKey]; // Access the primary key value dynamically
-
-    const { accessToken, refreshToken } = this.authService.generateAuthTokens({
-      id: userId,
-      role: role,
-    });
-
-    res
-      .cookie("refreshToken", refreshToken, {
-        maxAge: constants.COOKIE_MAX_AGE_MS,
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
-      })
-      .cookie("accessToken", accessToken, {
-        maxAge: constants.COOKIE_MAX_AGE_MS,
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
-      })
-      .status(200)
-      .send(templates.verifiedUserTemplate);
+    res.status(200).send(templates.verifiedUserTemplate);
   });
 
   validateLogin = asyncHandler(async (req, res) => {
@@ -99,25 +77,35 @@ class AuthController {
       throw new Error("Identifier & Role field are mandatory");
     }
 
-    const result = await this.authService.validateLogin({
-      identifier,
-      userType: role,
-    });
-    res.status(200).json(result);
+    const { accessToken, refreshToken, verified } =
+      await this.authService.validateLogin({
+        identifier,
+        userType: role,
+      });
+
+    if (!verified) {
+      // if not verified, return only the verification status
+      return res.status(200).json({ verified });
+    }
+
+    res
+      .cookie("refreshToken", refreshToken, {
+        maxAge: constants.COOKIE_MAX_AGE_MS,
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+      })
+      .status(200)
+      .json({ accessToken, verified });
   });
 
   googleAuth = asyncHandler(async (req, res) => {
     const { email, role } = req.user; // Set by verifyGoogleIdToken middleware
 
-    const user = await this.authService.googleAuth(email, role);
-
-    const primaryKey = user.constructor.primaryKeyAttribute; // Get the primary key field dynamically
-    const userId = user[primaryKey]; // Access the primary key value dynamically
-
-    const { accessToken, refreshToken } = this.authService.generateAuthTokens({
-      id: userId,
-      role,
-    });
+    const { accessToken, refreshToken } = await this.authService.googleAuth(
+      email,
+      role
+    );
 
     res
       .cookie("refreshToken", refreshToken, {
