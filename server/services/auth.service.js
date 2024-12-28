@@ -63,7 +63,7 @@ class AuthService {
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      throw HttpError.unauthorized("Invalid credentials");
+      throw HttpError.unauthorized("Invalid credentials. Please try again.");
     }
 
     const verificationSecret = genratedOTP;
@@ -101,7 +101,22 @@ class AuthService {
       throw HttpError.notFound(`${userType} doesn't exist`);
     }
 
-    return { verified: user.otp === null };
+    const verified = user.otp === null;
+
+    if (!verified) {
+      // if the user is not verified
+      return { verified };
+    }
+
+    const primaryKey = user.constructor.primaryKeyAttribute; // Get the primary key field dynamically
+    const userId = user[primaryKey]; // Access the primary key value dynamically
+
+    const { accessToken, refreshToken } = this.generateAuthTokens({
+      id: userId,
+      role: userType,
+    });
+
+    return { accessToken, refreshToken, verified };
   }
 
   async googleAuth(email, userType) {
@@ -113,7 +128,16 @@ class AuthService {
     if (!user) {
       throw HttpError.notFound(`${userType} not found. Please sign up.`);
     }
-    return user;
+
+    const primaryKey = user.constructor.primaryKeyAttribute; // Get the primary key field dynamically
+    const userId = user[primaryKey]; // Access the primary key value dynamically
+
+    const { accessToken, refreshToken } = this.generateAuthTokens({
+      id: userId,
+      role: userType,
+    });
+
+    return { accessToken, refreshToken };
   }
 
   async forgotPassword(identifier, userType) {
