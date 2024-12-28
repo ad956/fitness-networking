@@ -9,39 +9,38 @@ const ProtectedRoute = ({ requiredRole, children }) => {
 
   useEffect(() => {
     if (!isLoading) {
-      if (authData?.user?.isAuthenticated) {
-        if (requiredRole === "admin" && authData.user.role !== "admin") {
-          setStatusCode(403); // Forbidden
-          return;
-        }
-
-        if (
-          (requiredRole === "user" || requiredRole === "partner") &&
-          authData.user.role !== requiredRole
-        ) {
-          setStatusCode(401); // Unauthorized
-          return;
-        }
-      } else {
+      // if the user is not authenticated
+      if (!authData?.isAuthenticated) {
         setStatusCode(401); // Unauthorized
+        return;
+      }
+
+      // check if the user has the correct role
+      if (requiredRole === "admin" && authData?.role !== "admin") {
+        setStatusCode(403); // Forbidden
+        return;
+      }
+
+      if (
+        (requiredRole === "user" || requiredRole === "partner") &&
+        authData?.role !== requiredRole
+      ) {
+        setStatusCode(401); // Unauthorized
+        return;
       }
     }
-  }, [
-    isLoading,
-    authData?.user?.isAuthenticated,
-    authData?.user?.role,
-    requiredRole,
-  ]);
+  }, [isLoading, authData?.isAuthenticated, authData?.role, requiredRole]);
 
   if (isLoading) {
     return <SpinnerLoader />;
   }
 
-  if (!authData?.user?.isAuthenticated) {
+  // handle error state if user is not authenticated or doesn't have required role
+  if (!authData?.isAuthenticated || statusCode) {
     return <AuthErrorFallback statusCode={statusCode} />;
   }
 
-  return statusCode ? <AuthErrorFallback statusCode={statusCode} /> : children;
+  return children; // user is authenticated and has the correct role
 };
 
 export default ProtectedRoute;
