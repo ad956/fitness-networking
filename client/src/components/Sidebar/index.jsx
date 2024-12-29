@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import { Button, cn, Image } from "@nextui-org/react";
+import { cn, Image } from "@nextui-org/react";
 import { fitness } from "@images";
 import {
   LuLayoutDashboard,
@@ -14,12 +14,12 @@ import {
 } from "react-icons/lu";
 import { useLogout } from "@hooks";
 import { motion } from "framer-motion";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { Settings } from "@components";
 
 export default function Sidebar() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const { logout, isLoading } = useLogout();
+  const { logout, isLoading, logoutError } = useLogout();
 
   const sidebarItems = [
     {
@@ -48,6 +48,12 @@ export default function Sidebar() {
       path: "/user/profile",
     },
   ];
+
+  useEffect(() => {
+    if (logoutError) {
+      toast.error(logoutError.message);
+    }
+  }, [logoutError]);
 
   return (
     <>
@@ -140,7 +146,7 @@ export default function Sidebar() {
           </NavLink>
 
           <button
-            onClick={logout}
+            onClick={() => logout()}
             disabled={isLoading}
             className={cn(
               "w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-500 group transition-all duration-300",
