@@ -104,9 +104,9 @@ export function useLogout() {
       queryClient.removeQueries({ queryKey: ["auth"] });
 
       // Clear localStorage
-      // removeAuthData();
+      removeAuthData();
 
-      // window.location.reload();
+      window.location.reload();
     },
   });
 
