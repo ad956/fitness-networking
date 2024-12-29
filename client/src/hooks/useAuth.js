@@ -92,8 +92,6 @@ export function useLogout() {
   const mutation = useMutation({
     mutationFn: (userRole) => authApi.logout(userRole),
     onSuccess: () => {
-      throw new Error("VHH");
-
       // Clear React Query cache
       queryClient.removeQueries({ queryKey: ["auth"] });
 
