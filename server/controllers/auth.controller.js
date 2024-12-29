@@ -1,6 +1,6 @@
 const authService = require("../services/auth.service");
 const asyncHandler = require("express-async-handler");
-const { constants, templates } = require("../utils");
+const { constants, isProduction, templates } = require("../utils");
 
 class AuthController {
   constructor(authService) {
@@ -40,10 +40,6 @@ class AuthController {
   });
 
   logout = asyncHandler(async (req, res) => {
-    const refreshToken = req.cookies.refreshToken;
-    await this.authService.logout(refreshToken);
-
-    res.clearCookie("accessToken");
     res.clearCookie("refreshToken");
     res.status(200).json({ message: "Logged out successfully" });
   });
@@ -92,8 +88,9 @@ class AuthController {
       .cookie("refreshToken", refreshToken, {
         maxAge: constants.COOKIE_MAX_AGE_MS,
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
+        path: "/",
       })
       .status(200)
       .json({ accessToken, verified });
@@ -111,8 +108,9 @@ class AuthController {
       .cookie("refreshToken", refreshToken, {
         maxAge: constants.COOKIE_MAX_AGE_MS,
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
+        path: "/",
       })
       .status(200)
       .json({ accessToken });
