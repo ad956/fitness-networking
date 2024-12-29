@@ -7,6 +7,7 @@ const {
 const genratedOTP = require("./generate-otp");
 
 module.exports = {
+  isProduction: process.env.NODE_ENV === "production",
   ...constants,
   templates: {
     verifiedUserTemplate,
