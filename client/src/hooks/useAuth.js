@@ -32,6 +32,7 @@ const authApi = {
           headers: {
             Authorization: `Bearer ${firebaseToken}`,
           },
+          withCredentials: true,
         }
       );
 
@@ -59,8 +60,12 @@ const authApi = {
     return response.data;
   },
 
-  logout: async (userRole) => {
-    return true;
+  logout: async () => {
+    const response = await axios.post(`auth/logout`, null, {
+      withCredentials: true,
+    });
+
+    return response.data;
   },
 
   checkVerification: async (user) => {
@@ -68,6 +73,7 @@ const authApi = {
       headers: {
         "Content-Type": "application/json",
       },
+      withCredentials: true,
     });
     return response.data;
   },
@@ -90,15 +96,17 @@ export function useLogout() {
   const { removeAuthData } = useAuthState();
 
   const mutation = useMutation({
-    mutationFn: (userRole) => authApi.logout(userRole),
-    onSuccess: () => {
+    mutationFn: () => authApi.logout(),
+    onSuccess: (data) => {
+      console.log(data);
+
       // Clear React Query cache
       queryClient.removeQueries({ queryKey: ["auth"] });
 
       // Clear localStorage
-      removeAuthData();
+      // removeAuthData();
 
-      window.location.reload();
+      // window.location.reload();
     },
   });
 
