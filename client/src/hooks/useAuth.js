@@ -94,19 +94,18 @@ export function useLogin() {
 export function useLogout() {
   const queryClient = useQueryClient();
   const { removeAuthData } = useAuthState();
+  const navigate = useNavigate();
 
   const mutation = useMutation({
     mutationFn: () => authApi.logout(),
     onSuccess: (data) => {
-      console.log(data);
-
       // Clear React Query cache
       queryClient.removeQueries({ queryKey: ["auth"] });
 
       // Clear localStorage
       removeAuthData();
 
-      window.location.reload();
+      navigate("/login");
     },
   });
 
