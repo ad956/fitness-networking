@@ -32,7 +32,6 @@ const authApi = {
           headers: {
             Authorization: `Bearer ${firebaseToken}`,
           },
-          validateStatus: (status) => status < 500,
         }
       );
 
@@ -61,7 +60,7 @@ const authApi = {
   },
 
   logout: async (userRole) => {
-    return axios.post(`auth/logout`);
+    return true;
   },
 
   checkVerification: async (user) => {
@@ -88,34 +87,40 @@ export function useLogin() {
 
 export function useLogout() {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
+  const { removeAuthData } = useAuthState();
 
-  return useMutation({
+  const mutation = useMutation({
     mutationFn: (userRole) => authApi.logout(userRole),
     onSuccess: () => {
+      throw new Error("VHH");
+
       // Clear React Query cache
       queryClient.removeQueries({ queryKey: ["auth"] });
 
-      // Clear sessionStorage
-      sessionStorage.removeItem("userRole");
-      sessionStorage.removeItem("accessToken");
+      // Clear localStorage
+      removeAuthData();
 
-      toast.success("Logged out successfully");
-      navigate("/login");
-    },
-    onError: (error) => {
-      toast.error("Logout failed: " + error.message);
+      window.location.reload();
     },
   });
+
+  return {
+    logout: mutation.mutate,
+    isLoading: mutation.isLoading,
+    logoutError: mutation.error,
+  };
 }
 
 export function useGoogleAuth() {
-  const navigate = useNavigate();
+  const { storeAccessToken, storeUserRole } = useAuthState();
 
   return useMutation({
     mutationFn: (data) => authApi.googleAuth(data.userRole),
     onSuccess: (data, variables) => {
-      navigate(`/${variables.userRole}`);
+      storeAccessToken(data.accessToken);
+      storeUserRole(variables.userRole);
+
+      window.location.reload();
     },
   });
 }
@@ -127,13 +132,11 @@ export function useSignup() {
 }
 
 export function useCheckAuth() {
-  const queryClient = useQueryClient();
-
   return useQuery({
     queryKey: ["auth"],
     queryFn: () => {
-      const accessToken = sessionStorage.getItem("accessToken");
-      const userRole = sessionStorage.getItem("userRole");
+      const accessToken = localStorage.getItem("accessToken");
+      const userRole = localStorage.getItem("userRole");
 
       if (accessToken && userRole) {
         return { isAuthenticated: true, role: userRole };
@@ -157,33 +160,22 @@ export function useCheckVerification(user) {
 }
 
 export function useAuthState() {
-  const login = useLogin();
-  const googleAuth = useGoogleAuth();
-  const signup = useSignup();
-  const { data: authData, isLoading: isCheckingAuth } = useCheckAuth();
-  const queryClient = useQueryClient();
-
   const storeAccessToken = (accessToken) => {
-    // Store the access token in sessionStorage
-    sessionStorage.setItem("accessToken", accessToken);
+    // Store the access token in localStorage
+    localStorage.setItem("accessToken", accessToken);
   };
 
   const storeUserRole = (userRole) => {
-    // Store the user role in react-query
-    sessionStorage.setItem("userRole", userRole);
+    // Store the user role in localStorage
+    localStorage.setItem("userRole", userRole);
   };
 
   const removeAuthData = () => {
-    sessionStorage.removeItem("accessToken");
-    sessionStorage.removeItem("userRole");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("userRole");
   };
 
   return {
-    login,
-    googleAuth,
-    signup,
-    authData,
-    isCheckingAuth,
     storeAccessToken,
     storeUserRole,
     removeAuthData,
