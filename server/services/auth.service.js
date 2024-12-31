@@ -75,6 +75,28 @@ class AuthService {
     return user;
   }
 
+  async demoLogin(userType) {
+    const Model = this.getModel(userType);
+
+    const user = await Model.findOne({
+      where: { user_id: 3 },
+    });
+
+    if (!user) {
+      throw HttpError.notFound(`${userType} doesn't exist`);
+    }
+
+    const primaryKey = user.constructor.primaryKeyAttribute; // Get the primary key field dynamically
+    const userId = user[primaryKey]; // Access the primary key value dynamically
+
+    const { accessToken, refreshToken } = this.generateAuthTokens({
+      id: userId,
+      role: userType,
+    });
+
+    return { accessToken, refreshToken };
+  }
+
   // performs email login-link verification
   async verifyUserToken(token, userType) {
     const Model = this.getModel(userType);
