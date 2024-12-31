@@ -1,5 +1,6 @@
 export {
   useLogin,
+  useDemoLogin,
   useLogout,
   useGoogleAuth,
   useSignup,
