@@ -15,11 +15,11 @@ if (isProduction && process.env.DB_URL) {
   });
 } else {
   sequelize = new Sequelize(
-    process.env.DB_NAME,
-    process.env.DB_USER,
-    process.env.DB_PASS,
+    process.env.DB_NAME || "fitness",
+    process.env.DB_USER || "root",
+    process.env.DB_PASS || "1245",
     {
-      host: process.env.DB_HOST,
+      host: process.env.DB_HOST || "127.0.0.1",
       dialect: "mysql",
     }
   );
