@@ -17,6 +17,25 @@ const authApi = {
     return response.data;
   },
 
+  demoLogin: async (userRole) => {
+    const response = await axios.post(
+      `auth/demo-login?role=${userRole}`,
+      null,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      }
+    );
+
+    if (!response.data.success) {
+      throw new Error("Demo login failed");
+    }
+
+    return response.data;
+  },
+
   googleAuth: async (userRole) => {
     try {
       const result = await signInWithPopup(auth, provider);
@@ -87,6 +106,26 @@ export function useLogin() {
         throw new Error("Invalid email/mobile or password");
       }
       throw new Error("Login failed. Please try again later.");
+    },
+  });
+}
+
+export function useDemoLogin() {
+  const { storeAccessToken, storeUserRole } = useAuthState();
+
+  return useMutation({
+    mutationFn: ({ userRole }) => authApi.demoLogin(userRole),
+    onSuccess: (data, variables) => {
+      // Store demo user credentials
+      storeAccessToken(data.accessToken);
+      storeUserRole(variables.userRole);
+
+      // Reload to reflect authentication changes
+      window.location.reload();
+    },
+    onError: (error) => {
+      console.error("Demo login error:", error);
+      throw new Error("Unable to login as demo user. Please try again later.");
     },
   });
 }
