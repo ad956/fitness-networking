@@ -8,11 +8,12 @@ import {
   RadioGroup,
 } from "@nextui-org/react";
 import { AiTwotoneEye, AiTwotoneEyeInvisible } from "react-icons/ai";
-import { FcGoogle } from "react-icons/fc";
+import { FcGoogle, FcCloseUpMode } from "react-icons/fc";
 import { signin_png } from "@images";
 import { SeoHelmet, VerificationModal } from "@components";
 import toast, { Toaster } from "react-hot-toast";
-import { useGoogleAuth, useLogin } from "@hooks";
+import { useDemoLogin, useGoogleAuth, useLogin } from "@hooks";
+import { motion } from "framer-motion";
 
 function LoginPage() {
   const [user, setUser] = useState({
@@ -26,6 +27,11 @@ function LoginPage() {
 
   const { mutate: googleAuth } = useGoogleAuth();
   const { mutate: loginMutate, isLoading: isLoginLoading } = useLogin();
+  const {
+    mutate: demoLogin,
+    isLoading: isDemoLoginLoading,
+    error,
+  } = useDemoLogin();
 
   const handleChange = (e) =>
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -85,7 +91,35 @@ function LoginPage() {
       toast.error("Please select your user role before signing in!");
       return;
     }
-    googleAuth({ userRole: user.role });
+    googleAuth(
+      { userRole: user.role },
+      {
+        onError: (error) => {
+          toast.dismiss();
+          toast.error(
+            error.message || "Google Sign In failed. Please try again."
+          );
+        },
+      }
+    );
+  };
+
+  const handleDemoLogin = () => {
+    if (!user.role) {
+      toast.error("Please select your user role before exploring demo access!");
+      return;
+    }
+
+    toast.loading("Accessing demo account...");
+    demoLogin(
+      { userRole: user.role },
+      {
+        onError: (error) => {
+          toast.dismiss();
+          toast.error(error.message || "Demo login failed. Please try again.");
+        },
+      }
+    );
   };
 
   return (
@@ -99,7 +133,12 @@ function LoginPage() {
       <Toaster />
       <Image src={signin_png} className="hidden md:block h-3/5 w-4/5" />
 
-      <div className="max-w-md w-full space-y-8 lg:mr-10">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="max-w-md w-full space-y-8 lg:mr-10"
+      >
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-zinc-900">
             Sign in to your account
@@ -107,21 +146,35 @@ function LoginPage() {
         </div>
 
         <div className="rounded-md shadow-sm">
-          <div>
+          <div className="flex gap-4">
             <Button
               variant="bordered"
               radius="full"
-              className="w-full flex justify-center items-center p-6 text-sm font-medium"
+              className="w-1/2 flex justify-center items-center p-6 text-sm font-medium"
               onClick={handleGoogleSignIn}
             >
               <FcGoogle size={25} />
               Sign in with Google
             </Button>
+
+            <Button
+              variant="bordered"
+              radius="full"
+              className="w-1/2 flex justify-center items-center gap-2 p-6 text-sm font-medium border-zinc-300 hover:bg-zinc-50"
+              onClick={handleDemoLogin}
+              disabled={isDemoLoginLoading}
+            >
+              <FcCloseUpMode size={22} className="text-emerald-500" />
+              <span>
+                {" "}
+                {isDemoLoginLoading ? "Logging in..." : "Explore Demo Access"}
+              </span>
+            </Button>
           </div>
           <div className="relative flex py-5 items-center">
             <div className="flex-grow border-t border-zinc-300 -700"></div>
             <span className="flex-shrink mx-4 text-zinc-600">
-              or sign in with email or username
+              or sign in with your credentials
             </span>
             <div className="flex-grow border-t border-zinc-300"></div>
           </div>
@@ -226,7 +279,7 @@ function LoginPage() {
             </Link>
           </p>
         </div>
-      </div>
+      </motion.div>
 
       {showVerifyModal && (
         <VerificationModal mutate={loginMutate} user={user} />
