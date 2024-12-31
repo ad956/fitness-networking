@@ -22,16 +22,11 @@ const authApi = {
       `auth/demo-login?role=${userRole}`,
       null,
       {
-        headers: {
-          "Content-Type": "application/json",
-        },
         withCredentials: true,
       }
     );
 
-    if (!response.data.success) {
-      throw new Error("Demo login failed");
-    }
+    if (response.data.message) throw new Error(response.data.message);
 
     return response.data;
   },
@@ -55,7 +50,7 @@ const authApi = {
         }
       );
 
-      if (response.message) {
+      if (response.data.message) {
         throw new Error(response.message);
       }
 
@@ -72,9 +67,7 @@ const authApi = {
       },
     });
 
-    if (!response.data.success) {
-      throw new Error("Signup failed");
-    }
+    if (response.data.message) throw new Error(response.data.message);
 
     return response.data;
   },
@@ -83,6 +76,8 @@ const authApi = {
     const response = await axios.post(`auth/logout`, null, {
       withCredentials: true,
     });
+
+    if (response.data.message) throw new Error(response.data.message);
 
     return response.data;
   },
@@ -94,6 +89,9 @@ const authApi = {
       },
       withCredentials: true,
     });
+
+    if (response.data.message) throw new Error(response.data.message);
+
     return response.data;
   },
 };
@@ -145,6 +143,10 @@ export function useLogout() {
       removeAuthData();
 
       navigate("/login");
+    },
+    onError: (error) => {
+      console.error(error.message);
+      throw new Error(error.message);
     },
   });
 
