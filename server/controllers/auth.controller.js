@@ -39,9 +39,32 @@ class AuthController {
     res.status(200).json({ msg: "verification pending" });
   });
 
+  demoLogin = asyncHandler(async (req, res) => {
+    const { role } = req.query;
+
+    if (!role) {
+      res.status(400);
+      throw new Error("Role is mandatory");
+    }
+
+    const { accessToken, refreshToken } = await this.authService.demoLogin(
+      role
+    );
+    res
+      .cookie("refreshToken", refreshToken, {
+        maxAge: constants.COOKIE_MAX_AGE_MS,
+        httpOnly: true,
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
+        path: "/",
+      })
+      .status(200)
+      .json({ accessToken });
+  });
+
   logout = asyncHandler(async (req, res) => {
     res.clearCookie("refreshToken");
-    res.status(200).json({ message: "Logged out successfully" });
+    res.status(200).json({ msg: "Logged out successfully" });
   });
 
   verifyUser = asyncHandler(async (req, res) => {
