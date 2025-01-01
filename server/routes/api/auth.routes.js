@@ -5,6 +5,7 @@ const authController = require("../../controllers/auth.controller");
 const verifyGoogleIdToken = require("../../middleware/verify-google-id-token.middleware");
 
 router.post("/login", authController.login);
+router.post("/demo-login", authController.demoLogin);
 router.post("/logout", authController.logout);
 router.post("/register", authController.register);
 router.post("/google-auth", verifyGoogleIdToken, authController.googleAuth);

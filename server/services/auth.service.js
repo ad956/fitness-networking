@@ -1,9 +1,8 @@
 const bcrypt = require("bcrypt");
 const { Op } = require("sequelize");
 
-const Admin = require("../models/admin.modal");
-const Partner = require("../models/partner.modal");
-const User = require("../models/user.modal");
+const db = require("../models/");
+const { Admin, Partner, User } = db;
 const HttpError = require("../errors/http-error");
 
 const { sendEmail, templateGenrator } = require("../services/email/");
@@ -73,6 +72,28 @@ class AuthService {
     await this.sendLoginVerificationEmail(user, verificationSecret, userType);
 
     return user;
+  }
+
+  async demoLogin(userType) {
+    const Model = this.getModel(userType);
+
+    const user = await Model.findOne({
+      where: { user_id: 3 },
+    });
+
+    if (!user) {
+      throw HttpError.notFound(`${userType} doesn't exist`);
+    }
+
+    const primaryKey = user.constructor.primaryKeyAttribute; // Get the primary key field dynamically
+    const userId = user[primaryKey]; // Access the primary key value dynamically
+
+    const { accessToken, refreshToken } = this.generateAuthTokens({
+      id: userId,
+      role: userType,
+    });
+
+    return { accessToken, refreshToken };
   }
 
   // performs email login-link verification

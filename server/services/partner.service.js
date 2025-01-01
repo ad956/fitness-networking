@@ -1,4 +1,6 @@
-const Partner = require("../models/partner.modal");
+const db = require("../models/");
+const { Partner } = db;
+
 const HttpError = require("../errors/http-error");
 
 class PartnerService {

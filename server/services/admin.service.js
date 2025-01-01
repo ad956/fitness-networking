@@ -1,9 +1,8 @@
 const { Op } = require("sequelize");
-const Admin = require("../models/admin.modal");
-const User = require("../models/user.modal");
-const Profile = require("../models/user-profile.modal");
-const Status = require("../models/status.modal");
-const Partner = require("../models/partner.modal");
+
+const db = require("../models/");
+const { Admin, Partner, Profile, Status, User } = db;
+
 const { sendEmail } = require("./email/");
 const { constants } = require("../utils");
 const bcrypt = require("bcrypt");

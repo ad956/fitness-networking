@@ -1,8 +1,8 @@
-const Transaction = require("../models/transactions.modal");
+const db = require("../models/");
+const { Profile, Transaction, User } = db;
+
 const { sendEmail, templateGenrator } = require("../services/email/");
 const { constants } = require("../utils/constants");
-const User = require("../models/user.modal");
-const Profile = require("../models/user-profile.modal");
 const HttpError = require("../errors/http-error");
 
 class UserService {

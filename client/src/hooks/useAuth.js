@@ -17,6 +17,20 @@ const authApi = {
     return response.data;
   },
 
+  demoLogin: async (userRole) => {
+    const response = await axios.post(
+      `auth/demo-login?role=${userRole}`,
+      null,
+      {
+        withCredentials: true,
+      }
+    );
+
+    if (response.data.message) throw new Error(response.data.message);
+
+    return response.data;
+  },
+
   googleAuth: async (userRole) => {
     try {
       const result = await signInWithPopup(auth, provider);
@@ -36,7 +50,7 @@ const authApi = {
         }
       );
 
-      if (response.message) {
+      if (response.data.message) {
         throw new Error(response.message);
       }
 
@@ -53,9 +67,7 @@ const authApi = {
       },
     });
 
-    if (!response.data.success) {
-      throw new Error("Signup failed");
-    }
+    if (response.data.message) throw new Error(response.data.message);
 
     return response.data;
   },
@@ -64,6 +76,8 @@ const authApi = {
     const response = await axios.post(`auth/logout`, null, {
       withCredentials: true,
     });
+
+    if (response.data.message) throw new Error(response.data.message);
 
     return response.data;
   },
@@ -75,6 +89,9 @@ const authApi = {
       },
       withCredentials: true,
     });
+
+    if (response.data.message) throw new Error(response.data.message);
+
     return response.data;
   },
 };
@@ -87,6 +104,26 @@ export function useLogin() {
         throw new Error("Invalid email/mobile or password");
       }
       throw new Error("Login failed. Please try again later.");
+    },
+  });
+}
+
+export function useDemoLogin() {
+  const { storeAccessToken, storeUserRole } = useAuthState();
+
+  return useMutation({
+    mutationFn: ({ userRole }) => authApi.demoLogin(userRole),
+    onSuccess: (data, variables) => {
+      // Store demo user credentials
+      storeAccessToken(data.accessToken);
+      storeUserRole(variables.userRole);
+
+      // Reload to reflect authentication changes
+      window.location.reload();
+    },
+    onError: (error) => {
+      console.error("Demo login error:", error);
+      throw new Error("Unable to login as demo user. Please try again later.");
     },
   });
 }
@@ -106,6 +143,10 @@ export function useLogout() {
       removeAuthData();
 
       navigate("/login");
+    },
+    onError: (error) => {
+      console.error(error.message);
+      throw new Error(error.message);
     },
   });
 

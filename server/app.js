@@ -9,7 +9,7 @@ const port = process.env.PORT || 3000;
 
 const initialRoute = require("./routes");
 const errorHandler = require("./middleware/error-handler.middleware");
-const { connectDB } = require("./config/db.config");
+const db = require("./models");
 
 const app = express();
 
@@ -23,7 +23,11 @@ app.use(
   })
 );
 
-connectDB();
+db.sequelize
+  .authenticate()
+  .then(() => console.log("Database connection established successfully."))
+  .catch((error) => console.error("Unable to connect to the database:", error));
+
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
