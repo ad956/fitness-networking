@@ -1,9 +1,8 @@
 const bcrypt = require("bcrypt");
 const { Op } = require("sequelize");
 
-const Admin = require("../models/admin.modal");
-const Partner = require("../models/partner.modal");
-const User = require("../models/user.modal");
+const db = require("../models/");
+const { Admin, Partner, User } = db;
 const HttpError = require("../errors/http-error");
 
 const { sendEmail, templateGenrator } = require("../services/email/");
