@@ -9,7 +9,7 @@ const port = process.env.PORT || 3000;
 
 const initialRoute = require("./routes");
 const errorHandler = require("./middleware/error-handler.middleware");
-const { db } = require("./models");
+const db = require("./models");
 
 const app = express();
 
