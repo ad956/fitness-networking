@@ -7,15 +7,11 @@ import GymOwners from "./GymOwners";
 export default function AdminLayout() {
   return (
     <Layout>
-      <div className="flex flex-col h-screen">
-        <section className="flex-1 overflow-y-auto">
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/members" element={<GymMembers />} />
-            <Route path="/owners" element={<GymOwners />} />
-          </Routes>
-        </section>
-      </div>
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/members" element={<GymMembers />} />
+        <Route path="/owners" element={<GymOwners />} />
+      </Routes>
     </Layout>
   );
 }
