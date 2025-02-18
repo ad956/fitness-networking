@@ -18,7 +18,7 @@
     "@nivo/pie": "^0.87.0",
     "@nivo/radial-bar": "^0.85.1",
     "@reduxjs/toolkit": "^2.2.2",
-    "@tanstack/react-query": "^5.29.2",
+    "@tanstack/react-query": "^5.66.7",
     "axios": "^1.6.8",
     "firebase": "^10.11.0",
     "framer-motion": "^11.0.20",
