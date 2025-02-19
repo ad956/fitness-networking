@@ -2,8 +2,11 @@ import React from "react";
 import { Avatar } from "@nextui-org/react";
 import { LuBell } from "react-icons/lu";
 import { motion } from "framer-motion";
+import { useUserStore } from "@store";
 
 export default function Headbar() {
+  const { user } = useUserStore();
+
   return (
     <motion.div
       initial={{ opacity: 0, y: -20 }}
@@ -15,7 +18,9 @@ export default function Headbar() {
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.2 }}
       >
-        <h1 className="text-2xl font-bold">Welcome back, John!</h1>
+        <h1 className="text-2xl font-bold">
+          Welcome back, {user?.name.split(" ")[0]}!
+        </h1>
         <p className="text-gray-500">
           Track your fitness journey and gym activities
         </p>
@@ -51,7 +56,7 @@ export default function Headbar() {
             isBordered
             as="button"
             className="transition-transform"
-            src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=100&h=100&fit=crop"
+            src={user?.profile}
           />
         </motion.div>
       </div>
