@@ -77,8 +77,10 @@ class AuthService {
   async demoLogin(userType) {
     const Model = this.getModel(userType);
 
+    const demo_userId = `${userType}_id`;
+
     const user = await Model.findOne({
-      where: { user_id: 3 },
+      where: { [demo_userId]: 3 },
     });
 
     if (!user) {
@@ -93,7 +95,18 @@ class AuthService {
       role: userType,
     });
 
-    return { accessToken, refreshToken };
+    return {
+      user: {
+        id: userId,
+        name: user.name,
+        mobile: user.mobile,
+        email: user.email,
+        profile: user.profile_photo,
+        role: userType,
+        accessToken,
+      },
+      refreshToken,
+    };
   }
 
   // performs email login-link verification
@@ -137,7 +150,19 @@ class AuthService {
       role: userType,
     });
 
-    return { accessToken, refreshToken, verified };
+    return {
+      user: {
+        id: userId,
+        name: user.name,
+        mobile: user.mobile,
+        email: user.email,
+        profile: user.profile_photo,
+        role: userType,
+        accessToken,
+      },
+      refreshToken,
+      verified,
+    };
   }
 
   async googleAuth(email, userType) {
