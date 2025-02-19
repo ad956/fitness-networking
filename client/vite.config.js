@@ -20,6 +20,7 @@ export default defineConfig(({ mode }) => {
         "@partner": "/src/pages/partner",
         "@routes": "/src/routes",
         "@styles": "/src/styles",
+        "@store": "/src/store",
         "@utils": "/src/utils",
       },
     },
