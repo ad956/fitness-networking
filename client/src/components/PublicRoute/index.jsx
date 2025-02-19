@@ -1,12 +1,12 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import { useCheckAuth } from "@hooks";
+import { useUserStore } from "@store";
 
 const PublicRoute = ({ children }) => {
-  const { data: authData } = useCheckAuth();
+  const { user } = useUserStore();
 
-  if (authData?.isAuthenticated) {
-    return <Navigate to={`/${authData.role}`} replace />;
+  if (user?.accessToken) {
+    return <Navigate to={`/${user.role}`} replace />;
   }
 
   return children;
