@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Image,
   Button,
@@ -24,6 +24,36 @@ function LoginPage() {
   const [isVisible, setIsVisible] = useState(false);
   const [isDigitsOnly, setIsDigitsOnly] = useState(false);
   const [showVerifyModal, setShowVerifyModal] = useState(false);
+
+  const [typed, setTyped] = useState("");
+  const [showAdminRole, setShowAdminRole] = useState(false);
+  const timeoutRef = useRef(null);
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      // Ignore key presses when typing inside an input
+      if (
+        document.activeElement &&
+        ["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)
+      ) {
+        return;
+      }
+
+      setTyped((prev) => (prev + event.key).slice(-5));
+
+      if ((typed + event.key).slice(-5).toLowerCase() === "admin") {
+        setShowAdminRole(true);
+        setTyped("");
+      }
+
+      // Reset typed text after 2 seconds of inactivity
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => setTyped(""), 2000);
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [typed]);
 
   const { mutate: googleAuth } = useGoogleAuth();
   const { mutate: loginMutate, isLoading: isLoginLoading } = useLogin();
@@ -252,6 +282,7 @@ function LoginPage() {
               >
                 <Radio value="user">Gym Member</Radio>
                 <Radio value="partner">Gym Proprietor</Radio>
+                {showAdminRole && <Radio value="admin">Admin</Radio>}
               </RadioGroup>
             </div>
             <div className="flex items-center justify-end py-4">
