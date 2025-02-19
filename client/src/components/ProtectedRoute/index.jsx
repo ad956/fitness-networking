@@ -1,50 +1,44 @@
 import React, { useEffect, useState } from "react";
-import { useCheckAuth } from "@hooks";
-import { SpinnerLoader } from "@components";
+import { useUserStore } from "@store";
 import AuthErrorFallback from "../AuthErrorFallback";
 
 const ProtectedRoute = ({ requiredRole, children }) => {
-  const { data: authData, isLoading } = useCheckAuth();
+  const { user } = useUserStore();
+
   const [statusCode, setStatusCode] = useState(null);
+  const [isChecking, setIsChecking] = useState(true);
 
   useEffect(() => {
-    if (!isLoading) {
-      // if the user is not authenticated
-      if (!authData?.isAuthenticated) {
-        setStatusCode(401); // Unauthorized
-        return;
-      }
+    setIsChecking(true);
 
-      // check if the user has the correct role
-      if (requiredRole === "admin" && authData?.role !== "admin") {
-        setStatusCode(403); // Forbidden
-        return;
-      }
-
-      if (
-        (requiredRole === "user" || requiredRole === "partner") &&
-        authData?.role !== requiredRole
-      ) {
-        setStatusCode(401); // Unauthorized
-        return;
-      }
+    // User is not authenticated
+    if (!user?.accessToken) {
+      setStatusCode(401);
     }
-  }, [isLoading, authData?.isAuthenticated, authData?.role, requiredRole]);
+    // User has the wrong role (admin check)
+    else if (requiredRole === "admin" && user?.role !== "admin") {
+      setStatusCode(403);
+    }
+    // User has the wrong role
+    else if (requiredRole !== user?.role) {
+      setStatusCode(401);
+    }
+    // User is valid
+    else {
+      setStatusCode(null);
+    }
 
-  if (isLoading) {
-    return (
-      <div className="h-screen grid place-items-center">
-        <SpinnerLoader />
-      </div>
-    );
-  }
+    setIsChecking(false);
+  }, [user?.accessToken, user?.role, requiredRole]);
 
-  // handle error state if user is not authenticated or doesn't have required role
-  if (!authData?.isAuthenticated || statusCode) {
+  if (isChecking) return null;
+
+  // Handle error state if user is not authenticated or doesn't have required role
+  if (statusCode) {
     return <AuthErrorFallback statusCode={statusCode} />;
   }
 
-  return children; // user is authenticated and has the correct role
+  return children; // User is authenticated and has the correct role
 };
 
 export default ProtectedRoute;
