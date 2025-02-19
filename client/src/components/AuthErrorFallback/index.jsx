@@ -1,33 +1,53 @@
+import { useEffect, useState } from "react";
 import { Image, Button, Link } from "@nextui-org/react";
-import { useCheckAuth } from "@hooks";
+import { useUserStore } from "@store";
 
 export default function AuthErrorFallback({ statusCode }) {
-  const { data: authData } = useCheckAuth();
-  const userRole = authData?.user?.role;
+  const { user } = useUserStore();
+  const userRole = user?.role;
 
-  let errorMessage, imageUrl;
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
 
-  if (statusCode === 401) {
-    errorMessage = "You must be logged in before accessing.";
-    imageUrl =
-      "https://cdn.dribbble.com/users/667145/screenshots/1983050/media/d4b5172f8f838ac1af701bc3b324e347.jpg?resize=800x600&vertical=center";
-  } else if (statusCode === 403) {
-    errorMessage = "You are not authorized to access this page.";
-    imageUrl =
-      "https://cdn.dribbble.com/users/134564/screenshots/4575057/kriptown-illu-animation403_clean.gif";
-  }
+  useEffect(() => {
+    if (statusCode === 401) {
+      setImageUrl(
+        "https://cdn.dribbble.com/users/761395/screenshots/6287961/error_401.jpg"
+      );
+    } else if (statusCode === 403) {
+      setImageUrl(
+        "https://cdn.dribbble.com/users/134564/screenshots/4575057/kriptown-illu-animation403_clean.gif"
+      );
+    }
+  }, [statusCode]);
 
   return (
-    <section className="h-screen w-screen flex flex-col lg:flex-row justify-around items-center">
-      <Image src={imageUrl} className="border" />
+    <section className="h-screen w-screen flex flex-col lg:flex-row justify-evenly items-center px-6">
+      <div className="w-full max-w-lg lg:max-w-xl flex justify-center">
+        {imageUrl && (
+          <Image
+            src={imageUrl}
+            className="border rounded-lg"
+            loading="lazy"
+            onLoad={() => setImageLoaded(true)}
+            style={{
+              maxWidth: "100%",
+              height: "auto",
+              visibility: imageLoaded ? "visible" : "hidden",
+            }}
+          />
+        )}
+      </div>
 
-      <div className="flex flex-col gap-5 justify-center items-center h-3/5 w-4/5 lg:w-2/5">
+      <div className="flex flex-col gap-5 justify-center items-center w-full max-w-md text-center">
         <div className="text-black/60 text-lg font-medium">
           <span className="text-black font-semibold">Message :</span>{" "}
-          {errorMessage}
+          {statusCode === 401 && !user?.accessToken
+            ? "You must be logged in before accessing."
+            : "You are not authorized to access this page."}
         </div>
 
-        <div className="flex flex-row gap-2">
+        <div className="flex flex-wrap justify-center gap-3">
           {statusCode === 403 ? (
             <Button
               className="bg-black text-white font-medium"
