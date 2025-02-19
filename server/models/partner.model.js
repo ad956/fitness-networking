@@ -27,6 +27,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(15),
         allowNull: false,
       },
+      profile_photo: {
+        type: DataTypes.STRING(255),
+      },
     },
     {
       tableName: "gym",

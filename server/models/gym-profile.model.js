@@ -19,9 +19,6 @@ module.exports = (sequelize, DataTypes) => {
       todays_credit: {
         type: DataTypes.DECIMAL(10, 2),
       },
-      profile_pic: {
-        type: DataTypes.STRING(255),
-      },
       city: {
         type: DataTypes.STRING(50),
       },
