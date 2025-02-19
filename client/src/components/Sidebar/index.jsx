@@ -16,38 +16,70 @@ import { useLogout } from "@hooks";
 import { motion } from "framer-motion";
 import toast, { Toaster } from "react-hot-toast";
 import { Settings } from "@components";
+import { useUserStore } from "@store";
 
 export default function Sidebar() {
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const { logout, isLoading, logoutError } = useLogout();
+  const { user } = useUserStore();
 
-  const sidebarItems = [
-    {
-      label: "Dashboard",
-      icon: <LuLayoutDashboard className="w-5 h-5" />,
-      path: "/user/dashboard",
-    },
-    {
-      label: "QR Code",
-      icon: <LuQrCode className="w-5 h-5" />,
-      path: "/user/qr-code",
-    },
-    {
-      label: "Membership",
-      icon: <LuDumbbell className="w-5 h-5" />,
-      path: "/user/membership",
-    },
-    {
-      label: "Transactions",
-      icon: <LuWallet className="w-5 h-5" />,
-      path: "/user/transactions",
-    },
-    {
-      label: "Profile",
-      icon: <LuUser className="w-5 h-5" />,
-      path: "/user/profile",
-    },
-  ];
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const { mutate: logout, isLoading, logoutError } = useLogout();
+
+  const sidebarItems = {
+    user: [
+      {
+        label: "Dashboard",
+        icon: <LuLayoutDashboard className="w-5 h-5" />,
+        path: "/user/dashboard",
+      },
+      {
+        label: "QR Code",
+        icon: <LuQrCode className="w-5 h-5" />,
+        path: "/user/qr-code",
+      },
+      {
+        label: "Membership",
+        icon: <LuDumbbell className="w-5 h-5" />,
+        path: "/user/membership",
+      },
+      {
+        label: "Transactions",
+        icon: <LuWallet className="w-5 h-5" />,
+        path: "/user/transactions",
+      },
+      {
+        label: "Profile",
+        icon: <LuUser className="w-5 h-5" />,
+        path: "/user/profile",
+      },
+    ],
+    partner: [
+      {
+        label: "Membership",
+        icon: <LuDumbbell className="w-5 h-5" />,
+        path: "/partner/membership",
+      },
+      {
+        label: "Transactions",
+        icon: <LuWallet className="w-5 h-5" />,
+        path: "/partner/transactions",
+      },
+    ],
+    admin: [
+      {
+        label: "Dashboard",
+        icon: <LuLayoutDashboard className="w-5 h-5" />,
+        path: "/admin/dashboard",
+      },
+      {
+        label: "User Management",
+        icon: <LuUser className="w-5 h-5" />,
+        path: "/admin/users",
+      },
+    ],
+  };
+
+  const userRole = user?.role || "user";
+  const itemsToShow = sidebarItems[userRole] || sidebarItems.user;
 
   useEffect(() => {
     if (logoutError) {
@@ -58,6 +90,7 @@ export default function Sidebar() {
   return (
     <>
       <div className="relative h-full w-64 bg-white shadow-xl flex flex-col p-6 overflow-hidden">
+        {/* Sidebar Pattern */}
         <div className="absolute inset-0 z-0 opacity-[0.03]">
           <svg width="100%" height="100%">
             <pattern
@@ -67,7 +100,6 @@ export default function Sidebar() {
               width="20"
               height="20"
               patternUnits="userSpaceOnUse"
-              patternContentUnits="userSpaceOnUse"
             >
               <circle cx="10" cy="10" r="1.6" fill="#4F46E5" />
             </pattern>
@@ -81,6 +113,7 @@ export default function Sidebar() {
           </svg>
         </div>
 
+        {/* Logo */}
         <div className="flex gap-2 items-center mb-8">
           <Image
             src={fitness}
@@ -93,8 +126,9 @@ export default function Sidebar() {
           </p>
         </div>
 
+        {/* Navigation */}
         <nav className="relative flex flex-col gap-2 flex-grow">
-          {sidebarItems.map((item, index) => (
+          {itemsToShow.map((item, index) => (
             <motion.div
               key={item.label}
               initial={{ opacity: 0, x: -20 }}
@@ -135,6 +169,7 @@ export default function Sidebar() {
           ))}
         </nav>
 
+        {/* Settings & Logout */}
         <div className="relative mt-4 space-y-2 pt-4 border-t border-gray-100">
           <NavLink
             to="#"
@@ -164,7 +199,7 @@ export default function Sidebar() {
           </button>
         </div>
 
-        {/* GitHub and Social Section */}
+        {/* GitHub & Social */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
