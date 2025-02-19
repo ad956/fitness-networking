@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { auth, provider } from "@utils";
 import { signInWithPopup } from "firebase/auth";
+import { useUserStore } from "@store";
 
 const authApi = {
   login: async (user) => {
@@ -13,7 +14,6 @@ const authApi = {
     });
 
     if (response.data.message) throw new Error(response.data.message);
-
     return response.data;
   },
 
@@ -27,7 +27,6 @@ const authApi = {
     );
 
     if (response.data.message) throw new Error(response.data.message);
-
     return response.data;
   },
 
@@ -53,7 +52,6 @@ const authApi = {
       if (response.data.message) {
         throw new Error(response.message);
       }
-
       return response.data;
     } catch (error) {
       throw new Error(error.message);
@@ -68,7 +66,6 @@ const authApi = {
     });
 
     if (response.data.message) throw new Error(response.data.message);
-
     return response.data;
   },
 
@@ -78,10 +75,10 @@ const authApi = {
     });
 
     if (response.data.message) throw new Error(response.data.message);
-
     return response.data;
   },
 
+  // for login verification
   checkVerification: async (user) => {
     const response = await axios.post("auth/validate-login", user, {
       headers: {
@@ -91,7 +88,6 @@ const authApi = {
     });
 
     if (response.data.message) throw new Error(response.data.message);
-
     return response.data;
   },
 };
@@ -100,29 +96,24 @@ export function useLogin() {
   return useMutation({
     mutationFn: authApi.login,
     onError: (error) => {
-      if (error.response?.status === 401) {
-        throw new Error("Invalid email/mobile or password");
-      }
-      throw new Error("Login failed. Please try again later.");
+      throw new Error(
+        error.response?.status === 401
+          ? "Invalid email/mobile or password"
+          : "Login failed. Please try again later."
+      );
     },
   });
 }
 
 export function useDemoLogin() {
-  const { storeAccessToken, storeUserRole } = useAuthState();
-
+  const { setUser } = useUserStore();
   return useMutation({
     mutationFn: ({ userRole }) => authApi.demoLogin(userRole),
-    onSuccess: (data, variables) => {
-      // Store demo user credentials
-      storeAccessToken(data.accessToken);
-      storeUserRole(variables.userRole);
-
-      // Reload to reflect authentication changes
+    onSuccess: (data) => {
+      setUser({ ...data.user });
       window.location.reload();
     },
-    onError: (error) => {
-      console.error("Demo login error:", error);
+    onError: () => {
       throw new Error("Unable to login as demo user. Please try again later.");
     },
   });
@@ -130,42 +121,29 @@ export function useDemoLogin() {
 
 export function useLogout() {
   const queryClient = useQueryClient();
-  const { removeAuthData } = useAuthState();
+  const { logoutUser } = useUserStore();
   const navigate = useNavigate();
 
-  const mutation = useMutation({
-    mutationFn: () => authApi.logout(),
-    onSuccess: (data) => {
-      // Clear React Query cache
+  return useMutation({
+    mutationFn: authApi.logout,
+    onSuccess: () => {
       queryClient.removeQueries({ queryKey: ["auth"] });
-
-      // Clear localStorage
-      removeAuthData();
-
+      logoutUser();
       navigate("/login");
     },
     onError: (error) => {
-      console.error(error.message);
       throw new Error(error.message);
     },
   });
-
-  return {
-    logout: mutation.mutate,
-    isLoading: mutation.isLoading,
-    logoutError: mutation.error,
-  };
 }
 
 export function useGoogleAuth() {
-  const { storeAccessToken, storeUserRole } = useAuthState();
+  const { setUser } = useUserStore();
 
   return useMutation({
     mutationFn: (data) => authApi.googleAuth(data.userRole),
-    onSuccess: (data, variables) => {
-      storeAccessToken(data.accessToken);
-      storeUserRole(variables.userRole);
-
+    onSuccess: (data) => {
+      setUser({ ...data.user });
       window.location.reload();
     },
   });
@@ -177,25 +155,6 @@ export function useSignup() {
   });
 }
 
-export function useCheckAuth() {
-  return useQuery({
-    queryKey: ["auth"],
-    queryFn: () => {
-      const accessToken = localStorage.getItem("accessToken");
-      const userRole = localStorage.getItem("userRole");
-
-      if (accessToken && userRole) {
-        return { isAuthenticated: true, role: userRole };
-      }
-
-      return { isAuthenticated: false, role: null };
-    },
-    retry: false, // No need to retry for auth check
-    refetchOnWindowFocus: false, // No need to refetch on window focus
-    staleTime: Infinity, // No need to refetch until logout
-  });
-}
-
 export function useCheckVerification(user) {
   return useQuery({
     queryKey: ["verification", user],
@@ -203,27 +162,4 @@ export function useCheckVerification(user) {
     enabled: !!user,
     refetchInterval: 5000,
   });
-}
-
-export function useAuthState() {
-  const storeAccessToken = (accessToken) => {
-    // Store the access token in localStorage
-    localStorage.setItem("accessToken", accessToken);
-  };
-
-  const storeUserRole = (userRole) => {
-    // Store the user role in localStorage
-    localStorage.setItem("userRole", userRole);
-  };
-
-  const removeAuthData = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("userRole");
-  };
-
-  return {
-    storeAccessToken,
-    storeUserRole,
-    removeAuthData,
-  };
 }
