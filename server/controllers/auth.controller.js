@@ -47,9 +47,7 @@ class AuthController {
       throw new Error("Role is mandatory");
     }
 
-    const { accessToken, refreshToken } = await this.authService.demoLogin(
-      role
-    );
+    const { user, refreshToken } = await this.authService.demoLogin(role);
     res
       .cookie("refreshToken", refreshToken, {
         maxAge: constants.COOKIE_MAX_AGE_MS,
@@ -59,7 +57,7 @@ class AuthController {
         path: "/",
       })
       .status(200)
-      .json({ accessToken });
+      .json({ user });
   });
 
   logout = asyncHandler(async (req, res) => {
@@ -96,7 +94,7 @@ class AuthController {
       throw new Error("Identifier & Role field are mandatory");
     }
 
-    const { accessToken, refreshToken, verified } =
+    const { user, refreshToken, verified } =
       await this.authService.validateLogin({
         identifier,
         userType: role,
@@ -116,7 +114,7 @@ class AuthController {
         path: "/",
       })
       .status(200)
-      .json({ accessToken, verified });
+      .json({ user, verified });
   });
 
   googleAuth = asyncHandler(async (req, res) => {
