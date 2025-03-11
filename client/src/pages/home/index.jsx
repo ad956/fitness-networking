@@ -192,7 +192,7 @@ const ownerPlans = [
     buttonText: "Buy Now",
   },
   {
-    title: "Enterprise Membership",
+    title: "Elite Membership",
     price: "₹5000/month",
     description:
       "Includes custom branding, dedicated account manager, and advanced reporting.",
