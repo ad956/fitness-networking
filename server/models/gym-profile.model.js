@@ -31,6 +31,10 @@ module.exports = (sequelize, DataTypes) => {
       address: {
         type: DataTypes.STRING(255),
       },
+      location: {
+        type: DataTypes.GEOMETRY("POINT"),
+        allowNull: false,
+      },
     },
     {
       tableName: "gym_profile",
