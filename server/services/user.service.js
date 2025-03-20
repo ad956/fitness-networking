@@ -181,6 +181,24 @@ class UserService {
       "#000"
     );
   }
+
+  async getNearByGyms() {
+    return [
+      { id: 1, name: "Fitness Track Gym", lat: 26.9124, lng: 75.7873 },
+      {
+        id: 2,
+        name: "Fitness connection Gym",
+        lat: 22.3017485,
+        lng: 73.075902,
+      },
+      {
+        id: 3,
+        name: "LET'S BURN GYM",
+        lat: 22.3017485,
+        lng: 73.075902,
+      },
+    ];
+  }
 }
 
 module.exports = new UserService();

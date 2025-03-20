@@ -2,7 +2,7 @@ import React from "react";
 import {
   AnimatedQRCode,
   CreditStats,
-  GymMap,
+  NearByGyms,
   GymMembership,
 } from "./components";
 
@@ -14,7 +14,7 @@ const Dashboard = () => {
         <GymMembership />
         <AnimatedQRCode />
       </div>
-      <GymMap />
+      <NearByGyms />
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import AnimatedQRCode from "./AnimatedQRCode";
 import CreditStats from "./CreditStats";
-import GymMap from "./GymMap";
+import NearByGyms from "./NearByGyms";
 import GymMembership from "./GymMembership";
 import PlansGrid from "./MembershipPlans";
 import ProfileSettings from "./Profile";
@@ -10,7 +10,7 @@ import QRCode from "./QRCode";
 export {
   AnimatedQRCode,
   CreditStats,
-  GymMap,
+  NearByGyms,
   GymMembership,
   PlansGrid,
   ProfileSettings,

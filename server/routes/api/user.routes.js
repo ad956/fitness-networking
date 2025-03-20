@@ -8,4 +8,6 @@ router.get("/all", userController.allUsers);
 router.get("/credit", userController.availableCredits);
 router.post("/credit/:plan", userController.purchaseCredits);
 
+router.get("/nearby-gyms", userController.nearByGyms);
+
 module.exports = router;

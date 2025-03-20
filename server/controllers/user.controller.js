@@ -58,6 +58,12 @@ class UserController {
       res.status(500).json({ error: "Transaction failed" });
     }
   });
+
+  nearByGyms = asyncHandler(async (req, res) => {
+    const currentUser = req.user;
+    const gyms = await this.userService.getNearByGyms();
+    res.status(200).json(gyms);
+  });
 }
 
 module.exports = new UserController(userService);
